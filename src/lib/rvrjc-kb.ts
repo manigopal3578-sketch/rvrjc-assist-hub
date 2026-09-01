@@ -456,5 +456,11 @@ export const FAQ: { question: string; chunkId: string }[] = [
   { question: "Where is the college located and how do I contact it?", chunkId: "contact-location" },
   { question: "Am I eligible for a scholarship or fee reimbursement?", chunkId: "scholarships" },
   { question: "Where are the latest notices and circulars published?", chunkId: "notices" },
+  { question: "Where do I check my fee payment status?", chunkId: "payment-status" },
+  { question: "Which documents do I need at the time of admission?", chunkId: "admission-documents" },
+  { question: "Where is the official admission portal to apply online?", chunkId: "admission-portal" },
+  { question: "How do I reach the college campus and where exactly is it?", chunkId: "campus-map" },
+  { question: "How do I get my hall ticket for semester exams?", chunkId: "hall-ticket-exam-section" },
+  { question: "What are the college bus routes and bus fee?", chunkId: "transport-routes" },
 ];
 
