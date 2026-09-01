@@ -212,11 +212,17 @@ const TOPICS = [
   { icon: I.bell,     title: "Notices",           desc: "Latest official notices and circulars." },
 ];
 
+/* Seeded FAQ — every question is answered by the assistant from a verified
+   official RVRJC page (see src/lib/rvrjc-kb.ts on the server). */
 const COMMON_QUESTIONS = [
   "Where can I find the academic calendar?",
   "How do I pay 2nd year fees?",
   "When is the next exam timetable released?",
   "How do I apply for a bonafide certificate?",
+  "What is the B.Tech tuition fee per year?",
+  "How are admissions done under Category-B?",
+  "Where do I check my semester results?",
+  "How much is the hostel and bus fee?",
 ];
 
 const ROUTES = [
@@ -225,22 +231,179 @@ const ROUTES = [
   { id: "examinations", label: "Examinations", icon: I.calendar },
   { id: "admissions",   label: "Admissions",   icon: I.people },
   { id: "departments",  label: "Departments",  icon: I.building },
+  { id: "faq",          label: "FAQ",          icon: I.qmarkTab },
   { id: "more",         label: "More",         icon: I.more },
 ];
 
-const PAGE_COPY = {
-  academics: { h: "Academics", p: "Programmes, curriculum, academic regulations and the academic calendar. Ask the assistant below for anything specific — every RVRJC answer is linked to an official source." },
-  examinations: { h: "Examinations", p: "Examination schedules, results, revaluation and certificate requests. Ask the assistant below for the latest published notices." },
-  admissions: { h: "Admissions", p: "Eligibility, counselling, EAPCET/ECET admissions, fee structure and required documents." },
-  departments: { h: "Departments", p: "CSE, ECE, EEE, IT, Mechanical, Civil, Chemical and the basic sciences — ask about labs, faculty and programmes." },
-  more: { h: "More", p: "Placements, library, hostel, transport, sports, NSS, alumni and grievance redressal." },
+/* Real content transcribed from official rvrjc.ac.in pages (verified 01-09-2026).
+   `src` values are DIRECT deep links to the exact official page, not the homepage. */
+const PAGES = {
+  academics: {
+    h: "Academics",
+    p: "R.V.R. & J.C. College of Engineering is an autonomous institution (UGC autonomy letter dated 17-03-2024) and follows its own R24 / R20 / R18 regulations.",
+    blocks: [
+      {
+        t: "Academic calendar — Odd semester 2026-27 (R24)",
+        rows: [
+          ["B.Tech IV & III Year, BBA II Year", "Class work 17-JUN-2026 · First mid 17-AUG-2026 · Last working day 24-OCT-2026 · Second mid 26-OCT-2026 · Sem-end exams from 11-NOV-2026"],
+          ["BBA III Year", "Class work 24-JUN-2026 · same mid and exam dates"],
+          ["B.Tech II Year", "Class work 03-AUG-2026 · First mid 21-SEP-2026 · Last working day 21-NOV-2026 · Second mid 23-NOV-2026 · Sem-end exams from 07-DEC-2026"],
+          ["B.Tech I Year", "Class work 03-AUG-2026 · First mid 02-NOV-2026"],
+        ],
+        src: "https://rvrjc.ac.in/xacademiccalender.php",
+        srcLabel: "Official Academic Calendars (year-wise PDFs)",
+      },
+      {
+        t: "Regulations & programmes",
+        rows: [
+          ["Academic regulations", "R24 for new UG batches; R20 and R18 continue for senior and supplementary batches"],
+          ["Programmes offered", "14 engineering programmes plus MCA, MBA, BBA and basic sciences"],
+          ["Course material", "Moodle / LMS at courses.rvrjc.ac.in/moodle"],
+        ],
+        src: "https://rvrjc.ac.in/xacademicregulations.php",
+        srcLabel: "Official Academic Regulations",
+      },
+    ],
+  },
+  examinations: {
+    h: "Examinations",
+    p: "Time tables, results and malpractice notices are published by the Examination Cell year-wise, with a PDF for every exam.",
+    blocks: [
+      {
+        t: "Examination time tables — 2026 (latest published)",
+        rows: [
+          ["B.Tech Sem-IV, 2nd Year, R18 supplementary", "Exams end 21-09-2026"],
+          ["B.Tech Sem-VI, 3rd Year, R18 supplementary", "Exams end 19-09-2026"],
+          ["B.Tech Sem-IV, 2nd Year, R24 supplementary", "Exams end 18-09-2026"],
+          ["B.Tech Sem-VI, 3rd Year, R20 supplementary", "Exams end 17-09-2026"],
+          ["B.Tech Sem-II, 1st Year, R18 / R20 supplementary", "Exams end 15-09-2026"],
+          ["BBA IV-Sem 2nd Year R24 supplementary", "Exams end 11-09-2026"],
+        ],
+        src: "https://rvrjcce.ac.in/xexamtimetables.php",
+        srcLabel: "Official Examination Time Tables",
+      },
+      {
+        t: "Results & examination cell",
+        rows: [
+          ["Results by register number", "examcell/results/regnoresultsR.php"],
+          ["Batch-wise results portal", "rvrjcce.ac.in/examcell/results/"],
+          ["Examination fee payment", "rvrjcce.ac.in/examfee/examfee.php"],
+        ],
+        src: "https://rvrjc.ac.in/xresults-new.php",
+        srcLabel: "Official Results page",
+      },
+    ],
+  },
+  admissions: {
+    h: "Admissions",
+    p: "Admissions follow the rules and regulations of the Government of Andhra Pradesh. Admissions helpline: 94910 73318.",
+    blocks: [
+      {
+        t: "Admission process",
+        rows: [
+          ["Category-A — 70% of seats", "Centralized counselling by the Convener, AP EAPCET, on rank basis"],
+          ["Category-B — 30% of seats", "Filled by the college on rank / merit order as per government directions; all seats ratified by the Government"],
+          ["Minimum qualification", "10+2 with MPC or equivalent for B.Tech"],
+          ["Lateral entry", "10% seats in the second year through AP ECET (diploma holders)"],
+          ["Reservations", "Statutory reservations as per government norms"],
+        ],
+        src: "https://rvrjc.ac.in/xadmission.php",
+        srcLabel: "Official Admission Procedure",
+      },
+      {
+        t: "Tuition fee per year (official fee structure)",
+        rows: [
+          ["B.Tech — Category-A (Convener Quota), 2025-26", "Rs. 1,05,000 (fixed by Govt. of A.P.)"],
+          ["B.Tech — Category-B, 2026-27 (proposed)", "Quantum Computing Rs. 2,50,000 · AI / AI&DS / CSE / CSE-AIML Rs. 2,00,000 · CSE-DS Rs. 1,75,000 · IT & ECE Rs. 1,50,000 · EEE, Mech, Chemical, Civil Rs. 75,000"],
+          ["BBA", "Category-A Rs. 18,000 · Category-B Rs. 50,000"],
+          ["M.Tech (AI, AI&DS, Robotics & AI, Power Systems, Structural, VLSI)", "Rs. 90,000"],
+          ["MBA / MCA", "Rs. 60,000 each"],
+          ["Hostel (optional), 2026-27", "Rs. 48,000 + Rs. 4,000 refundable caution deposit"],
+          ["College bus (optional)", "Guntur Rs. 13,500 · Chilakaluripet Rs. 15,000"],
+          ["Scholarship holders", "Need not pay tuition fee under Category-A"],
+        ],
+        src: "https://rvrjc.ac.in/xfeestructure.php",
+        srcLabel: "Official Fee Structure",
+      },
+      {
+        t: "Paying fees online",
+        rows: [
+          ["Tuition / common services fee", "rvrjcce.ac.in/tuitionfee/tuitionfee.php"],
+          ["Examination fee", "rvrjcce.ac.in/examfee/examfee.php"],
+          ["Bus fee", "rvrjcce.ac.in/busfee/busfee.php"],
+          ["Terms", "Transaction charges are borne by the cardholder and are not refunded or reversed under any circumstances"],
+        ],
+        src: "https://rvrjc.ac.in/xfeepayments.php",
+        srcLabel: "Official Fee Payments page",
+      },
+    ],
+  },
+  departments: {
+    h: "Departments",
+    p: "Every department maintains its own official page on rvrjc.ac.in.",
+    blocks: [
+      {
+        t: "Engineering programmes",
+        rows: [
+          ["Computer Science & Engineering", "rvrjc.ac.in/CSE"],
+          ["CSE (AI & ML) · CSE (Data Science) · CSE (IoT)", "/xcsm · /CSD · /CSO"],
+          ["Computer Science & Business Systems (powered by TCS)", "rvrjc.ac.in/CSBS"],
+          ["Artificial Intelligence · AI & Data Science · Quantum Computing", "/AI · /AIDS · /QTC"],
+          ["Information Technology · ECE · EEE", "/IT · /ECE · /EEE"],
+          ["Mechanical · Civil · Chemical", "/ME · /CE · /Chemical"],
+        ],
+        src: "https://rvrjc.ac.in/xcourses.php",
+        srcLabel: "Official Programs Offered",
+      },
+      {
+        t: "Other departments",
+        rows: [
+          ["Computer Applications (MCA)", "rvrjc.ac.in/CA"],
+          ["Management Sciences (BBA & MBA)", "rvrjc.ac.in/MBA"],
+          ["Mathematics & Humanities · Physics · Chemistry", "/mandh · /Physics · /Chemistry"],
+        ],
+        src: "https://rvrjc.ac.in/xstaffdirectory.php",
+        srcLabel: "College Services Directory",
+      },
+    ],
+  },
+  more: {
+    h: "More",
+    p: "Placements, hostel, transport and student support — all links go to the official pages.",
+    blocks: [
+      {
+        t: "Training & Placement Cell",
+        rows: [
+          ["Placement portal", "tandp.rvrjcce.ac.in"],
+          ["Ch. Srinivasa Rao — Training & Placement Officer", "tpo@rvrjc.ac.in · +91 9491071947 / +91 9849958211"],
+          ["Dr. K. Suresh Babu — Placement Officer", "tpcell@rvrjc.ac.in · +91 9490750007"],
+        ],
+        src: "https://rvrjc.ac.in/xtrainingandplacements.php",
+        srcLabel: "Official Training & Placements",
+      },
+      {
+        t: "Campus & student support",
+        rows: [
+          ["Hostels", "rvrjcce.ac.in/xhostels.php"],
+          ["Transport committee & routes", "rvrjc.ac.in/transport.php"],
+          ["Central library · Facilities", "/xlibrary.php · /xfacilities.php"],
+          ["Scholarships", "rvrjc.ac.in/xscholarships.php"],
+          ["Grievance redressal cell", "rvrjc.ac.in/xstudgrievances.php"],
+        ],
+        src: "https://rvrjc.ac.in/xfacilities.php",
+        srcLabel: "Official Facilities page",
+      },
+    ],
+  },
 };
 
 /* ============================================================
    PERSISTENT CHAT WIDGET — created ONCE, mounted in the shell.
    Routing only swaps #view / #viewBelow, never this node.
    ============================================================ */
-const API_URL = "https://YOUR_BACKEND/ask";
+// Live server endpoint backed by the verified RVRJC knowledge base.
+const API_URL = "/api/public/ask";
+
 
 /*
   ---------------------------------------------------------------
