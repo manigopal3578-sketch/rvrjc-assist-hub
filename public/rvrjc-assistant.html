@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RVRJC Assistant – Prototype Website</title>
+<style>
+  :root{
+    --navy:#0d2a5c;
+    --navy-dark:#091f45;
+    --orange:#e2761b;
+    --pale:#e8f0fb;
+    --border:#e3e7ee;
+    --gray:#6b7280;
+    --bg:#f6f8fb;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);color:#111827;-webkit-font-smoothing:antialiased;
+  }
+  img{display:block;max-width:100%}
+  button{font:inherit;cursor:pointer}
+  .wrap{max-width:960px;margin:0 auto;background:#fff;min-height:100vh}
+  .pad{padding:16px}
+
+  /* ===== TOP DISCLAIMER BAR ===== */
+  .disclaimer{background:var(--navy);color:#fff;text-align:center;padding:10px 14px}
+  .disclaimer .l1{display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:14px}
+  .disclaimer .l2{font-size:12px;color:rgba(255,255,255,.82);margin-top:2px}
+  .disclaimer .l3{font-size:11px;color:rgba(255,255,255,.62);margin-top:3px;line-height:1.4}
+
+  /* ===== HEADER ===== */
+  header.site{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 14px;position:relative;z-index:30}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .crest{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:var(--pale);flex:0 0 auto}
+  .brand .n1{font-weight:800;color:var(--navy);font-size:16px;line-height:1.1}
+  .brand .n2{font-weight:800;color:var(--navy);font-size:11px;letter-spacing:.04em;line-height:1.3}
+  .brand .n3{color:var(--orange);font-size:10px;font-weight:700}
+  .burger{background:none;border:0;padding:8px;color:var(--navy)}
+
+  /* slide-out nav */
+  .drawer{position:fixed;top:0;right:0;height:100%;width:264px;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.18);transform:translateX(100%);transition:transform .25s ease;z-index:60;padding:18px}
+  .drawer.open{transform:translateX(0)}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+  .scrim.open{opacity:1;pointer-events:auto}
+  .drawer h4{margin:0 0 12px;color:var(--navy);font-size:13px;letter-spacing:.08em}
+  .drawer a{display:block;padding:12px 8px;border-radius:8px;color:#111827;text-decoration:none;font-weight:600;font-size:15px}
+  .drawer a[data-active="true"]{background:var(--pale);color:var(--navy)}
+
+  /* ===== HERO ===== */
+  .hero img{width:100%;height:240px;object-fit:cover}
+
+  /* ===== SECONDARY NAV ===== */
+  .tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--border);background:#fff;padding:0 8px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;background:none;border:0;padding:10px 12px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--gray);font-size:11px;font-weight:600;border-bottom:3px solid transparent}
+  .tab[data-active="true"]{color:var(--navy);border-bottom-color:var(--navy)}
+
+  /* ===== SECTIONS ===== */
+  h2.sec{font-size:18px;font-weight:800;margin:18px 0 12px;text-align:left}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:480px){.grid2{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:6px;transition:.15s}
+  .card:hover{border-color:#c9d6ea;box-shadow:0 4px 14px rgba(13,42,92,.07)}
+  .ico{width:36px;height:36px;border-radius:50%;background:var(--pale);color:var(--navy);display:flex;align-items:center;justify-content:center}
+  .card .t{font-weight:700;font-size:14px}
+  .card .d{color:var(--gray);font-size:12px;line-height:1.4}
+
+  /* ===== CHAT WIDGET ===== */
+  #chatMount{margin:20px 0}
+  .chat{border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(13,42,92,.12);border:1px solid var(--border);background:#fff}
+  .chat-head{background:var(--navy);color:#fff;display:flex;align-items:center;gap:8px;padding:12px 14px}
+  .chat-head .title{font-weight:800;font-size:15px}
+  .chat-head .online{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.85)}
+  .dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.25)}
+  .chat-body{padding:16px}
+  .chat-body .hi{font-weight:800;font-size:16px}
+  .chat-body .sub{font-size:14px;margin-top:2px}
+  .chat-body .muted{color:var(--gray);font-size:12.5px;line-height:1.55;margin-top:6px}
+  .qa-label{font-size:10.5px;color:var(--gray);letter-spacing:.14em;font-weight:700;margin:16px 0 8px}
+  .pills{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pill{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:9px 12px;font-size:12.5px;font-weight:600;color:var(--navy);text-align:left}
+  .pill:hover{background:var(--pale)}
+  .log{margin-top:16px;display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto;padding:4px}
+  .log:empty{display:none}
+  .msg{max-width:82%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.5;white-space:pre-wrap}
+  .msg.user{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+  .msg.bot{align-self:flex-start;background:#f1f3f7;color:#111827;border-bottom-left-radius:4px}
+  .msg.bot .src{display:inline-flex;align-items:center;gap:6px;margin-top:9px;background:#fff;border:1px solid var(--border);color:var(--navy);font-weight:700;font-size:12px;border-radius:8px;padding:7px 10px;text-decoration:none}
+  .typing{align-self:flex-start;background:#f1f3f7;border-radius:14px;padding:12px 14px;display:flex;gap:5px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#9aa3b2;animation:bounce 1.2s infinite}
+  .typing i:nth-child(2){animation-delay:.15s}
+  .typing i:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+  .composer{display:flex;align-items:center;gap:8px;margin-top:14px}
+  .field{flex:1;display:flex;align-items:center;gap:8px;background:#f6f8fb;border:1px solid var(--border);border-radius:999px;padding:8px 14px}
+  .field input{flex:1;border:0;background:transparent;outline:none;font-size:14px;min-width:0}
+  .mic{background:none;border:0;color:var(--gray);padding:2px;display:flex}
+  .send{width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;border:0;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .send:hover{background:var(--navy-dark)}
+  .chat-foot{text-align:center;font-size:11px;color:var(--gray);padding:10px;border-top:1px solid var(--border);background:#fbfcfe}
+
+  /* ===== QUESTION ROWS ===== */
+  .qrow{width:100%;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:9px;text-align:left}
+  .qrow:hover{border-color:#c9d6ea}
+  .qrow .q{flex:1;font-size:13.5px;font-weight:600}
+  .qmark{width:30px;height:30px;border-radius:50%;background:var(--pale);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:0 0 auto}
+  .chev{color:#9aa3b2;flex:0 0 auto}
+  .lead{color:var(--gray);font-size:13.5px;line-height:1.6;margin:0 0 4px}
+  footer.site{padding:22px 16px 40px;text-align:center;color:var(--gray);font-size:11.5px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== TOP DISCLAIMER BAR ===== -->
+  <div class="disclaimer">
+    <div class="l1">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31l-5.66 9.8A2 2 0 0 0 6.07 22h11.86a2 2 0 0 0 1.73-2.89L14 9.31V2"/><path d="M8.5 2h7"/><path d="M6.8 15h10.4"/></svg>
+      RVRJC Assistant – Prototype Website
+    </div>
+    <div class="l2">(For Demonstration Only)</div>
+    <div class="l3">This is a prototype built for Engineering Day Presentation. Not an official website.</div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site">
+    <div class="brand">
+      <!-- LOGO_URL placeholder -->
+      <img class="crest" src="https://placehold.co/88x88/0d2a5c/ffffff?text=RVR" alt="R.V.R. &amp; J.C. College of Engineering crest" />
+      <div>
+        <div class="n1">R.V.R. &amp; J.C.</div>
+        <div class="n2">COLLEGE OF ENGINEERING</div>
+        <div class="n3">(AUTONOMOUS)</div>
+      </div>
+    </div>
+    <button class="burger" id="burger" aria-label="Open menu">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <!-- COLLEGE_PHOTO_URL -->
+    <img src="/__l5e/assets-v1/cf9fa55c-31ea-4125-b230-c8baa9743f5b/rvrjc-campus.jpeg" alt="R.V.R. &amp; J.C. College of Engineering main building" />
+  </div>
+
+  <!-- ===== SECONDARY NAV ===== -->
+  <nav class="tabs" id="tabs"></nav>
+
+  <main class="pad">
+    <!-- route-specific content -->
+    <div id="view"></div>
+
+    <!-- ===== PERSISTENT CHAT WIDGET (mounted once, never re-created) ===== -->
+    <div id="chatMount"></div>
+
+    <!-- content that renders BELOW the widget (Home only) -->
+    <div id="viewBelow"></div>
+  </main>
+
+  <footer class="site">
+    Prototype for Engineering Day Presentation · Not an official website of
+    R.V.R. &amp; J.C. College of Engineering (Autonomous).
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Site navigation">
+  <h4>MENU</h4>
+  <div id="drawerLinks"></div>
+</aside>
+
+<script>
+/* ============================================================
+   ICONS
+   ============================================================ */
+const svg = (d, extra = "") =>
+  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}${extra}</svg>`;
+
+const I = {
+  home: svg('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h14V10"/>'),
+  cap: svg('<path d="M22 9 12 4 2 9l10 5 10-5Z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/>'),
+  calendar: svg('<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/>'),
+  people: svg('<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M17 5.5a3 3 0 0 1 0 5.8M18 20a6 6 0 0 0-2-4.4"/>'),
+  building: svg('<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/>'),
+  more: svg('<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>'),
+  results: svg('<path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M9 13l2 2 4-4"/>'),
+  briefcase: svg('<rect x="2.5" y="7" width="19" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>'),
+  rupee: svg('<path d="M7 4h10M7 9h10M16 4c0 5-4 5-9 5l8 10"/>'),
+  bell: svg('<path d="M18 9a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10.5 20a2 2 0 0 0 3 0"/>'),
+  shield: svg('<path d="M12 3l7.5 3v6c0 4.5-3 7.6-7.5 9-4.5-1.4-7.5-4.5-7.5-9V6L12 3Z"/><path d="M12 9v6M9 12h6"/>'),
+  chev: svg('<path d="m9 6 6 6-6 6"/>'),
+  mic: svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 12a6.5 6.5 0 0 0 13 0M12 18.5V22"/>'),
+  send: svg('<path d="M4 12l16-8-6.5 16-2.5-6.5L4 12Z"/>'),
+  link: svg('<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>'),
+};
+
+/* ============================================================
+   DATA
+   ============================================================ */
+const TOPICS = [
+  { icon: I.calendar, title: "Academic Calendar", desc: "View academic schedules and important dates." },
+  { icon: I.people,   title: "Admission Process", desc: "Understand admissions and official links." },
+  { icon: I.cap,      title: "Exam Time Table",   desc: "Find examination schedules and notices." },
+  { icon: I.building, title: "Departments",       desc: "Explore departments and academic programmes." },
+  { icon: I.results,  title: "Results",           desc: "Check published examination results." },
+  { icon: I.briefcase,title: "Placements",        desc: "Placement cell and career support." },
+  { icon: I.rupee,    title: "Fees",              desc: "Fee information and official payment page." },
+  { icon: I.bell,     title: "Notices",           desc: "Latest official notices and circulars." },
+];
+
+const COMMON_QUESTIONS = [
+  "Where can I find the academic calendar?",
+  "How do I pay 2nd year fees?",
+  "When is the next exam timetable released?",
+  "How do I apply for a bonafide certificate?",
+];
+
+const ROUTES = [
+  { id: "home",         label: "Home",         icon: I.home },
+  { id: "academics",    label: "Academics",    icon: I.cap },
+  { id: "examinations", label: "Examinations", icon: I.calendar },
+  { id: "admissions",   label: "Admissions",   icon: I.people },
+  { id: "departments",  label: "Departments",  icon: I.building },
+  { id: "more",         label: "More",         icon: I.more },
+];
+
+const PAGE_COPY = {
+  academics: { h: "Academics", p: "Programmes, curriculum, academic regulations and the academic calendar. Ask the assistant below for anything specific — every RVRJC answer is linked to an official source." },
+  examinations: { h: "Examinations", p: "Examination schedules, results, revaluation and certificate requests. Ask the assistant below for the latest published notices." },
+  admissions: { h: "Admissions", p: "Eligibility, counselling, EAPCET/ECET admissions, fee structure and required documents." },
+  departments: { h: "Departments", p: "CSE, ECE, EEE, IT, Mechanical, Civil, Chemical and the basic sciences — ask about labs, faculty and programmes." },
+  more: { h: "More", p: "Placements, library, hostel, transport, sports, NSS, alumni and grievance redressal." },
+};
+
+/* ============================================================
+   PERSISTENT CHAT WIDGET — created ONCE, mounted in the shell.
+   Routing only swaps #view / #viewBelow, never this node.
+   ============================================================ */
+const API_URL = "https://YOUR_BACKEND/ask";
+
+/*
+  ---------------------------------------------------------------
+  BACKEND (implement server-side — NOT in this frontend file)
+  POST { question }  ->  { answer, sourceLabel?, sourceUrl?, mode: "rvrjc" | "general" }
+
+  1. Embed the incoming question and vector-search the RVRJC knowledge
+     base (Supabase / pgvector) over chunks scraped from the official site.
+  2. If a chunk clears the similarity threshold -> answer STRICTLY from that
+     chunk, return mode:"rvrjc" plus the real sourceUrl / sourceLabel of the
+     page the chunk came from. Never invent an RVRJC-specific fact that is
+     not present in a retrieved chunk.
+  3. If nothing matches well (the question isn't about RVRJC — general
+     knowledge, math, definitions, "who is the PM of India") -> fall back to
+     the LLM's normal knowledge, answer normally, return mode:"general" and
+     omit sourceUrl.
+  4. If the question IS RVRJC-specific but no chunk clears the threshold,
+     answer: "I couldn't find verified RVRJC information on this — you may
+     want to check with the college office directly."
+  ---------------------------------------------------------------
+*/
+
+const chat = (() => {
+  const el = document.createElement("div");
+  el.className = "chat";
+  el.innerHTML = `
+    <div class="chat-head">
+      <span style="display:flex">${I.shield}</span>
+      <span class="title">RVRJC Assistant</span>
+      <span class="online"><span class="dot"></span>Online</span>
+    </div>
+    <div class="chat-body">
+      <div class="hi">Namaste! 🙏</div>
+      <div class="sub">I'm your RVRJC Assistant.</div>
+      <div class="muted">Ask me anything about admissions, academics, examinations, placements, departments, facilities and more. Every answer is linked to an official RVRJC source — and I can also help with general questions.</div>
+      <div class="qa-label">QUICK ACTIONS</div>
+      <div class="pills">
+        ${TOPICS.map(t => `<button class="pill" data-ask="${t.title}">${t.icon}<span>${t.title}</span></button>`).join("")}
+      </div>
+      <div class="log" id="log"></div>
+      <div class="composer">
+        <div class="field">
+          <input id="qInput" type="text" placeholder="Type your question..." autocomplete="off" />
+          <button class="mic" aria-label="Voice input (demo)">${I.mic}</button>
+        </div>
+        <button class="send" id="sendBtn" aria-label="Send">${I.send}</button>
+      </div>
+    </div>
+    <div class="chat-foot">Powered by RASA AI Assistant · Official RVRJC website</div>
+  `;
+  document.getElementById("chatMount").appendChild(el);
+
+  const log = el.querySelector("#log");
+  const input = el.querySelector("#qInput");
+  let busy = false;
+
+  const scrollLog = () => { log.scrollTop = log.scrollHeight; };
+
+  function push(role, text, sourceUrl, sourceLabel) {
+    const b = document.createElement("div");
+    b.className = "msg " + role;
+    b.textContent = text;
+    if (role === "bot" && sourceUrl) {
+      const a = document.createElement("a");
+      a.className = "src";
+      a.href = sourceUrl;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.innerHTML = `${sourceLabel || "Open Official Page"} ${I.link}`;
+      b.appendChild(document.createElement("br"));
+      b.appendChild(a);
+    }
+    log.appendChild(b);
+    scrollLog();
+  }
+
+  function typing(on) {
+    let t = log.querySelector(".typing");
+    if (on && !t) {
+      t = document.createElement("div");
+      t.className = "typing";
+      t.innerHTML = "<i></i><i></i><i></i>";
+      log.appendChild(t);
+      scrollLog();
+    } else if (!on && t) t.remove();
+  }
+
+  async function ask(question) {
+    const q = (question || "").trim();
+    if (!q || busy) return;
+    busy = true;
+    input.value = "";
+    push("user", q);
+    typing(true);
+    try {
+      // POST { question } -> { answer, sourceLabel?, sourceUrl?, mode }
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q }),
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      typing(false);
+      push("bot", data.answer || "No answer returned.", data.sourceUrl, data.sourceLabel);
+    } catch (err) {
+      typing(false);
+      push(
+        "bot",
+        "Demo mode: the assistant backend isn't connected yet. Once " +
+          API_URL +
+          " is live, this question will be answered from the official RVRJC knowledge base."
+      );
+    } finally {
+      busy = false;
+      scrollLog();
+    }
+  }
+
+  el.querySelectorAll("[data-ask]").forEach(b =>
+    b.addEventListener("click", () => ask(b.dataset.ask))
+  );
+  el.querySelector("#sendBtn").addEventListener("click", () => ask(input.value));
+  input.addEventListener("keydown", e => { if (e.key === "Enter") ask(input.value); });
+
+  return {
+    ask(q) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      ask(q);
+    },
+  };
+})();
+
+/* ============================================================
+   CLIENT-SIDE ROUTING (hash based — no reload, widget persists)
+   ============================================================ */
+const view = document.getElementById("view");
+const viewBelow = document.getElementById("viewBelow");
+const tabsEl = document.getElementById("tabs");
+const drawerLinks = document.getElementById("drawerLinks");
+
+tabsEl.innerHTML = ROUTES.map(
+  r => `<button class="tab" data-route="${r.id}">${r.icon}<span>${r.label}</span></button>`
+).join("");
+drawerLinks.innerHTML = ROUTES.map(
+  r => `<a href="#/${r.id}" data-route="${r.id}">${r.label}</a>`
+).join("");
+
+function quickActionsHTML() {
+  return `
+    <h2 class="sec">Quick actions</h2>
+    <div class="grid2">
+      ${TOPICS.map(t => `
+        <button class="card" data-ask="${t.title}">
+          <span class="ico">${t.icon}</span>
+          <span class="t">${t.title}</span>
+          <span class="d">${t.desc}</span>
+        </button>`).join("")}
+    </div>`;
+}
+
+function commonQuestionsHTML() {
+  return `
+    <h2 class="sec">Common student questions</h2>
+    ${COMMON_QUESTIONS.map(q => `
+      <button class="qrow" data-ask="${q}">
+        <span class="qmark">?</span>
+        <span class="q">${q}</span>
+        <span class="chev">${I.chev}</span>
+      </button>`).join("")}`;
+}
+
+function render(route) {
+  if (route === "home") {
+    view.innerHTML = quickActionsHTML();
+    viewBelow.innerHTML = commonQuestionsHTML();
+  } else {
+    const c = PAGE_COPY[route];
+    view.innerHTML = `
+      <h2 class="sec">${c.h}</h2>
+      <p class="lead">${c.p}</p>
+      <div class="grid2" style="margin-top:14px">
+        ${TOPICS.slice(0, 4).map(t => `
+          <button class="card" data-ask="${t.title}">
+            <span class="ico">${t.icon}</span>
+            <span class="t">${t.title}</span>
+            <span class="d">${t.desc}</span>
+          </button>`).join("")}
+      </div>`;
+    viewBelow.innerHTML = "";
+  }
+
+  tabsEl.querySelectorAll(".tab").forEach(t =>
+    t.setAttribute("data-active", String(t.dataset.route === route))
+  );
+  drawerLinks.querySelectorAll("a").forEach(a =>
+    a.setAttribute("data-active", String(a.dataset.route === route))
+  );
+}
+
+// Any element with data-ask sends a preset question to the persistent widget.
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-ask]");
+  if (btn && !btn.closest(".chat")) chat.ask(btn.dataset.ask);
+  const tab = e.target.closest(".tab");
+  if (tab) location.hash = "#/" + tab.dataset.route;
+});
+
+function currentRoute() {
+  const id = (location.hash || "").replace("#/", "");
+  return ROUTES.some(r => r.id === id) ? id : "home";
+}
+window.addEventListener("hashchange", () => { render(currentRoute()); closeDrawer(); });
+render(currentRoute());
+
+/* ===== drawer ===== */
+const drawer = document.getElementById("drawer");
+const scrim = document.getElementById("scrim");
+const closeDrawer = () => { drawer.classList.remove("open"); scrim.classList.remove("open"); };
+document.getElementById("burger").addEventListener("click", () => {
+  drawer.classList.add("open"); scrim.classList.add("open");
+});
+scrim.addEventListener("click", closeDrawer);
+</script>
+</body>
+</html>
