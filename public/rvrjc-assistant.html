@@ -568,10 +568,10 @@ function quickActionsHTML() {
     </div>`;
 }
 
-function commonQuestionsHTML() {
+function commonQuestionsHTML(title = "Common student questions", list = COMMON_QUESTIONS.slice(0, 4)) {
   return `
-    <h2 class="sec">Common student questions</h2>
-    ${COMMON_QUESTIONS.map(q => `
+    <h2 class="sec">${title}</h2>
+    ${list.map(q => `
       <button class="qrow" data-ask="${q}">
         <span class="qmark">?</span>
         <span class="q">${q}</span>
@@ -579,25 +579,35 @@ function commonQuestionsHTML() {
       </button>`).join("")}`;
 }
 
+function infoBlocksHTML(page) {
+  return `
+    <h2 class="sec">${page.h}</h2>
+    <p class="lead">${page.p}</p>
+    ${page.blocks.map(b => `
+      <section class="block">
+        <h3 class="block-t">${b.t}</h3>
+        <dl class="rows">
+          ${b.rows.map(([k, v]) => `<div class="row"><dt>${k}</dt><dd>${v}</dd></div>`).join("")}
+        </dl>
+        <a class="srcbtn" href="${b.src}" target="_blank" rel="noopener">${b.srcLabel} ${I.link}</a>
+      </section>`).join("")}`;
+}
+
 function render(route) {
   if (route === "home") {
     view.innerHTML = quickActionsHTML();
     viewBelow.innerHTML = commonQuestionsHTML();
-  } else {
-    const c = PAGE_COPY[route];
+  } else if (route === "faq") {
     view.innerHTML = `
-      <h2 class="sec">${c.h}</h2>
-      <p class="lead">${c.p}</p>
-      <div class="grid2" style="margin-top:14px">
-        ${TOPICS.slice(0, 4).map(t => `
-          <button class="card" data-ask="${t.title}">
-            <span class="ico">${t.icon}</span>
-            <span class="t">${t.title}</span>
-            <span class="d">${t.desc}</span>
-          </button>`).join("")}
-      </div>`;
+      <h2 class="sec">Frequently asked questions</h2>
+      <p class="lead">Tap any question — the assistant below answers it from the verified official RVRJC source, with a direct link to that page.</p>
+      ${commonQuestionsHTML("", COMMON_QUESTIONS).replace('<h2 class="sec"></h2>', "")}`;
     viewBelow.innerHTML = "";
+  } else {
+    view.innerHTML = infoBlocksHTML(PAGES[route]);
+    viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", COMMON_QUESTIONS.slice(0, 4));
   }
+
 
   tabsEl.querySelectorAll(".tab").forEach(t =>
     t.setAttribute("data-active", String(t.dataset.route === route))
