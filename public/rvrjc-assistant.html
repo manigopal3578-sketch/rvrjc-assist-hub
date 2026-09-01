@@ -462,6 +462,7 @@ const PAGES = {
       {
         t: "Campus & student support",
         rows: [
+          ["Campus map & location", "rvrjcce.ac.in/xcampusmap.php"],
           ["Hostels", "rvrjcce.ac.in/xhostels.php"],
           ["Transport committee & routes", "rvrjcce.ac.in/xtransport.php"],
           ["Central library · Facilities", "/xlibrary.php · /xfacilities.php"],
@@ -473,15 +474,109 @@ const PAGES = {
       },
     ],
   },
+  portal: {
+    h: "Admissions & student portal",
+    p: "Everything the college actually runs online — application route, seat allotment, fee payment, payment status and the documents you must produce. Every link below is an official RVRJC or Government of A.P. portal.",
+    official: "https://rvrjcce.ac.in/xfeepayments.php",
+    officialLabel: "Go to Official Fee Payments Page",
+    blocks: [
+      {
+        t: "1 · Application & status",
+        rows: [
+          ["Category-A (70%, Convener Quota)", "Register, pay, verify certificates, exercise web options and track application status / seat allotment on the Govt. of A.P. APSCHE CETs portal — cets.apsche.ap.gov.in"],
+          ["Category-B (30%, Management Quota)", "Apply directly to the college as per the notification on the official Admission Procedure page; confirm the seat by paying tuition fee online"],
+          ["Lateral entry (10%, 2nd year)", "Through AP ECET counselling on the same APSCHE CETs portal"],
+          ["Admissions helpline", "94910 73318 · 94910 73317"],
+        ],
+        src: "https://rvrjcce.ac.in/xadmission.php",
+        srcLabel: "Official Admission Procedure",
+      },
+      {
+        t: "2 · Fee payment",
+        rows: [
+          ["Tuition / common services fee", "rvrjcce.ac.in/tuitionfee/tuitionfee.php"],
+          ["Examination fee", "rvrjcce.ac.in/examfee/examfee.php"],
+          ["Bus fee", "rvrjcce.ac.in/busfee/busfee.php"],
+          ["Online fee payment status", "rvrjcce.ac.in/xonlinefeestatus.php"],
+          ["Official terms", "Transaction charges are borne by the cardholder and are not refunded or reversed under any circumstances"],
+        ],
+        src: "https://rvrjcce.ac.in/xfeepayments.php",
+        srcLabel: "Official Fee Payments page",
+      },
+      {
+        t: "3 · Documents to upload / produce",
+        rows: [
+          ["Entrance exam", "AP EAPCET / ECET rank card and hall ticket"],
+          ["Academics", "10+2 (MPC) or diploma marks memo · SSC / 10th certificate"],
+          ["School records", "Transfer Certificate (TC) · study certificates (Class VI–XII)"],
+          ["Reservation & reimbursement", "Caste certificate · income certificate"],
+          ["Identity", "Aadhaar card · passport-size photographs"],
+          ["Where they are verified", "Category-A: certificate verification step of APSCHE CETs counselling. Category-B / lateral entry: college admissions office"],
+        ],
+        src: "https://rvrjcce.ac.in/xadmission.php",
+        srcLabel: "Official Admission Procedure",
+      },
+      {
+        t: "4 · Student portals",
+        rows: [
+          ["Results (batch-wise / RegNo)", "rvrjcce.ac.in/examcell/results/"],
+          ["Examination cell", "rvrjcce.ac.in/examcell/"],
+          ["Moodle / LMS", "courses.rvrjc.ac.in/moodle/"],
+          ["Placement portal", "tandp.rvrjcce.ac.in"],
+          ["Grievance redressal", "rvrjcce.ac.in/xstudgrievances.php"],
+        ],
+        src: "https://rvrjcce.ac.in/xwebportal.php",
+        srcLabel: "Official Web Portal page",
+      },
+    ],
+  },
+  campusmap: {
+    h: "Campus map & directions",
+    p: "R.V.R. & J.C. College of Engineering (Autonomous), Chandramoulipuram, Chowdavaram, Guntur – 522 019, Andhra Pradesh. Phone 94910 73317 / 94910 73318.",
+    official: "https://rvrjcce.ac.in/xcampusmap.php",
+    officialLabel: "Go to Official Campus Map Page",
+    blocks: [
+      {
+        t: "Reaching the campus",
+        rows: [
+          ["Main campus", "Chandramoulipuram, Chowdavaram, Guntur – 522 019 (map point 16.254766, 80.325605)"],
+          ["Driving / walking directions", "google.com/maps/dir → destination 16.254766, 80.325605"],
+          ["City office", "Opposite Chinmaya Vidyalaya, S.V.N. Colony, Guntur – 522 006 · 0863-2232505 (O) · Fax 0863-2350343"],
+          ["College buses", "Routes from Guntur (Rs. 13,500/yr) and Chilakaluripet (Rs. 15,000/yr) — Transport Committee page"],
+        ],
+        src: "https://rvrjcce.ac.in/xcampusmap.php",
+        srcLabel: "Official Campus Map & Location",
+      },
+      {
+        t: "Buildings & blocks inside the campus",
+        rows: [
+          ["Academic blocks — computing", "CSE · CSE (AI & ML) · CSE (Data Science) · CSE (IoT) · CSBS (TCS) · AI · AI & Data Science · Quantum Computing · IT · MCA"],
+          ["Academic blocks — core engineering", "ECE · EEE · Mechanical · Civil · Chemical"],
+          ["Sciences & management", "Mathematics & Humanities · Physics · Chemistry · Management Sciences (BBA & MBA)"],
+          ["Examination Cell", "Time tables, hall tickets, results and malpractice notices"],
+          ["Central Library", "rvrjcce.ac.in/xlibrary.php"],
+          ["Training & Placement Cell", "Campus drives and career guidance · tandp.rvrjcce.ac.in"],
+          ["Student Wellness Centre · Sports & recreation", "Project-SWC · rvrjcce.ac.in/xsportsactivities.php"],
+          ["R&D Cell · AICTE IDEA Lab · RJ E-NEST (iTBI)", "Research centres and incubation inside the campus"],
+        ],
+        src: "https://rvrjcce.ac.in/xfacilities.php",
+        srcLabel: "Official Facilities page",
+      },
+    ],
+  },
 };
 
 /* Where each tab's "Go to Official Page" button points. */
+const ADMISSION_PORTAL = "https://cets.apsche.ap.gov.in/";
+const TUITION_FEE_PORTAL = "https://rvrjcce.ac.in/tuitionfee/tuitionfee.php";
 const OFFICIAL_BY_ROUTE = {
   home: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
   academics: { url: PAGES.academics.official, label: PAGES.academics.officialLabel },
   examinations: { url: PAGES.examinations.official, label: PAGES.examinations.officialLabel },
   admissions: { url: PAGES.admissions.official, label: PAGES.admissions.officialLabel },
-  apply: { url: "https://rvrjcce.ac.in/xadmission.php", label: "Go to Official Admissions Page" },
+  apply: { url: ADMISSION_PORTAL, label: "Open Official AP EAPCET Admission Portal" },
+  portal: { url: PAGES.portal.official, label: PAGES.portal.officialLabel },
+  campusmap: { url: PAGES.campusmap.official, label: PAGES.campusmap.officialLabel },
   departments: { url: PAGES.departments.official, label: PAGES.departments.officialLabel },
   faq: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
   more: { url: PAGES.more.official, label: PAGES.more.officialLabel },
