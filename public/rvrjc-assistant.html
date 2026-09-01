@@ -741,15 +741,20 @@ drawerLinks.innerHTML = ROUTES.map(
 function officialButtonHTML(route) {
   const o = OFFICIAL_BY_ROUTE[route];
   if (!o) return "";
-  const applyBtn =
-    route === "admissions"
-      ? `<button class="btn btn-orange" data-go="apply">${I.edit} Submit Application</button>`
-      : "";
+  const extra = {
+    admissions: `<button class="btn btn-orange" data-go="apply">${I.edit} Submit Application</button>
+      <button class="btn btn-outline" data-go="portal">${I.rupee} Admissions Portal</button>`,
+    apply: `<button class="btn btn-outline" data-go="portal">${I.rupee} Application status, fees & documents</button>`,
+    portal: `<a class="btn btn-orange" href="${TUITION_FEE_PORTAL}" target="_blank" rel="noopener">${I.external} Pay Tuition Fee</a>`,
+    more: `<button class="btn btn-outline" data-go="campusmap">${I.building} Campus Map</button>`,
+    home: `<button class="btn btn-outline" data-go="campusmap">${I.building} Campus Map</button>`,
+  }[route] || "";
   return `<div class="actions">
     <a class="btn btn-primary" href="${o.url}" target="_blank" rel="noopener">${I.external} ${o.label}</a>
-    ${applyBtn}
+    ${extra}
   </div>`;
 }
+
 
 function quickActionsHTML() {
   return `
