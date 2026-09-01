@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RVRJC Assistant – Prototype Website</title>
+<title>RVRJC Assistant – R.V.R. &amp; J.C. College of Engineering</title>
 <style>
   :root{
     --navy:#0d2a5c;
@@ -23,17 +23,11 @@
   img{display:block;max-width:100%}
   button{font:inherit;cursor:pointer}
   .wrap{max-width:960px;margin:0 auto;background:#fff;min-height:100vh}
-  .pad{padding:16px}
-
-  /* ===== TOP DISCLAIMER BAR ===== */
-  .disclaimer{background:var(--navy);color:#fff;text-align:center;padding:10px 14px}
-  .disclaimer .l1{display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:14px}
-  .disclaimer .l2{font-size:12px;color:rgba(255,255,255,.82);margin-top:2px}
-  .disclaimer .l3{font-size:11px;color:rgba(255,255,255,.62);margin-top:3px;line-height:1.4}
+  .pad{padding:16px 16px 110px}
 
   /* ===== HEADER ===== */
   header.site{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 14px;position:relative;z-index:30}
-  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none}
   .crest{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:var(--pale);flex:0 0 auto}
   .brand .n1{font-weight:800;color:var(--navy);font-size:16px;line-height:1.1}
   .brand .n2{font-weight:800;color:var(--navy);font-size:11px;letter-spacing:.04em;line-height:1.3}
@@ -53,7 +47,7 @@
   .hero img{width:100%;height:240px;object-fit:cover}
 
   /* ===== SECONDARY NAV ===== */
-  .tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--border);background:#fff;padding:0 8px;scrollbar-width:none}
+  .tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--border);background:#fff;padding:0 8px;scrollbar-width:none;position:sticky;top:0;z-index:20}
   .tabs::-webkit-scrollbar{display:none}
   .tab{flex:0 0 auto;background:none;border:0;padding:10px 12px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--gray);font-size:11px;font-weight:600;border-bottom:3px solid transparent}
   .tab[data-active="true"]{color:var(--navy);border-bottom-color:var(--navy)}
@@ -68,14 +62,25 @@
   .card .t{font-weight:700;font-size:14px}
   .card .d{color:var(--gray);font-size:12px;line-height:1.4}
 
-  /* ===== CHAT WIDGET ===== */
-  #chatMount{margin:20px 0}
-  .chat{border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(13,42,92,.12);border:1px solid var(--border);background:#fff}
-  .chat-head{background:var(--navy);color:#fff;display:flex;align-items:center;gap:8px;padding:12px 14px}
+  /* ===== ACTION BUTTONS ===== */
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:11px 15px;font-size:13px;font-weight:700;text-decoration:none}
+  .btn-primary{background:var(--navy);color:#fff}
+  .btn-primary:hover{background:var(--navy-dark)}
+  .btn-outline{background:#fff;color:var(--navy);border:1px solid #c9d6ea}
+  .btn-outline:hover{background:var(--pale)}
+  .btn-orange{background:var(--orange);color:#fff}
+  .btn-orange:hover{filter:brightness(.94)}
+
+  /* ===== CHAT ===== */
+  .chat{display:flex;flex-direction:column;height:100%;background:#fff}
+  .chat-head{background:var(--navy);color:#fff;display:flex;align-items:center;gap:8px;padding:12px 14px;flex:0 0 auto}
+  .chat-head .avatar{width:28px;height:28px;border-radius:50%;background:#fff;padding:2px;object-fit:contain}
   .chat-head .title{font-weight:800;font-size:15px}
   .chat-head .online{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.85)}
+  .chat-head .close{background:none;border:0;color:#fff;padding:4px;display:flex;margin-left:10px}
   .dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.25)}
-  .chat-body{padding:16px}
+  .chat-body{padding:16px;flex:1;overflow-y:auto}
   .chat-body .hi{font-weight:800;font-size:16px}
   .chat-body .sub{font-size:14px;margin-top:2px}
   .chat-body .muted{color:var(--gray);font-size:12.5px;line-height:1.55;margin-top:6px}
@@ -83,7 +88,7 @@
   .pills{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .pill{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:9px 12px;font-size:12.5px;font-weight:600;color:var(--navy);text-align:left}
   .pill:hover{background:var(--pale)}
-  .log{margin-top:16px;display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto;padding:4px}
+  .log{margin-top:16px;display:flex;flex-direction:column;gap:10px;padding:4px}
   .log:empty{display:none}
   .msg{max-width:82%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.5;white-space:pre-wrap}
   .msg.user{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
@@ -94,13 +99,38 @@
   .typing i:nth-child(2){animation-delay:.15s}
   .typing i:nth-child(3){animation-delay:.3s}
   @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
-  .composer{display:flex;align-items:center;gap:8px;margin-top:14px}
+  .composer{display:flex;align-items:center;gap:8px;padding:12px 14px;border-top:1px solid var(--border);flex:0 0 auto;background:#fff}
   .field{flex:1;display:flex;align-items:center;gap:8px;background:#f6f8fb;border:1px solid var(--border);border-radius:999px;padding:8px 14px}
   .field input{flex:1;border:0;background:transparent;outline:none;font-size:14px;min-width:0}
   .mic{background:none;border:0;color:var(--gray);padding:2px;display:flex}
   .send{width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;border:0;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
   .send:hover{background:var(--navy-dark)}
-  .chat-foot{text-align:center;font-size:11px;color:var(--gray);padding:10px;border-top:1px solid var(--border);background:#fbfcfe}
+  .chat-foot{text-align:center;font-size:11px;color:var(--gray);padding:9px;border-top:1px solid var(--border);background:#fbfcfe;flex:0 0 auto}
+  .chat-foot a{color:var(--navy);font-weight:700;text-decoration:none}
+  .chat-foot a:hover{text-decoration:underline}
+
+  /* ===== GLOBAL FLOATING CHAT BUTTON + PANEL ===== */
+  .fab{position:fixed;right:18px;bottom:18px;width:64px;height:64px;border-radius:50%;border:0;background:#fff;box-shadow:0 10px 26px rgba(13,42,92,.28);display:flex;align-items:center;justify-content:center;padding:6px;z-index:80}
+  .fab img{width:100%;height:100%;object-fit:contain}
+  .fab::after{content:"";position:absolute;right:6px;top:6px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid #fff}
+  .fab:hover{transform:translateY(-2px);transition:.15s}
+  .fab-label{position:fixed;right:92px;bottom:36px;background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:7px 11px;border-radius:8px;z-index:80;box-shadow:0 6px 18px rgba(13,42,92,.22)}
+  @media (max-width:560px){.fab-label{display:none}}
+
+  .chat-scrim{position:fixed;inset:0;background:rgba(9,31,69,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:90}
+  .chat-scrim.open{opacity:1;pointer-events:auto}
+  .chat-panel{
+    position:fixed;z-index:95;right:18px;bottom:18px;
+    width:min(75vw,760px);height:75vh;max-height:75vh;
+    background:#fff;border-radius:18px;overflow:hidden;
+    box-shadow:0 24px 60px rgba(9,31,69,.35);
+    display:flex;flex-direction:column;
+    transform:translateY(16px) scale(.98);opacity:0;pointer-events:none;transition:.2s ease;
+  }
+  .chat-panel.open{transform:none;opacity:1;pointer-events:auto}
+  @media (max-width:700px){
+    .chat-panel{right:8px;left:8px;bottom:8px;width:auto;height:78vh;max-height:78vh}
+  }
 
   /* ===== QUESTION ROWS ===== */
   .qrow{width:100%;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:9px;text-align:left}
@@ -120,34 +150,36 @@
   .srcbtn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:var(--pale);color:var(--navy);border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700;text-decoration:none}
   .srcbtn:hover{background:#dbe7f8}
 
+  /* ===== APPLICATION FORM ===== */
+  .form{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:560px){.fgrid{grid-template-columns:1fr}}
+  .f{display:flex;flex-direction:column;gap:5px}
+  .f label{font-size:12px;font-weight:700;color:var(--navy)}
+  .f input,.f select,.f textarea{border:1px solid var(--border);border-radius:9px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:#fbfcfe;outline:none}
+  .f input:focus,.f select:focus,.f textarea:focus{border-color:#9db8e0;background:#fff}
+  .f.full{grid-column:1 / -1}
+  .note{font-size:11.5px;color:var(--gray);line-height:1.55;margin-top:12px}
+  .ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:10px;padding:12px;font-size:12.5px;line-height:1.55;margin-top:12px}
+
   footer.site{padding:22px 16px 40px;text-align:center;color:var(--gray);font-size:11.5px;line-height:1.6}
+  footer.site a{color:var(--navy);font-weight:700;text-decoration:none}
+  footer.site a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ===== TOP DISCLAIMER BAR ===== -->
-  <div class="disclaimer">
-    <div class="l1">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31l-5.66 9.8A2 2 0 0 0 6.07 22h11.86a2 2 0 0 0 1.73-2.89L14 9.31V2"/><path d="M8.5 2h7"/><path d="M6.8 15h10.4"/></svg>
-      RVRJC Assistant – Prototype Website
-    </div>
-    <div class="l2">(For Demonstration Only)</div>
-    <div class="l3">This is a prototype built for Engineering Day Presentation. Not an official website.</div>
-  </div>
-
   <!-- ===== HEADER ===== -->
   <header class="site">
-    <div class="brand">
-      <!-- Official RVRJC crest -->
+    <a class="brand" href="https://rvrjc.ac.in" target="_blank" rel="noopener">
       <img class="crest" src="/__l5e/assets-v1/beb7034b-4f08-4229-bc4e-fce69dcf52c9/rvrjc-crest.png" alt="R.V.R. &amp; J.C. College of Engineering crest" />
-
       <div>
         <div class="n1">R.V.R. &amp; J.C.</div>
         <div class="n2">COLLEGE OF ENGINEERING</div>
         <div class="n3">(AUTONOMOUS)</div>
       </div>
-    </div>
+    </a>
     <button class="burger" id="burger" aria-label="Open menu">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -155,7 +187,6 @@
 
   <!-- ===== HERO ===== -->
   <div class="hero">
-    <!-- COLLEGE_PHOTO_URL -->
     <img src="/__l5e/assets-v1/cf9fa55c-31ea-4125-b230-c8baa9743f5b/rvrjc-campus.jpeg" alt="R.V.R. &amp; J.C. College of Engineering main building" />
   </div>
 
@@ -163,19 +194,13 @@
   <nav class="tabs" id="tabs"></nav>
 
   <main class="pad">
-    <!-- route-specific content -->
     <div id="view"></div>
-
-    <!-- ===== PERSISTENT CHAT WIDGET (mounted once, never re-created) ===== -->
-    <div id="chatMount"></div>
-
-    <!-- content that renders BELOW the widget (Home only) -->
     <div id="viewBelow"></div>
   </main>
 
   <footer class="site">
-    Prototype for Engineering Day Presentation · Not an official website of
-    R.V.R. &amp; J.C. College of Engineering (Autonomous).
+    R.V.R. &amp; J.C. College of Engineering (Autonomous), Chowdavaram, Guntur – 522 019.<br />
+    Official website: <a href="https://rvrjc.ac.in" target="_blank" rel="noopener">https://rvrjc.ac.in</a>
   </footer>
 </div>
 
@@ -184,6 +209,14 @@
   <h4>MENU</h4>
   <div id="drawerLinks"></div>
 </aside>
+
+<!-- ===== GLOBAL ASSISTANT (available on every page) ===== -->
+<div class="chat-scrim" id="chatScrim"></div>
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="RVRJC Assistant"></div>
+<span class="fab-label" id="fabLabel">Ask the RVRJC Assistant</span>
+<button class="fab" id="fab" aria-label="Open the RVRJC Assistant">
+  <img src="/rasa-assistant.png" alt="RASA AI Assistant" />
+</button>
 
 <script>
 /* ============================================================
@@ -206,15 +239,19 @@ const I = {
   shield: svg('<path d="M12 3l7.5 3v6c0 4.5-3 7.6-7.5 9-4.5-1.4-7.5-4.5-7.5-9V6L12 3Z"/><path d="M12 9v6M9 12h6"/>'),
   chev: svg('<path d="m9 6 6 6-6 6"/>'),
   qmarkTab: svg('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7"/><path d="M12 17h.01"/>'),
-
+  edit: svg('<path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="M13.5 6.5l3 3"/>'),
   mic: svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 12a6.5 6.5 0 0 0 13 0M12 18.5V22"/>'),
   send: svg('<path d="M4 12l16-8-6.5 16-2.5-6.5L4 12Z"/>'),
   link: svg('<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>'),
+  external: svg('<path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>'),
+  close: svg('<path d="M6 6l12 12M18 6 6 18"/>'),
 };
 
 /* ============================================================
    DATA
    ============================================================ */
+const OFFICIAL_SITE = "https://rvrjc.ac.in";
+
 const TOPICS = [
   { icon: I.calendar, title: "Academic Calendar", desc: "View academic schedules and important dates." },
   { icon: I.people,   title: "Admission Process", desc: "Understand admissions and official links." },
@@ -226,8 +263,8 @@ const TOPICS = [
   { icon: I.bell,     title: "Notices",           desc: "Latest official notices and circulars." },
 ];
 
-/* Seeded FAQ — every question is answered by the assistant from a verified
-   official RVRJC page (see src/lib/rvrjc-kb.ts on the server). */
+/* Every question here is answered by the assistant from a verified official
+   RVRJC page — see the KB chunks in src/lib/rvrjc-kb.ts. */
 const COMMON_QUESTIONS = [
   "Where can I find the academic calendar?",
   "How do I pay 2nd year fees?",
@@ -237,6 +274,18 @@ const COMMON_QUESTIONS = [
   "How are admissions done under Category-B?",
   "Where do I check my semester results?",
   "How much is the hostel and bus fee?",
+  "How do I apply for a Category-B management quota seat?",
+  "How does lateral entry admission through AP ECET work?",
+  "How do I pay the examination fee online?",
+  "Which branches and departments does RVRJC offer?",
+  "What is the Category-B tuition fee for CSE and AI branches?",
+  "How do placements work and who do I contact?",
+  "Where do I download course material on Moodle?",
+  "How do I file a grievance or report ragging?",
+  "What are the R24 regulations and attendance rules?",
+  "Where is the college located and how do I contact it?",
+  "Am I eligible for a scholarship or fee reimbursement?",
+  "Where are the latest notices and circulars published?",
 ];
 
 const ROUTES = [
@@ -244,17 +293,20 @@ const ROUTES = [
   { id: "academics",    label: "Academics",    icon: I.cap },
   { id: "examinations", label: "Examinations", icon: I.calendar },
   { id: "admissions",   label: "Admissions",   icon: I.people },
+  { id: "apply",        label: "Apply",        icon: I.edit },
   { id: "departments",  label: "Departments",  icon: I.building },
   { id: "faq",          label: "FAQ",          icon: I.qmarkTab },
   { id: "more",         label: "More",         icon: I.more },
 ];
 
 /* Real content transcribed from official rvrjc.ac.in pages (verified 01-09-2026).
-   `src` values are DIRECT deep links to the exact official page, not the homepage. */
+   `src` / `official` values are DIRECT deep links to the exact official page. */
 const PAGES = {
   academics: {
     h: "Academics",
     p: "R.V.R. & J.C. College of Engineering is an autonomous institution (UGC autonomy letter dated 17-03-2024) and follows its own R24 / R20 / R18 regulations.",
+    official: "https://rvrjc.ac.in/xacademiccalender.php",
+    officialLabel: "Go to Official Academics Page",
     blocks: [
       {
         t: "Academic calendar — Odd semester 2026-27 (R24)",
@@ -282,6 +334,8 @@ const PAGES = {
   examinations: {
     h: "Examinations",
     p: "Time tables, results and malpractice notices are published by the Examination Cell year-wise, with a PDF for every exam.",
+    official: "https://rvrjcce.ac.in/xexamtimetables.php",
+    officialLabel: "Go to Official Examinations Page",
     blocks: [
       {
         t: "Examination time tables — 2026 (latest published)",
@@ -299,7 +353,7 @@ const PAGES = {
       {
         t: "Results & examination cell",
         rows: [
-          ["Results by register number", "examcell/results/regnoresultsR.php"],
+          ["Results by register number", "rvrjc.ac.in/examcell/results/regnoresultsR.php"],
           ["Batch-wise results portal", "rvrjcce.ac.in/examcell/results/"],
           ["Examination fee payment", "rvrjcce.ac.in/examfee/examfee.php"],
         ],
@@ -311,6 +365,9 @@ const PAGES = {
   admissions: {
     h: "Admissions",
     p: "Admissions follow the rules and regulations of the Government of Andhra Pradesh. Admissions helpline: 94910 73318.",
+    official: "https://rvrjc.ac.in/xadmission.php",
+    officialLabel: "Go to Official Admissions Page",
+    apply: true,
     blocks: [
       {
         t: "Admission process",
@@ -355,6 +412,8 @@ const PAGES = {
   departments: {
     h: "Departments",
     p: "Every department maintains its own official page on rvrjc.ac.in.",
+    official: "https://rvrjc.ac.in/xcourses.php",
+    officialLabel: "Go to Official Programs Page",
     blocks: [
       {
         t: "Engineering programmes",
@@ -384,6 +443,8 @@ const PAGES = {
   more: {
     h: "More",
     p: "Placements, hostel, transport and student support — all links go to the official pages.",
+    official: "https://rvrjc.ac.in/xfacilities.php",
+    officialLabel: "Go to Official Facilities Page",
     blocks: [
       {
         t: "Training & Placement Cell",
@@ -411,45 +472,40 @@ const PAGES = {
   },
 };
 
+/* Where each tab's "Go to Official Page" button points. */
+const OFFICIAL_BY_ROUTE = {
+  home: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
+  academics: { url: PAGES.academics.official, label: PAGES.academics.officialLabel },
+  examinations: { url: PAGES.examinations.official, label: PAGES.examinations.officialLabel },
+  admissions: { url: PAGES.admissions.official, label: PAGES.admissions.officialLabel },
+  apply: { url: "https://rvrjc.ac.in/xadmission.php", label: "Go to Official Admissions Page" },
+  departments: { url: PAGES.departments.official, label: PAGES.departments.officialLabel },
+  faq: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
+  more: { url: PAGES.more.official, label: PAGES.more.officialLabel },
+};
+
 /* ============================================================
-   PERSISTENT CHAT WIDGET — created ONCE, mounted in the shell.
-   Routing only swaps #view / #viewBelow, never this node.
+   GLOBAL CHAT — created ONCE, lives outside the routed views,
+   so it is available on every page and never loses its history.
    ============================================================ */
-// Live server endpoint backed by the verified RVRJC knowledge base.
 const API_URL = "/api/public/ask";
 
-
-/*
-  ---------------------------------------------------------------
-  BACKEND (implement server-side — NOT in this frontend file)
-  POST { question }  ->  { answer, sourceLabel?, sourceUrl?, mode: "rvrjc" | "general" }
-
-  1. Embed the incoming question and vector-search the RVRJC knowledge
-     base (Supabase / pgvector) over chunks scraped from the official site.
-  2. If a chunk clears the similarity threshold -> answer STRICTLY from that
-     chunk, return mode:"rvrjc" plus the real sourceUrl / sourceLabel of the
-     page the chunk came from. Never invent an RVRJC-specific fact that is
-     not present in a retrieved chunk.
-  3. If nothing matches well (the question isn't about RVRJC — general
-     knowledge, math, definitions, "who is the PM of India") -> fall back to
-     the LLM's normal knowledge, answer normally, return mode:"general" and
-     omit sourceUrl.
-  4. If the question IS RVRJC-specific but no chunk clears the threshold,
-     answer: "I couldn't find verified RVRJC information on this — you may
-     want to check with the college office directly."
-  ---------------------------------------------------------------
-*/
-
 const chat = (() => {
+  const panel = document.getElementById("chatPanel");
+  const scrim = document.getElementById("chatScrim");
+  const fab = document.getElementById("fab");
+  const fabLabel = document.getElementById("fabLabel");
+
   const el = document.createElement("div");
   el.className = "chat";
   el.innerHTML = `
     <div class="chat-head">
-      <span style="display:flex">${I.shield}</span>
+      <img class="avatar" src="/rasa-assistant.png" alt="" />
       <span class="title">RVRJC Assistant</span>
       <span class="online"><span class="dot"></span>Online</span>
+      <button class="close" id="chatClose" aria-label="Close assistant">${I.close}</button>
     </div>
-    <div class="chat-body">
+    <div class="chat-body" id="chatBody">
       <div class="hi">Namaste! 🙏</div>
       <div class="sub">I'm your RVRJC Assistant.</div>
       <div class="muted">Ask me anything about admissions, academics, examinations, placements, departments, facilities and more. Every answer is linked to an official RVRJC source — and I can also help with general questions.</div>
@@ -458,35 +514,58 @@ const chat = (() => {
         ${TOPICS.map(t => `<button class="pill" data-ask="${t.title}">${t.icon}<span>${t.title}</span></button>`).join("")}
       </div>
       <div class="log" id="log"></div>
-      <div class="composer">
-        <div class="field">
-          <input id="qInput" type="text" placeholder="Type your question..." autocomplete="off" />
-          <button class="mic" aria-label="Voice input (demo)">${I.mic}</button>
-        </div>
-        <button class="send" id="sendBtn" aria-label="Send">${I.send}</button>
-      </div>
     </div>
-    <div class="chat-foot">Powered by RASA AI Assistant · Official RVRJC website</div>
+    <div class="composer">
+      <div class="field">
+        <input id="qInput" type="text" placeholder="Type your question..." autocomplete="off" />
+        <button class="mic" aria-label="Voice input (demo)">${I.mic}</button>
+      </div>
+      <button class="send" id="sendBtn" aria-label="Send">${I.send}</button>
+    </div>
+    <div class="chat-foot">
+      Powered by RASA AI Assistant ·
+      <a href="https://rvrjc.ac.in" target="_blank" rel="noopener">Official RVRJC website</a>
+    </div>
   `;
-  document.getElementById("chatMount").appendChild(el);
+  panel.appendChild(el);
 
+  const body = el.querySelector("#chatBody");
   const log = el.querySelector("#log");
   const input = el.querySelector("#qInput");
   let busy = false;
 
-  const scrollLog = () => { log.scrollTop = log.scrollHeight; };
+  const scrollLog = () => { body.scrollTop = body.scrollHeight; };
+
+  function open() {
+    panel.classList.add("open");
+    scrim.classList.add("open");
+    fabLabel.style.display = "none";
+    setTimeout(() => input.focus(), 180);
+    scrollLog();
+  }
+  function close() {
+    panel.classList.remove("open");
+    scrim.classList.remove("open");
+    fabLabel.style.display = "";
+  }
+
+  fab.addEventListener("click", () => (panel.classList.contains("open") ? close() : open()));
+  scrim.addEventListener("click", close);
+  el.querySelector("#chatClose").addEventListener("click", close);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
 
   function push(role, text, sourceUrl, sourceLabel) {
     const b = document.createElement("div");
     b.className = "msg " + role;
     b.textContent = text;
-    if (role === "bot" && sourceUrl) {
+    if (role === "bot") {
+      // Always link to the REAL official page the answer came from.
       const a = document.createElement("a");
       a.className = "src";
-      a.href = sourceUrl;
+      a.href = sourceUrl || OFFICIAL_SITE;
       a.target = "_blank";
       a.rel = "noopener";
-      a.innerHTML = `${sourceLabel || "Open Official Page"} ${I.link}`;
+      a.innerHTML = `${sourceLabel || "Official RVRJC website"} ${I.link}`;
       b.appendChild(document.createElement("br"));
       b.appendChild(a);
     }
@@ -513,7 +592,6 @@ const chat = (() => {
     push("user", q);
     typing(true);
     try {
-      // POST { question } -> { answer, sourceLabel?, sourceUrl?, mode }
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -529,7 +607,6 @@ const chat = (() => {
     } catch (err) {
       typing(false);
       push("bot", "I couldn't reach the assistant service just now. Please check your connection and try again.");
-
     } finally {
       busy = false;
       scrollLog();
@@ -543,15 +620,13 @@ const chat = (() => {
   input.addEventListener("keydown", e => { if (e.key === "Enter") ask(input.value); });
 
   return {
-    ask(q) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      ask(q);
-    },
+    ask(q) { open(); ask(q); },
+    open,
   };
 })();
 
 /* ============================================================
-   CLIENT-SIDE ROUTING (hash based — no reload, widget persists)
+   CLIENT-SIDE ROUTING (hash based — no reload, chat persists)
    ============================================================ */
 const view = document.getElementById("view");
 const viewBelow = document.getElementById("viewBelow");
@@ -565,9 +640,23 @@ drawerLinks.innerHTML = ROUTES.map(
   r => `<a href="#/${r.id}" data-route="${r.id}">${r.label}</a>`
 ).join("");
 
+function officialButtonHTML(route) {
+  const o = OFFICIAL_BY_ROUTE[route];
+  if (!o) return "";
+  const applyBtn =
+    route === "admissions"
+      ? `<button class="btn btn-orange" data-go="apply">${I.edit} Submit Application</button>`
+      : "";
+  return `<div class="actions">
+    <a class="btn btn-primary" href="${o.url}" target="_blank" rel="noopener">${I.external} ${o.label}</a>
+    ${applyBtn}
+  </div>`;
+}
+
 function quickActionsHTML() {
   return `
     <h2 class="sec">Quick actions</h2>
+    ${officialButtonHTML("home")}
     <div class="grid2">
       ${TOPICS.map(t => `
         <button class="card" data-ask="${t.title}">
@@ -578,9 +667,9 @@ function quickActionsHTML() {
     </div>`;
 }
 
-function commonQuestionsHTML(title = "Common student questions", list = COMMON_QUESTIONS.slice(0, 4)) {
+function commonQuestionsHTML(title = "Common student questions", list = COMMON_QUESTIONS.slice(0, 6)) {
   return `
-    <h2 class="sec">${title}</h2>
+    ${title ? `<h2 class="sec">${title}</h2>` : ""}
     ${list.map(q => `
       <button class="qrow" data-ask="${q}">
         <span class="qmark">?</span>
@@ -589,10 +678,11 @@ function commonQuestionsHTML(title = "Common student questions", list = COMMON_Q
       </button>`).join("")}`;
 }
 
-function infoBlocksHTML(page) {
+function infoBlocksHTML(page, route) {
   return `
     <h2 class="sec">${page.h}</h2>
     <p class="lead">${page.p}</p>
+    ${officialButtonHTML(route)}
     ${page.blocks.map(b => `
       <section class="block">
         <h3 class="block-t">${b.t}</h3>
@@ -603,6 +693,61 @@ function infoBlocksHTML(page) {
       </section>`).join("")}`;
 }
 
+const BRANCHES = [
+  "Computer Science & Engineering (CSE)",
+  "CSE (AI & Machine Learning)",
+  "CSE (Data Science)",
+  "CSE (IoT)",
+  "Computer Science & Business Systems (CSBS)",
+  "Artificial Intelligence (AI)",
+  "AI & Data Science",
+  "Quantum Computing",
+  "Information Technology (IT)",
+  "Electronics & Communication Engineering (ECE)",
+  "Electrical & Electronics Engineering (EEE)",
+  "Mechanical Engineering",
+  "Civil Engineering",
+  "Chemical Engineering",
+  "MBA", "MCA", "BBA",
+];
+
+function applyHTML() {
+  return `
+    <h2 class="sec">Admission application</h2>
+    <p class="lead">Fill in your details below, then submit — you will be taken to the official RVRJC admissions page (rvrjc.ac.in/xadmission.php) to complete and verify your application with the college. Admissions helpline: 94910 73318.</p>
+    ${officialButtonHTML("apply")}
+    <form class="form" id="applyForm">
+      <div class="fgrid">
+        <div class="f"><label for="ap_name">Full name (as in 10+2 memo)</label><input id="ap_name" name="name" required placeholder="Your full name" /></div>
+        <div class="f"><label for="ap_phone">Mobile number</label><input id="ap_phone" name="phone" required pattern="[0-9+ustatic\\s]{10,15}" placeholder="10-digit mobile" /></div>
+        <div class="f"><label for="ap_email">Email</label><input id="ap_email" name="email" type="email" required placeholder="you@example.com" /></div>
+        <div class="f"><label for="ap_dob">Date of birth</label><input id="ap_dob" name="dob" type="date" required /></div>
+        <div class="f"><label for="ap_cat">Admission category</label>
+          <select id="ap_cat" name="category" required>
+            <option value="Category-A (Convener Quota, AP EAPCET)">Category-A — Convener Quota (AP EAPCET)</option>
+            <option value="Category-B (Management Quota)">Category-B — Management Quota</option>
+            <option value="Lateral Entry (AP ECET)">Lateral Entry — AP ECET (diploma holders)</option>
+          </select>
+        </div>
+        <div class="f"><label for="ap_rank">AP EAPCET / ECET rank (if available)</label><input id="ap_rank" name="rank" placeholder="e.g. 12456" /></div>
+        <div class="f"><label for="ap_branch">Preferred branch</label>
+          <select id="ap_branch" name="branch" required>
+            ${BRANCHES.map(b => `<option>${b}</option>`).join("")}
+          </select>
+        </div>
+        <div class="f"><label for="ap_marks">10+2 (MPC) percentage</label><input id="ap_marks" name="marks" placeholder="e.g. 92.4" /></div>
+        <div class="f full"><label for="ap_addr">Address</label><textarea id="ap_addr" name="address" rows="2" placeholder="Village / town, district, PIN"></textarea></div>
+        <div class="f full"><label for="ap_note">Anything else the admissions office should know?</label><textarea id="ap_note" name="note" rows="2" placeholder="Optional"></textarea></div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn btn-orange">${I.edit} Submit Application</button>
+        <button type="button" class="btn btn-outline" data-ask="How do I apply for a Category-B management quota seat?">${I.qmarkTab} Ask the assistant about applying</button>
+      </div>
+      <div id="applyOk"></div>
+      <p class="note">This form collects your details on this device and then opens the official RVRJC admissions page in a new tab, where the college's own admission notification, application form and helpline are published. This site does not store your data and is not a substitute for the official college application.</p>
+    </form>`;
+}
+
 function render(route) {
   if (route === "home") {
     view.innerHTML = quickActionsHTML();
@@ -610,14 +755,18 @@ function render(route) {
   } else if (route === "faq") {
     view.innerHTML = `
       <h2 class="sec">Frequently asked questions</h2>
-      <p class="lead">Tap any question — the assistant below answers it from the verified official RVRJC source, with a direct link to that page.</p>
-      ${commonQuestionsHTML("", COMMON_QUESTIONS).replace('<h2 class="sec"></h2>', "")}`;
+      <p class="lead">Tap any question — the assistant answers it from the verified official RVRJC source, with a direct link to that page.</p>
+      ${officialButtonHTML("faq")}
+      ${commonQuestionsHTML("", COMMON_QUESTIONS)}`;
     viewBelow.innerHTML = "";
+  } else if (route === "apply") {
+    view.innerHTML = applyHTML();
+    viewBelow.innerHTML = "";
+    wireApplyForm();
   } else {
-    view.innerHTML = infoBlocksHTML(PAGES[route]);
-    viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", COMMON_QUESTIONS.slice(0, 4));
+    view.innerHTML = infoBlocksHTML(PAGES[route], route);
+    viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", COMMON_QUESTIONS.slice(0, 6));
   }
-
 
   tabsEl.querySelectorAll(".tab").forEach(t =>
     t.setAttribute("data-active", String(t.dataset.route === route))
@@ -625,12 +774,38 @@ function render(route) {
   drawerLinks.querySelectorAll("a").forEach(a =>
     a.setAttribute("data-active", String(a.dataset.route === route))
   );
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// Any element with data-ask sends a preset question to the persistent widget.
+function wireApplyForm() {
+  const form = document.getElementById("applyForm");
+  if (!form) return;
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const summary = [
+      `Name: ${d.get("name")}`,
+      `Mobile: ${d.get("phone")}`,
+      `Email: ${d.get("email")}`,
+      `Category: ${d.get("category")}`,
+      `Branch: ${d.get("branch")}`,
+      d.get("rank") ? `Rank: ${d.get("rank")}` : "",
+    ].filter(Boolean).join(" · ");
+    try { localStorage.setItem("rvrjc_application", JSON.stringify(Object.fromEntries(d.entries()))); } catch (_) {}
+    document.getElementById("applyOk").innerHTML =
+      `<div class="ok"><strong>Application details captured.</strong><br />${summary}<br /><br />
+       The official RVRJC admissions page has been opened in a new tab — complete your application there or call the admissions helpline 94910 73318.
+       <br /><a class="srcbtn" href="https://rvrjc.ac.in/xadmission.php" target="_blank" rel="noopener">Official Admission Procedure ${I.link}</a></div>`;
+    window.open("https://rvrjc.ac.in/xadmission.php", "_blank", "noopener");
+  });
+}
+
+// Any element with data-ask sends a preset question to the global assistant.
 document.addEventListener("click", e => {
   const btn = e.target.closest("[data-ask]");
   if (btn && !btn.closest(".chat")) chat.ask(btn.dataset.ask);
+  const go = e.target.closest("[data-go]");
+  if (go) location.hash = "#/" + go.dataset.go;
   const tab = e.target.closest(".tab");
   if (tab) location.hash = "#/" + tab.dataset.route;
 });
