@@ -719,7 +719,7 @@ function applyHTML() {
     <form class="form" id="applyForm">
       <div class="fgrid">
         <div class="f"><label for="ap_name">Full name (as in 10+2 memo)</label><input id="ap_name" name="name" required placeholder="Your full name" /></div>
-        <div class="f"><label for="ap_phone">Mobile number</label><input id="ap_phone" name="phone" required pattern="[0-9+ustatic\\s]{10,15}" placeholder="10-digit mobile" /></div>
+        <div class="f"><label for="ap_phone">Mobile number</label><input id="ap_phone" name="phone" required inputmode="tel" pattern="[0-9+ ]{10,15}" placeholder="10-digit mobile" /></div>
         <div class="f"><label for="ap_email">Email</label><input id="ap_email" name="email" type="email" required placeholder="you@example.com" /></div>
         <div class="f"><label for="ap_dob">Date of birth</label><input id="ap_dob" name="dob" type="date" required /></div>
         <div class="f"><label for="ap_cat">Admission category</label>
