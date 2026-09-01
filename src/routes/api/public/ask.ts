@@ -8,7 +8,7 @@ import { KB, type KbChunk } from "@/lib/rvrjc-kb";
  *
  * Retrieval-then-fallback pipeline:
  *  1. Score the question against the verified RVRJC knowledge base (src/lib/rvrjc-kb.ts).
- *     Each chunk is transcribed from a specific official rvrjc.ac.in page and carries
+ *     Each chunk is transcribed from a specific official rvrjcce.ac.in page and carries
  *     that page's DIRECT deep link.
  *  2. If a chunk clears the similarity threshold -> answer STRICTLY from that chunk and
  *     return mode:"rvrjc" with the real sourceUrl. RVRJC-specific facts are never invented.
@@ -171,7 +171,7 @@ export const Route = createFileRoute("/api/public/ask")({
             answer:
               "I couldn't find verified RVRJC information on this — you may want to check with the college office directly.",
             sourceLabel: "Official RVRJC website",
-            sourceUrl: "https://rvrjc.ac.in/index.php",
+            sourceUrl: "https://rvrjcce.ac.in/index.php",
             mode: "rvrjc",
           });
         }
@@ -196,7 +196,7 @@ export const Route = createFileRoute("/api/public/ask")({
               answer ||
               "I couldn't produce an answer for that. Please try rephrasing your question.",
             sourceLabel: "Official RVRJC website",
-            sourceUrl: "https://rvrjc.ac.in",
+            sourceUrl: "https://rvrjcce.ac.in",
             mode: "general",
           });
 

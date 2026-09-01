@@ -7,8 +7,8 @@ No database, no embeddings service, no redeploy scripts — edit one file.
 ## Step-by-step
 
 1. **Open the official RVRJC page** you want the bot to know
-   (e.g. `https://rvrjc.ac.in/xfeestructure.php`). Copy the exact text.
-   Keep the **deep link** of that page — not `https://rvrjc.ac.in`.
+   (e.g. `https://rvrjcce.ac.in/xfeestructure.php`). Copy the exact text.
+   Keep the **deep link** of that page — not `https://rvrjcce.ac.in`.
 2. **Open `src/lib/rvrjc-kb.ts`** in the editor (or ask the assistant in chat
    to add it for you).
 3. **Copy an existing block** in the `KB` array and paste it at the end,
@@ -24,7 +24,7 @@ No database, no embeddings service, no redeploy scripts — edit one file.
        "Paste the verified text from the official page here.\n" +
        "Use \\n for line breaks and • for bullets.",
      sourceLabel: "Official Anti-Ragging page",
-     sourceUrl: "https://rvrjc.ac.in/xantiragging.php",   // DEEP link
+     sourceUrl: "https://rvrjcce.ac.in/xantiragging.php",   // DEEP link
    },
    ```
 

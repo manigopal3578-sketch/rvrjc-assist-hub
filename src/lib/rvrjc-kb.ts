@@ -2,7 +2,7 @@
  * RVRJC knowledge base.
  *
  * Every entry is transcribed from the official R.V.R. & J.C. College of
- * Engineering (Autonomous) website (https://rvrjc.ac.in) and carries the
+ * Engineering (Autonomous) website (https://rvrjcce.ac.in) and carries the
  * DIRECT deep link to the exact page the fact came from — not the homepage.
  * The ask endpoint may only answer RVRJC-specific questions from these
  * chunks; it must never invent an RVRJC fact that is not written here.
@@ -23,7 +23,7 @@ export type KbChunk = {
   sourceUrl: string;
 };
 
-export const OFFICIAL_SITE = "https://rvrjc.ac.in";
+export const OFFICIAL_SITE = "https://rvrjcce.ac.in";
 
 export const KB: KbChunk[] = [
   {
@@ -44,7 +44,7 @@ export const KB: KbChunk[] = [
       "• Statutory reservations are followed as per government norms.\n\n" +
       "Admissions helpline: 94910 73318.",
     sourceLabel: "Official Admission Procedure page",
-    sourceUrl: "https://rvrjc.ac.in/xadmission.php",
+    sourceUrl: "https://rvrjcce.ac.in/xadmission.php",
   },
   {
     id: "fee-structure",
@@ -69,7 +69,7 @@ export const KB: KbChunk[] = [
       "Optional charges: college bus transport Rs. 13,500 from Guntur and Rs. 15,000 from Chilakaluripet; hostel Rs. 48,000 for 2026-27 plus a refundable caution deposit of Rs. 4,000.\n\n" +
       "Scholarship-eligible candidates need not pay tuition fee under Category-A.",
     sourceLabel: "Official Fee Structure page",
-    sourceUrl: "https://rvrjc.ac.in/xfeestructure.php",
+    sourceUrl: "https://rvrjcce.ac.in/xfeestructure.php",
   },
   {
     id: "fee-payment",
@@ -87,7 +87,7 @@ export const KB: KbChunk[] = [
       "To pay your 2nd-year tuition fee, open the Tuition Fee link above, enter your registration/admission number, verify the amount shown for your branch and category, and complete the payment.\n\n" +
       "Note from the official terms: transaction fee charges are borne by the cardholder and are not refunded or reversed under any circumstances, including refunds, reversals or chargebacks. Payment status can be checked on the same fee payments page.",
     sourceLabel: "Official Fee Payments page",
-    sourceUrl: "https://rvrjc.ac.in/xfeepayments.php",
+    sourceUrl: "https://rvrjcce.ac.in/xfeepayments.php",
   },
   {
     id: "academic-calendar",
@@ -106,7 +106,7 @@ export const KB: KbChunk[] = [
       "• B.Tech I Year — class work from 03-AUG-2026; first mid 02-NOV-2026.\n\n" +
       "Always download the PDF for your exact class and regulation from the official page for the authoritative dates.",
     sourceLabel: "Official Academic Calendars page",
-    sourceUrl: "https://rvrjc.ac.in/xacademiccalender.php",
+    sourceUrl: "https://rvrjcce.ac.in/xacademiccalender.php",
   },
   {
     id: "exam-timetable",
@@ -133,11 +133,11 @@ export const KB: KbChunk[] = [
     answer:
       "Published examination results are available from the Examination Cell:\n\n" +
       "• Results portal (batch-wise / examination-wise): https://rvrjcce.ac.in/examcell/results/\n" +
-      "• Register-number-wise results: https://rvrjc.ac.in/examcell/results/regnoresultsR.php\n" +
-      "• Consolidated results page: https://rvrjc.ac.in/xresults-new.php\n\n" +
+      "• Register-number-wise results: https://rvrjcce.ac.in/examcell/results/\n" +
+      "• Consolidated results page: https://rvrjcce.ac.in/xresults-new.php\n\n" +
       "Enter your register number on the RegNo-wise page to see your semester results. Malpractice cases and their punishments are also published by the Examination Cell.",
     sourceLabel: "Official Results page",
-    sourceUrl: "https://rvrjc.ac.in/xresults-new.php",
+    sourceUrl: "https://rvrjcce.ac.in/xresults-new.php",
   },
   {
     id: "departments",
@@ -149,10 +149,10 @@ export const KB: KbChunk[] = [
     ],
     answer:
       "Departments and programmes at RVR & JC College of Engineering (Autonomous):\n\n" +
-      "Engineering: Computer Science & Engineering (rvrjc.ac.in/CSE), CSE (AI & ML) (/xcsm), CSE (Data Science) (/CSD), CSE (IoT) (/CSO), Computer Science & Business Systems – powered by TCS (/CSBS), Artificial Intelligence (/AI), AI & Data Science (/AIDS), Quantum Computing (/QTC), Information Technology (/IT), Electronics & Communication Engineering (/ECE), Electrical & Electronics Engineering (/EEE), Mechanical Engineering (/ME), Civil Engineering (/CE), Chemical Engineering (/Chemical).\n\n" +
+      "Engineering: Computer Science & Engineering (rvrjcce.ac.in/CSE), CSE (AI & ML) (/xcsm), CSE (Data Science) (/CSD), CSE (IoT) (/CSO), Computer Science & Business Systems – powered by TCS (/CSBS), Artificial Intelligence (/AI), AI & Data Science (/AIDS), Quantum Computing (/QTC), Information Technology (/IT), Electronics & Communication Engineering (/ECE), Electrical & Electronics Engineering (/EEE), Mechanical Engineering (/ME), Civil Engineering (/CE), Chemical Engineering (/Chemical).\n\n" +
       "Others: Computer Applications – MCA (/CA), Management Sciences – BBA & MBA (/MBA), Mathematics & Humanities (/mandh), Physics (/Physics), Chemistry (/Chemistry).",
     sourceLabel: "Official Programs Offered page",
-    sourceUrl: "https://rvrjc.ac.in/xcourses.php",
+    sourceUrl: "https://rvrjcce.ac.in/xcourses.php",
   },
   {
     id: "placements",
@@ -168,7 +168,7 @@ export const KB: KbChunk[] = [
       "• Dr. K. Suresh Babu, Placement Officer — tpcell@rvrjc.ac.in, +91 9490750007\n\n" +
       "Students register and track drives on the placement portal: http://tandp.rvrjcce.ac.in",
     sourceLabel: "Official Training & Placements page",
-    sourceUrl: "https://rvrjc.ac.in/xtrainingandplacements.php",
+    sourceUrl: "https://rvrjcce.ac.in/xtrainingandplacements.php",
   },
   {
     id: "scholarships",
@@ -177,7 +177,7 @@ export const KB: KbChunk[] = [
     answer:
       "The college publishes its academic scholarship details on the official Academic Scholarship page. Note that under Category-A (Convener Quota), scholarship-eligible candidates need not pay tuition fee, as stated in the official fee structure.",
     sourceLabel: "Official Academic Scholarship page",
-    sourceUrl: "https://rvrjc.ac.in/xscholarships.php",
+    sourceUrl: "https://rvrjcce.ac.in/xscholarships.php",
   },
   {
     id: "certificates-office",
@@ -190,19 +190,19 @@ export const KB: KbChunk[] = [
     answer:
       "Bonafide, study and transfer certificate requests are handled by the college administrative office; the official website does not publish an online application form for them. The verified route is to apply in writing at the administrative office through your Head of Department, giving your name, register number, branch, year and the purpose of the certificate.\n\n" +
       "Use the College Services Directory to reach the correct office, and the Student Grievance Redressal Cell if a request is delayed:\n" +
-      "• Services directory: https://rvrjc.ac.in/xstaffdirectory.php\n" +
-      "• Grievance redressal: https://rvrjc.ac.in/xstudgrievances.php",
+      "• Services directory: https://rvrjcce.ac.in/xstaffdirectory.php\n" +
+      "• Grievance redressal: https://rvrjcce.ac.in/xstudgrievances.php",
     sourceLabel: "Official College Services Directory",
-    sourceUrl: "https://rvrjc.ac.in/xstaffdirectory.php",
+    sourceUrl: "https://rvrjcce.ac.in/xstaffdirectory.php",
   },
   {
     id: "notices",
     topic: "Notices",
     keywords: ["notice", "notices", "circular", "news", "announcement", "latest", "newsletter"],
     answer:
-      "Latest official notices, circulars and news are posted on the college homepage under Latest News, Exam Schedules, Exam Results and Placements News sections. Newsletters are published separately at https://rvrjc.ac.in/xnewsletters.php.",
+      "Latest official notices, circulars and news are posted on the college homepage under Latest News, Exam Schedules, Exam Results and Placements News sections. Newsletters are published separately at https://rvrjcce.ac.in/xnewsletters.php.",
     sourceLabel: "Official RVRJC homepage notices",
-    sourceUrl: "https://rvrjc.ac.in/index.php",
+    sourceUrl: "https://rvrjcce.ac.in/index.php",
   },
   {
     id: "hostel-transport",
@@ -210,9 +210,9 @@ export const KB: KbChunk[] = [
     keywords: ["hostel", "hostels", "mess", "boarding", "lodging", "bus", "transport", "bus route", "bus fee"],
     answer:
       "Hostel: accommodation with boarding and lodging is optional and costs Rs. 48,000 for the academic year 2026-27, plus a refundable caution deposit of Rs. 4,000. Hostel details: https://rvrjcce.ac.in/xhostels.php\n\n" +
-      "Transport: college bus transport is optional — Rs. 13,500 per year from Guntur and Rs. 15,000 per year from Chilakaluripet. Transport committee and routes: https://rvrjc.ac.in/transport.php; bus fee payment: https://rvrjcce.ac.in/busfee/busfee.php",
+      "Transport: college bus transport is optional — Rs. 13,500 per year from Guntur and Rs. 15,000 per year from Chilakaluripet. Transport committee and routes: https://rvrjcce.ac.in/xtransport.php; bus fee payment: https://rvrjcce.ac.in/busfee/busfee.php",
     sourceLabel: "Official Fee Structure (hostel & transport charges)",
-    sourceUrl: "https://rvrjc.ac.in/xfeestructure.php",
+    sourceUrl: "https://rvrjcce.ac.in/xfeestructure.php",
   },
   {
     id: "academic-regulations",
@@ -221,19 +221,19 @@ export const KB: KbChunk[] = [
     answer:
       "The college is autonomous (UGC autonomy letter dated 17-03-2024) and follows its own academic regulations — currently R24 for new UG batches, with R20 and R18 still in force for senior and supplementary batches. Full regulation documents, credit requirements, attendance and promotion rules are published on the official Academic Regulations page.",
     sourceLabel: "Official Academic Regulations page",
-    sourceUrl: "https://rvrjc.ac.in/xacademicregulations.php",
+    sourceUrl: "https://rvrjcce.ac.in/xacademicregulations.php",
   },
   {
     id: "library-facilities",
     topic: "Library & Facilities",
     keywords: ["library", "facilities", "lab", "labs", "moodle", "lms", "wifi", "sports", "campus"],
     answer:
-      "Central Library: https://rvrjc.ac.in/xlibrary.php\n" +
-      "Campus facilities overview: https://rvrjc.ac.in/xfacilities.php\n" +
+      "Central Library: https://rvrjcce.ac.in/xlibrary.php\n" +
+      "Campus facilities overview: https://rvrjcce.ac.in/xfacilities.php\n" +
       "Moodle / LMS for course material: http://courses.rvrjc.ac.in/moodle/\n" +
-      "Sports and recreation: https://rvrjc.ac.in/xsportsactivities.php",
+      "Sports and recreation: https://rvrjcce.ac.in/xsportsactivities.php",
     sourceLabel: "Official Facilities page",
-    sourceUrl: "https://rvrjc.ac.in/xfacilities.php",
+    sourceUrl: "https://rvrjcce.ac.in/xfacilities.php",
   },
   {
     id: "lateral-entry",
@@ -249,7 +249,7 @@ export const KB: KbChunk[] = [
       "• Convener quota lateral seats are allotted in the centralized ECET counselling; remaining seats are filled by the college on merit as per government directions.\n\n" +
       "Admissions helpline: 94910 73318.",
     sourceLabel: "Official Admission Procedure page",
-    sourceUrl: "https://rvrjc.ac.in/xadmission.php",
+    sourceUrl: "https://rvrjcce.ac.in/xadmission.php",
   },
   {
     id: "category-b-application",
@@ -268,7 +268,7 @@ export const KB: KbChunk[] = [
       "4. Confirm the seat by paying the fee through the official online tuition fee portal.\n\n" +
       "Admissions helpline: 94910 73318.",
     sourceLabel: "Official Admission Procedure page",
-    sourceUrl: "https://rvrjc.ac.in/xadmission.php",
+    sourceUrl: "https://rvrjcce.ac.in/xadmission.php",
   },
   {
     id: "exam-fee",
@@ -282,7 +282,7 @@ export const KB: KbChunk[] = [
       "Enter your register number, select the examination shown for your semester and regulation, and complete the payment. Fee notifications and last dates for regular and supplementary examinations are published on the official examinations pages along with the time tables.\n\n" +
       "As per the official terms, transaction charges are borne by the cardholder and are not refunded or reversed under any circumstances.",
     sourceLabel: "Official Fee Payments page",
-    sourceUrl: "https://rvrjc.ac.in/xfeepayments.php",
+    sourceUrl: "https://rvrjcce.ac.in/xfeepayments.php",
   },
   {
     id: "grievance",
@@ -293,10 +293,10 @@ export const KB: KbChunk[] = [
     ],
     answer:
       "The college runs a Student Grievance Redressal Cell for student complaints, including academic, administrative and disciplinary matters. Submit your grievance to the cell through your Head of Department or the administrative office; the members and procedure are published on the official page.\n\n" +
-      "• Student grievance redressal: https://rvrjc.ac.in/xstudgrievances.php\n" +
-      "• College services directory (to reach the right office): https://rvrjc.ac.in/xstaffdirectory.php",
+      "• Student grievance redressal: https://rvrjcce.ac.in/xstudgrievances.php\n" +
+      "• College services directory (to reach the right office): https://rvrjcce.ac.in/xstaffdirectory.php",
     sourceLabel: "Official Student Grievances page",
-    sourceUrl: "https://rvrjc.ac.in/xstudgrievances.php",
+    sourceUrl: "https://rvrjcce.ac.in/xstudgrievances.php",
   },
   {
     id: "moodle-lms",
@@ -325,7 +325,7 @@ export const KB: KbChunk[] = [
       "• Department-wise and office-wise contacts are listed in the official college services directory.\n\n" +
       "Use the official contact page for the current phone numbers and email addresses.",
     sourceLabel: "Official Contact Us page",
-    sourceUrl: "https://rvrjc.ac.in/xcontactus.php",
+    sourceUrl: "https://rvrjcce.ac.in/detailesofthecollege.php",
   },
 ];
 
