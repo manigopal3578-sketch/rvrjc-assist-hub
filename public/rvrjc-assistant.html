@@ -866,6 +866,25 @@ function render(route) {
     view.innerHTML = applyHTML();
     viewBelow.innerHTML = "";
     wireApplyForm();
+  } else if (route === "campusmap") {
+    view.innerHTML = `
+      ${infoBlocksHTML(PAGES.campusmap, "campusmap")}
+      <section class="block">
+        <h3 class="block-t">Live campus location</h3>
+        <div class="mapwrap">
+          <iframe title="R.V.R. &amp; J.C. College of Engineering on Google Maps" loading="lazy"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3830.331619006292!2d80.32332137517936!3d16.254765734444128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4a76e740000001%3A0xc41c8498715c6da0!2sR.V.R.%20%26%20J.C.College%20of%20Engineering!5e0!3m2!1sen!2sin!4v1723996093411!5m2!1sen!2sin"
+            allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="actions">
+          <a class="btn btn-orange" href="https://www.google.com/maps/dir/?api=1&destination=16.254766,80.325605" target="_blank" rel="noopener">${I.external} Get directions</a>
+          <a class="btn btn-outline" href="https://rvrjcce.ac.in/xtransport.php" target="_blank" rel="noopener">${I.external} Bus routes</a>
+        </div>
+      </section>`;
+    viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", [
+      "How do I reach the college campus and where exactly is it?",
+      "What are the college bus routes and bus fee?",
+    ]);
   } else {
     view.innerHTML = infoBlocksHTML(PAGES[route], route);
     viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", COMMON_QUESTIONS.slice(0, 6));
@@ -886,22 +905,31 @@ function wireApplyForm() {
   form.addEventListener("submit", e => {
     e.preventDefault();
     const d = new FormData(form);
+    const category = String(d.get("category") || "");
+    const isCollegeRoute = category.startsWith("Category-B");
+    const target = isCollegeRoute ? TUITION_FEE_PORTAL : ADMISSION_PORTAL;
+    const targetLabel = isCollegeRoute
+      ? "Official RVRJC Tuition Fee Portal"
+      : "Official AP EAPCET / ECET Admission Portal (APSCHE CETs)";
     const summary = [
       `Name: ${d.get("name")}`,
       `Mobile: ${d.get("phone")}`,
       `Email: ${d.get("email")}`,
-      `Category: ${d.get("category")}`,
+      `Category: ${category}`,
       `Branch: ${d.get("branch")}`,
       d.get("rank") ? `Rank: ${d.get("rank")}` : "",
     ].filter(Boolean).join(" · ");
     try { localStorage.setItem("rvrjc_application", JSON.stringify(Object.fromEntries(d.entries()))); } catch (_) {}
     document.getElementById("applyOk").innerHTML =
       `<div class="ok"><strong>Application details captured.</strong><br />${summary}<br /><br />
-       The official RVRJC admissions page has been opened in a new tab — complete your application there or call the admissions helpline 94910 73318.
-       <br /><a class="srcbtn" href="https://rvrjcce.ac.in/xadmission.php" target="_blank" rel="noopener">Official Admission Procedure ${I.link}</a></div>`;
-    window.open("https://rvrjcce.ac.in/xadmission.php", "_blank", "noopener");
+       ${targetLabel} has been opened in a new tab — complete your application there, or call the admissions helpline 94910 73318.
+       <br /><a class="srcbtn" href="${target}" target="_blank" rel="noopener">${targetLabel} ${I.link}</a>
+       <a class="srcbtn" href="https://rvrjcce.ac.in/xadmission.php" target="_blank" rel="noopener">Official Admission Procedure ${I.link}</a>
+       <a class="srcbtn" href="#/portal">Application status, fees &amp; documents ${I.link}</a></div>`;
+    window.open(target, "_blank", "noopener");
   });
 }
+
 
 // Any element with data-ask sends a preset question to the global assistant.
 document.addEventListener("click", e => {
