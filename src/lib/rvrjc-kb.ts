@@ -319,15 +319,120 @@ export const KB: KbChunk[] = [
       "helpline", "reach", "map", "chowdavaram", "guntur", "office timings",
     ],
     answer:
-      "R.V.R. & J.C. College of Engineering (Autonomous) is located at Chowdavaram, Guntur – 522 019, Andhra Pradesh.\n\n" +
-      "• Admissions helpline: 94910 73318\n" +
+      "R.V.R. & J.C. College of Engineering (Autonomous) is located at Chandramoulipuram, Chowdavaram, Guntur – 522 019, Andhra Pradesh, India.\n\n" +
+      "• College phone: 94910 73317 & 94910 73318 (also the admissions helpline)\n" +
+      "• City office: R.V.R. & J.C. CoE City Office, Opposite Chinmaya Vidyalaya, S.V.N. Colony, Guntur – 522 006. Ph: 0863-2232505 (O), Fax: 0863-2350343\n" +
       "• Training & Placement: tpo@rvrjc.ac.in, +91 9491071947\n" +
-      "• Department-wise and office-wise contacts are listed in the official college services directory.\n\n" +
-      "Use the official contact page for the current phone numbers and email addresses.",
-    sourceLabel: "Official Contact Us page",
+      "• Department-wise and office-wise contacts are listed in the official college services directory: https://rvrjcce.ac.in/xstaffdirectory.php",
+    sourceLabel: "Official Details of the College page",
     sourceUrl: "https://rvrjcce.ac.in/detailesofthecollege.php",
   },
+  {
+    id: "campus-map",
+    topic: "Campus Map & Directions",
+    keywords: [
+      "campus map", "map", "directions", "how to reach", "route", "google maps", "locate",
+      "location of college", "landmark", "bus stop", "railway station", "gate", "blocks",
+      "which block", "organizational map", "city office",
+    ],
+    answer:
+      "Campus map & location (official Campus Map page):\n\n" +
+      "• Main campus: Chandramoulipuram, Chowdavaram, Guntur – 522 019, on the Guntur–Chilakaluripet side of Guntur city. Ph: 94910 73317 / 94910 73318.\n" +
+      "• Map coordinates used on the official campus map: 16.254766, 80.325605.\n" +
+      "• Google Maps directions: https://www.google.com/maps/dir/?api=1&destination=16.254766,80.325605\n" +
+      "• City office: Opposite Chinmaya Vidyalaya, S.V.N. Colony, Guntur – 522 006. Ph: 0863-2232505.\n" +
+      "• Inside the campus, each department has its own block and its own official page (CSE, ECE, EEE, ME, CE, Chemical, IT, AI, AIDS, QTC, CSBS, CSD, CSO, MCA, MBA/BBA, Mathematics & Humanities, Physics, Chemistry); the Examination Cell, Central Library, Training & Placement Cell and Student Wellness Centre are separate facilities listed on the official facilities page.\n" +
+      "• College buses run from Guntur and Chilakaluripet — see the Transport Committee page: https://rvrjcce.ac.in/xtransport.php",
+    sourceLabel: "Official Campus Map & Location page",
+    sourceUrl: "https://rvrjcce.ac.in/xcampusmap.php",
+  },
+  {
+    id: "admission-portal",
+    topic: "Admission Portal",
+    keywords: [
+      "admission portal", "portal", "online application", "apply online", "counselling portal",
+      "web options", "certificate verification", "application status", "status of application",
+      "seat allotment", "allotment order", "cets", "apsche", "eapcet portal", "registration",
+    ],
+    answer:
+      "There are two official routes, depending on your category:\n\n" +
+      "1. Category-A (70%, Convener Quota): registration, fee payment, certificate verification, web options and seat allotment are all done on the Government of A.P. / APSCHE CETs admissions portal — https://cets.apsche.ap.gov.in/ — where you also track your application status and download the allotment order. RVRJC does not run this step.\n" +
+      "2. Category-B (30%, Management Quota) and lateral entry (ECET): you apply directly to the college as per the notification on the official Admission Procedure page — https://rvrjcce.ac.in/xadmission.php — and confirm the seat by paying the tuition fee on the college's own portal: https://rvrjcce.ac.in/tuitionfee/tuitionfee.php\n\n" +
+      "Admissions helpline: 94910 73318 (also 94910 73317).",
+    sourceLabel: "Official Admission Procedure page",
+    sourceUrl: "https://rvrjcce.ac.in/xadmission.php",
+  },
+  {
+    id: "payment-status",
+    topic: "Fee Payment Status",
+    keywords: [
+      "payment status", "fee status", "did my payment go through", "failed payment",
+      "transaction failed", "receipt", "download receipt", "online fee status", "refund",
+    ],
+    answer:
+      "Check a fee payment on the college's Online Fee Payment Status page: https://rvrjcce.ac.in/xonlinefeestatus.php — enter the register/admission number you used while paying.\n\n" +
+      "The three payment gateways are separate, so check the one you used:\n" +
+      "• Tuition / common services fee — https://rvrjcce.ac.in/tuitionfee/tuitionfee.php\n" +
+      "• Examination fee — https://rvrjcce.ac.in/examfee/examfee.php\n" +
+      "• Bus fee — https://rvrjcce.ac.in/busfee/busfee.php\n\n" +
+      "Official terms: transaction fee charges are borne by the cardholder and are not refunded or reversed under any circumstances, including refunds, reversals or chargebacks. If an amount is debited but not shown, contact the college office on 94910 73317 / 94910 73318 with the transaction reference.",
+    sourceLabel: "Official Fee Payments page",
+    sourceUrl: "https://rvrjcce.ac.in/xfeepayments.php",
+  },
+  {
+    id: "admission-documents",
+    topic: "Admission Documents",
+    keywords: [
+      "documents", "document", "certificates required", "originals", "upload", "document upload",
+      "what to bring", "tc", "caste certificate", "income certificate", "aadhaar", "rank card",
+      "study certificate", "verification",
+    ],
+    answer:
+      "Documents required at admission (as per the Government of A.P. admission rules the college follows):\n\n" +
+      "• AP EAPCET / ECET rank card and hall ticket\n" +
+      "• 10+2 (Intermediate, MPC) or diploma marks memo — minimum qualification for B.Tech is 10+2 with MPC or equivalent\n" +
+      "• SSC / 10th certificate (for date of birth)\n" +
+      "• Transfer Certificate (TC) and study certificates (Class VI to XII)\n" +
+      "• Caste certificate and income certificate (for reservation and fee reimbursement)\n" +
+      "• Aadhaar card and passport-size photographs\n\n" +
+      "For Category-A, originals are uploaded/verified at the certificate-verification step of the APSCHE CETs counselling (https://cets.apsche.ap.gov.in/). For Category-B and lateral entry, submit them at the college admissions office — helpline 94910 73318. All seats are ratified by the Government.",
+    sourceLabel: "Official Admission Procedure page",
+    sourceUrl: "https://rvrjcce.ac.in/xadmission.php",
+  },
+  {
+    id: "hall-ticket-exam-section",
+    topic: "Hall Tickets & Exam Section",
+    keywords: [
+      "hall ticket", "hallticket", "admit card", "exam section", "exam cell contact",
+      "malpractice", "revaluation", "recounting", "external examination", "internal examination",
+    ],
+    answer:
+      "Hall tickets, examination notifications, internal and external examination matters are handled by the Examination Cell: https://rvrjcce.ac.in/examcell/\n\n" +
+      "• Time tables (year-wise PDFs): https://rvrjcce.ac.in/xexamtimetables.php\n" +
+      "• Results: https://rvrjcce.ac.in/examcell/results/ and https://rvrjcce.ac.in/xresults-new.php\n" +
+      "• Examination fee payment: https://rvrjcce.ac.in/examfee/examfee.php\n" +
+      "• Malpractice cases and their punishments are published by the Examination Cell.\n\n" +
+      "Hall tickets are issued through your department once the examination fee is paid; collect or download it as announced in the exam notification for your semester.",
+    sourceLabel: "Official Examination Section",
+    sourceUrl: "https://rvrjcce.ac.in/examcell/",
+  },
+  {
+    id: "transport-routes",
+    topic: "Bus Routes & Transport",
+    keywords: [
+      "bus", "bus route", "transport", "transport committee", "bus timings", "college bus",
+      "chilakaluripet", "guntur bus", "bus pass",
+    ],
+    answer:
+      "College transport is optional and managed by the Transport Committee: https://rvrjcce.ac.in/xtransport.php\n\n" +
+      "• Bus fee per year: Rs. 13,500 from Guntur and Rs. 15,000 from Chilakaluripet (official fee structure).\n" +
+      "• Pay the bus fee online: https://rvrjcce.ac.in/busfee/busfee.php\n" +
+      "• Route lists, stops and timings are published by the Transport Committee — check that page or the committee members for your stop.",
+    sourceLabel: "Official Transport Committee page",
+    sourceUrl: "https://rvrjcce.ac.in/xtransport.php",
+  },
 ];
+
 
 /** The seeded FAQ list — each question maps to a verified KB chunk. */
 export const FAQ: { question: string; chunkId: string }[] = [
