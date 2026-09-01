@@ -235,6 +235,98 @@ export const KB: KbChunk[] = [
     sourceLabel: "Official Facilities page",
     sourceUrl: "https://rvrjc.ac.in/xfacilities.php",
   },
+  {
+    id: "lateral-entry",
+    topic: "Lateral Entry (ECET)",
+    keywords: [
+      "lateral entry", "lateral", "ecet", "diploma", "diploma holder", "second year admission",
+      "direct second year", "polytechnic",
+    ],
+    answer:
+      "Lateral entry admissions are offered into the second year of B.Tech for diploma holders through AP ECET.\n\n" +
+      "• 10% of the sanctioned intake is available as lateral entry seats in the second year.\n" +
+      "• Selection is through AP ECET rank, under the rules of the Government of Andhra Pradesh; seats are ratified by the Government.\n" +
+      "• Convener quota lateral seats are allotted in the centralized ECET counselling; remaining seats are filled by the college on merit as per government directions.\n\n" +
+      "Admissions helpline: 94910 73318.",
+    sourceLabel: "Official Admission Procedure page",
+    sourceUrl: "https://rvrjc.ac.in/xadmission.php",
+  },
+  {
+    id: "category-b-application",
+    topic: "Category-B Application",
+    keywords: [
+      "category b", "management quota", "apply for management", "spot admission",
+      "application form", "how to apply", "submit application", "b category application",
+      "30%", "college application",
+    ],
+    answer:
+      "Category-B (Management Quota) covers 30% of seats and is filled directly by the college in rank / merit order as per government directions, with all seats ratified by the Government.\n\n" +
+      "Verified steps:\n" +
+      "1. Keep your AP EAPCET rank card, 10+2 (MPC) marks memo, TC, study certificates, caste/income certificates and Aadhaar ready.\n" +
+      "2. Apply to the college with those details — use the official Admission Procedure page for the current notification and application form for the year.\n" +
+      "3. Branch allotment follows merit order and seat availability; the tuition fee depends on the branch (see the official fee structure).\n" +
+      "4. Confirm the seat by paying the fee through the official online tuition fee portal.\n\n" +
+      "Admissions helpline: 94910 73318.",
+    sourceLabel: "Official Admission Procedure page",
+    sourceUrl: "https://rvrjc.ac.in/xadmission.php",
+  },
+  {
+    id: "exam-fee",
+    topic: "Examination Fee",
+    keywords: [
+      "exam fee", "examination fee", "supply fee", "supplementary fee", "pay exam fee",
+      "revaluation fee", "exam fee last date", "exam fee notification",
+    ],
+    answer:
+      "Examination fees are paid online through the Examination Cell's own gateway: https://rvrjcce.ac.in/examfee/examfee.php\n\n" +
+      "Enter your register number, select the examination shown for your semester and regulation, and complete the payment. Fee notifications and last dates for regular and supplementary examinations are published on the official examinations pages along with the time tables.\n\n" +
+      "As per the official terms, transaction charges are borne by the cardholder and are not refunded or reversed under any circumstances.",
+    sourceLabel: "Official Fee Payments page",
+    sourceUrl: "https://rvrjc.ac.in/xfeepayments.php",
+  },
+  {
+    id: "grievance",
+    topic: "Grievances & Student Support",
+    keywords: [
+      "grievance", "grievances", "complaint", "ragging", "anti ragging", "harassment",
+      "committee", "redressal", "report", "help",
+    ],
+    answer:
+      "The college runs a Student Grievance Redressal Cell for student complaints, including academic, administrative and disciplinary matters. Submit your grievance to the cell through your Head of Department or the administrative office; the members and procedure are published on the official page.\n\n" +
+      "• Student grievance redressal: https://rvrjc.ac.in/xstudgrievances.php\n" +
+      "• College services directory (to reach the right office): https://rvrjc.ac.in/xstaffdirectory.php",
+    sourceLabel: "Official Student Grievances page",
+    sourceUrl: "https://rvrjc.ac.in/xstudgrievances.php",
+  },
+  {
+    id: "moodle-lms",
+    topic: "Moodle / Course Material",
+    keywords: [
+      "moodle", "lms", "course material", "notes", "study material", "online classes",
+      "assignments", "login", "e-learning",
+    ],
+    answer:
+      "Course material, unit notes and assignments are hosted on the college Moodle / LMS: http://courses.rvrjc.ac.in/moodle/\n\n" +
+      "Log in with the credentials issued by your department; each subject is enrolled by the concerned faculty. For login issues, contact your subject faculty or department office (see the college services directory).",
+    sourceLabel: "Official RVRJC Moodle / LMS",
+    sourceUrl: "http://courses.rvrjc.ac.in/moodle/",
+  },
+  {
+    id: "contact-location",
+    topic: "Contact & Location",
+    keywords: [
+      "contact", "address", "location", "where is the college", "phone", "email",
+      "helpline", "reach", "map", "chowdavaram", "guntur", "office timings",
+    ],
+    answer:
+      "R.V.R. & J.C. College of Engineering (Autonomous) is located at Chowdavaram, Guntur – 522 019, Andhra Pradesh.\n\n" +
+      "• Admissions helpline: 94910 73318\n" +
+      "• Training & Placement: tpo@rvrjc.ac.in, +91 9491071947\n" +
+      "• Department-wise and office-wise contacts are listed in the official college services directory.\n\n" +
+      "Use the official contact page for the current phone numbers and email addresses.",
+    sourceLabel: "Official Contact Us page",
+    sourceUrl: "https://rvrjc.ac.in/xcontactus.php",
+  },
 ];
 
 /** The seeded FAQ list — each question maps to a verified KB chunk. */
@@ -247,4 +339,17 @@ export const FAQ: { question: string; chunkId: string }[] = [
   { question: "How are admissions done under Category-B?", chunkId: "admission-process" },
   { question: "Where do I check my semester results?", chunkId: "results" },
   { question: "How much is the hostel and bus fee?", chunkId: "hostel-transport" },
+  { question: "How do I apply for a Category-B management quota seat?", chunkId: "category-b-application" },
+  { question: "How does lateral entry admission through AP ECET work?", chunkId: "lateral-entry" },
+  { question: "How do I pay the examination fee online?", chunkId: "exam-fee" },
+  { question: "Which branches and departments does RVRJC offer?", chunkId: "departments" },
+  { question: "What is the Category-B tuition fee for CSE and AI branches?", chunkId: "fee-structure" },
+  { question: "How do placements work and who do I contact?", chunkId: "placements" },
+  { question: "Where do I download course material on Moodle?", chunkId: "moodle-lms" },
+  { question: "How do I file a grievance or report ragging?", chunkId: "grievance" },
+  { question: "What are the R24 regulations and attendance rules?", chunkId: "academic-regulations" },
+  { question: "Where is the college located and how do I contact it?", chunkId: "contact-location" },
+  { question: "Am I eligible for a scholarship or fee reimbursement?", chunkId: "scholarships" },
+  { question: "Where are the latest notices and circulars published?", chunkId: "notices" },
 ];
+

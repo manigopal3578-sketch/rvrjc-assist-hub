@@ -195,8 +195,11 @@ export const Route = createFileRoute("/api/public/ask")({
             answer:
               answer ||
               "I couldn't produce an answer for that. Please try rephrasing your question.",
+            sourceLabel: "Official RVRJC website",
+            sourceUrl: "https://rvrjc.ac.in",
             mode: "general",
           });
+
         } catch (err) {
           const status = (err as { status?: number }).status ?? 500;
           const messageByStatus: Record<number, string> = {
