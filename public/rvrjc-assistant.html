@@ -297,20 +297,29 @@ const COMMON_QUESTIONS = [
   "Where is the college located and how do I contact it?",
   "Am I eligible for a scholarship or fee reimbursement?",
   "Where are the latest notices and circulars published?",
+  "Where do I download the scheme and syllabus for my branch?",
+  "What is the syllabus schedule and when are the mid exams?",
+  "What are the hostel rules and facilities?",
+  "How do I apply for a hostel seat and pay the hostel fee?",
+  "What are the central library hours and how many books can I borrow?",
 ];
 
 const ROUTES = [
   { id: "home",         label: "Home",         icon: I.home },
   { id: "academics",    label: "Academics",    icon: I.cap },
+  { id: "syllabus",     label: "Syllabus",     icon: I.cap },
   { id: "examinations", label: "Examinations", icon: I.calendar },
   { id: "admissions",   label: "Admissions",   icon: I.people },
   { id: "apply",        label: "Apply",        icon: I.edit },
+  { id: "hostel",       label: "Hostel",       icon: I.building },
+  { id: "hostelportal", label: "Hostel Portal",icon: I.rupee },
   { id: "portal",       label: "Portal",       icon: I.rupee },
   { id: "campusmap",    label: "Campus Map",   icon: I.building },
   { id: "departments",  label: "Departments",  icon: I.building },
   { id: "faq",          label: "FAQ",          icon: I.qmarkTab },
   { id: "more",         label: "More",         icon: I.more },
 ];
+
 
 
 /* Real content transcribed from official rvrjcce.ac.in pages (verified 01-09-2026).
@@ -575,23 +584,108 @@ const PAGES = {
       },
     ],
   },
+  hostelportal: {
+    h: "Hostel portal",
+    p: "Hostel admission, fee payment, payment status and the documents you must submit. RVRJC hostels are run by NES — the college publishes every hostel detail on its official hostel pages, and payments go through the official college payment portals.",
+    official: "https://rvrjcce.ac.in/xhostels.php",
+    officialLabel: "Go to Official Hostels Page",
+    blocks: [
+      {
+        t: "1 · Hostel application & allotment status",
+        rows: [
+          ["Men's Hostel (on campus)", "Chandramoulipuram campus · 2 blocks · about 1250 students — rvrjcce.ac.in/xmenshostel.php"],
+          ["Women's Hostel", "S.V.N. Colony, Guntur · 2 blocks · about 400 students (2nd–4th year and PG) — rvrjcce.ac.in/xwomenshostel.php"],
+          ["First-Year Girls' Hostel", "Capacity 294 · biometric entry/exit · hostel office 0863-2244171 — rvrjcce.ac.in/xgirlshostel.php"],
+          ["Application & allotment", "Apply to the Chief Warden / hostel office at the time of admission; room allotment and vacancy status are confirmed by the hostel office"],
+        ],
+        src: "https://rvrjcce.ac.in/xhostels.php",
+        srcLabel: "Official Hostels page",
+      },
+      {
+        t: "2 · Hostel fee payment",
+        rows: [
+          ["Hostel fee 2026-27", "Rs. 48,000 per year + Rs. 4,000 refundable caution deposit"],
+          ["Men's hostel receipts (DD)", "DD in favour of \"NES Hostels – Men's Hostel Receipts A/c\", Union Bank of India, Guntur"],
+          ["Online payments (tuition / exam / bus)", "rvrjcce.ac.in/xfeepayments.php"],
+          ["Payment status", "rvrjcce.ac.in/xonlinefeestatus.php"],
+          ["Official terms", "Transaction charges are borne by the cardholder and are not refunded or reversed under any circumstances"],
+        ],
+        src: "https://rvrjcce.ac.in/xfeestructure.php",
+        srcLabel: "Official Fee Structure",
+      },
+      {
+        t: "3 · Documents to submit at the hostel office",
+        rows: [
+          ["Admission proof", "College admission / seat allotment letter"],
+          ["Fee proof", "Hostel fee receipt or DD counterfoil"],
+          ["Identity", "Aadhaar card · passport-size photographs · college ID"],
+          ["Parent / guardian", "Parent contact number and address proof, signed undertaking"],
+          ["Health", "Medical fitness / declaration form where the warden asks for it"],
+        ],
+        src: "https://rvrjcce.ac.in/xhostels.php",
+        srcLabel: "Official Hostels page",
+      },
+      {
+        t: "4 · Hostel rules you agree to",
+        rows: [
+          ["Entry / exit", "Sign the register at every exit; biometric entry/exit in the first-year girls' hostel"],
+          ["Timings & leave", "Return before the notified closing time; leave and outings need written warden permission"],
+          ["Prohibited", "Ragging, alcohol, smoking, outside visitors in rooms — ragging is punishable and reportable to the Anti-Ragging Committee"],
+          ["Grievances", "rvrjcce.ac.in/xstudgrievances.php"],
+        ],
+        src: "https://rvrjcce.ac.in/xstudgrievances.php",
+        srcLabel: "Official Grievance & Anti-Ragging page",
+      },
+    ],
+  },
 };
 
 /* Where each tab's "Go to Official Page" button points. */
 const ADMISSION_PORTAL = "https://cets.apsche.ap.gov.in/";
 const TUITION_FEE_PORTAL = "https://rvrjcce.ac.in/tuitionfee/tuitionfee.php";
+const HOSTEL_PORTAL = "https://rvrjcce.ac.in/xhostels.php";
+const FEE_PAYMENT_PORTAL = "https://rvrjcce.ac.in/xfeepayments.php";
 const OFFICIAL_BY_ROUTE = {
   home: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
   academics: { url: PAGES.academics.official, label: PAGES.academics.officialLabel },
+  syllabus: { url: "https://rvrjcce.ac.in/xacademicregulations.php", label: "Go to Official Regulations & Syllabus Page" },
   examinations: { url: PAGES.examinations.official, label: PAGES.examinations.officialLabel },
   admissions: { url: PAGES.admissions.official, label: PAGES.admissions.officialLabel },
   apply: { url: ADMISSION_PORTAL, label: "Open Official AP EAPCET Admission Portal" },
+  hostel: { url: HOSTEL_PORTAL, label: "Open Official RVRJC Hostels Page" },
+  hostelportal: { url: PAGES.hostelportal.official, label: PAGES.hostelportal.officialLabel },
   portal: { url: PAGES.portal.official, label: PAGES.portal.officialLabel },
   campusmap: { url: PAGES.campusmap.official, label: PAGES.campusmap.officialLabel },
   departments: { url: PAGES.departments.official, label: PAGES.departments.officialLabel },
   faq: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
   more: { url: PAGES.more.official, label: PAGES.more.officialLabel },
 };
+
+/* Departments and their official scheme & syllabus pages + regulation PDFs. */
+const REG_PDFS = [
+  ["R26 Regulations (PDF)", "https://rvrjcce.ac.in/files/R26-Regulations.pdf"],
+  ["R24 UG Regulations (PDF)", "https://rvrjcce.ac.in/files/R24-UG-Regulations.pdf"],
+];
+const SYLLABUS_DEPTS = [
+  ["Computer Science & Engineering (CSE)", "CSE"],
+  ["CSE (AI & Machine Learning)", "xcsm"],
+  ["CSE (Data Science)", "CSD"],
+  ["CSE (IoT)", "CSO"],
+  ["Computer Science & Business Systems (CSBS)", "CSBS"],
+  ["Artificial Intelligence (AI)", "AI"],
+  ["AI & Data Science", "AIDS"],
+  ["Quantum Computing", "QTC"],
+  ["Information Technology (IT)", "IT"],
+  ["Electronics & Communication Engineering (ECE)", "ECE"],
+  ["Electrical & Electronics Engineering (EEE)", "EEE"],
+  ["Mechanical Engineering", "ME"],
+  ["Civil Engineering", "CE"],
+  ["Chemical Engineering", "Chemical"],
+  ["Computer Applications (MCA)", "CA"],
+  ["Management Sciences (BBA & MBA)", "MBA"],
+];
+const REGULATIONS = ["R26", "R24", "R20", "R18"];
+
 
 /* ============================================================
    GLOBAL CHAT — created ONCE, lives outside the routed views,
@@ -755,11 +849,20 @@ function officialButtonHTML(route) {
   const extra = {
     admissions: `<button class="btn btn-orange" data-go="apply">${I.edit} Submit Application</button>
       <button class="btn btn-outline" data-go="portal">${I.rupee} Admissions Portal</button>`,
-    apply: `<button class="btn btn-outline" data-go="portal">${I.rupee} Application status, fees & documents</button>`,
+    apply: `<button class="btn btn-outline" data-go="portal">${I.rupee} Application status, fees & documents</button>
+      <button class="btn btn-outline" data-go="hostel">${I.building} Hostel application</button>`,
+    academics: `<button class="btn btn-orange" data-go="syllabus">${I.cap} Scheme &amp; Syllabus (all branches)</button>`,
+    syllabus: `<button class="btn btn-outline" data-go="academics">${I.calendar} Academic calendar &amp; mid dates</button>`,
+    hostel: `<button class="btn btn-outline" data-go="hostelportal">${I.rupee} Hostel portal — status, fee &amp; documents</button>`,
+    hostelportal: `<button class="btn btn-orange" data-go="hostel">${I.edit} Apply for hostel</button>
+      <a class="btn btn-outline" href="${FEE_PAYMENT_PORTAL}" target="_blank" rel="noopener">${I.external} Pay fees online</a>`,
     portal: `<a class="btn btn-orange" href="${TUITION_FEE_PORTAL}" target="_blank" rel="noopener">${I.external} Pay Tuition Fee</a>`,
     more: `<button class="btn btn-outline" data-go="campusmap">${I.building} Campus Map</button>`,
-    home: `<button class="btn btn-outline" data-go="campusmap">${I.building} Campus Map</button>`,
+    campusmap: `<button class="btn btn-orange" data-go="hostel">${I.building} Hostel application</button>`,
+    home: `<button class="btn btn-outline" data-go="campusmap">${I.building} Campus Map</button>
+      <button class="btn btn-outline" data-go="syllabus">${I.cap} Syllabus</button>`,
   }[route] || "";
+
   return `<div class="actions">
     <a class="btn btn-primary" href="${o.url}" target="_blank" rel="noopener">${I.external} ${o.label}</a>
     ${extra}
@@ -862,6 +965,133 @@ function applyHTML() {
     </form>`;
 }
 
+/* ---------- Syllabus: real department + regulation pages and PDFs ---------- */
+function syllabusHTML() {
+  return `
+    <h2 class="sec">Scheme &amp; syllabus</h2>
+    <p class="lead">Pick your department and regulation. Every link opens the official RVRJC scheme &amp; syllabus page for that department, where the semester-wise course structure and a PDF for every subject are published. RVRJC is autonomous, so the regulation (R26 / R24 / R20 / R18) printed on your admission year decides which syllabus applies to you.</p>
+    ${officialButtonHTML("syllabus")}
+    <section class="block">
+      <h3 class="block-t">Regulation documents (official PDFs)</h3>
+      <div class="actions">
+        ${REG_PDFS.map(([label, url]) => `<a class="btn btn-orange" href="${url}" target="_blank" rel="noopener">${I.external} ${label}</a>`).join("")}
+      </div>
+      <a class="srcbtn" href="https://rvrjcce.ac.in/xacademicregulations.php" target="_blank" rel="noopener">Official Academic Regulations ${I.link}</a>
+    </section>
+    ${SYLLABUS_DEPTS.map(([name, slug]) => `
+      <section class="block">
+        <h3 class="block-t">${name}</h3>
+        <dl class="rows">
+          <div class="row"><dt>Scheme &amp; syllabus (all regulations)</dt>
+            <dd>rvrjcce.ac.in/${slug}/schemeandsyllabus.php</dd></div>
+          <div class="row"><dt>Regulations covered</dt>
+            <dd>${REGULATIONS.join(" · ")} — semester-wise course structure with a PDF per subject</dd></div>
+        </dl>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://rvrjcce.ac.in/${slug}/schemeandsyllabus.php" target="_blank" rel="noopener">${I.external} Open scheme &amp; syllabus</a>
+          <a class="btn btn-outline" href="https://rvrjcce.ac.in/${slug}/" target="_blank" rel="noopener">${I.external} Department page</a>
+        </div>
+      </section>`).join("")}`;
+}
+
+/* ---------- Hostel application form ---------- */
+const HOSTEL_TYPES = [
+  "Men's Hostel (on campus, Chandramoulipuram)",
+  "Women's Hostel (S.V.N. Colony, 2nd–4th year & PG)",
+  "First-Year Girls' Hostel (biometric entry, capacity 294)",
+];
+const HOSTEL_DOCS = [
+  "College admission / seat allotment letter",
+  "Hostel fee receipt or DD counterfoil",
+  "Aadhaar card",
+  "Passport-size photographs",
+  "Parent / guardian address proof and signed undertaking",
+  "Medical fitness / declaration form",
+];
+
+function hostelHTML() {
+  return `
+    <h2 class="sec">Hostel application</h2>
+    <p class="lead">Fill in your details and submit — you are taken to the official RVRJC hostels page and, for fee payment, the official college payment portal. Hostel fee 2026-27 is Rs. 48,000 per year plus Rs. 4,000 refundable caution deposit. First-year girls' hostel office: 0863-2244171.</p>
+    ${officialButtonHTML("hostel")}
+    <form class="form" id="hostelForm">
+      <div class="fgrid">
+        <div class="f"><label for="h_name">Full name</label><input id="h_name" name="name" required placeholder="Your full name" /></div>
+        <div class="f"><label for="h_phone">Mobile number</label><input id="h_phone" name="phone" required inputmode="tel" pattern="[0-9+ ]{10,15}" placeholder="10-digit mobile" /></div>
+        <div class="f"><label for="h_regno">Register number (if allotted)</label><input id="h_regno" name="regno" placeholder="e.g. Y26CS001" /></div>
+        <div class="f"><label for="h_cat">Admission category</label>
+          <select id="h_cat" name="category" required>
+            <option value="Category-A (Convener Quota, AP EAPCET)">Category-A — Convener Quota (AP EAPCET)</option>
+            <option value="Category-B (Management Quota)">Category-B — Management Quota</option>
+            <option value="Lateral Entry (AP ECET)">Lateral Entry — AP ECET</option>
+          </select>
+        </div>
+        <div class="f"><label for="h_branch">Branch</label>
+          <select id="h_branch" name="branch" required>
+            ${BRANCHES.map(b => `<option>${b}</option>`).join("")}
+          </select>
+        </div>
+        <div class="f"><label for="h_sem">Year / semester</label>
+          <select id="h_sem" name="semester" required>
+            ${["I Year – Semester 1","I Year – Semester 2","II Year – Semester 3","II Year – Semester 4","III Year – Semester 5","III Year – Semester 6","IV Year – Semester 7","IV Year – Semester 8","PG – Semester 1","PG – Semester 2"].map(s => `<option>${s}</option>`).join("")}
+          </select>
+        </div>
+        <div class="f"><label for="h_type">Hostel</label>
+          <select id="h_type" name="hostel" required>
+            ${HOSTEL_TYPES.map(h => `<option>${h}</option>`).join("")}
+          </select>
+        </div>
+        <div class="f"><label for="h_parent">Parent / guardian mobile</label><input id="h_parent" name="parent" inputmode="tel" placeholder="10-digit mobile" /></div>
+        <div class="f full"><label for="h_addr">Home address</label><textarea id="h_addr" name="address" rows="2" placeholder="Village / town, district, PIN"></textarea></div>
+        <div class="f full"><label>Documents ready to submit at the hostel office</label>
+          <div class="checks">
+            ${HOSTEL_DOCS.map((d, i) => `<label class="chk"><input type="checkbox" name="docs" value="${d}" id="h_doc${i}" /><span>${d}</span></label>`).join("")}
+          </div>
+        </div>
+        <div class="f full"><label for="h_note">Special requirements (medical, food, accessibility)</label><textarea id="h_note" name="note" rows="2" placeholder="Optional"></textarea></div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn btn-orange">${I.edit} Submit Hostel Application</button>
+        <button type="button" class="btn btn-outline" data-ask="How do I apply for a hostel seat and pay the hostel fee?">${I.qmarkTab} Ask the assistant about hostels</button>
+      </div>
+      <div id="hostelOk"></div>
+      <p class="note">This form keeps your details on this device and then opens the official RVRJC hostels page and payment portal in a new tab. Hostel seats are allotted only by the Chief Warden / hostel office; this site does not store your data.</p>
+    </form>`;
+}
+
+function wireHostelForm() {
+  const form = document.getElementById("hostelForm");
+  if (!form) return;
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const hostel = String(d.get("hostel") || "");
+    const target = hostel.startsWith("Men's")
+      ? "https://rvrjcce.ac.in/xmenshostel.php"
+      : hostel.startsWith("Women's")
+      ? "https://rvrjcce.ac.in/xwomenshostel.php"
+      : "https://rvrjcce.ac.in/xgirlshostel.php";
+    const docs = d.getAll("docs");
+    const summary = [
+      `Name: ${d.get("name")}`,
+      `Mobile: ${d.get("phone")}`,
+      `Category: ${d.get("category")}`,
+      `Branch: ${d.get("branch")}`,
+      `Semester: ${d.get("semester")}`,
+      `Hostel: ${hostel}`,
+      `Documents ready: ${docs.length ? docs.length + " of " + HOSTEL_DOCS.length : "none ticked yet"}`,
+    ].join(" · ");
+    try { localStorage.setItem("rvrjc_hostel_application", JSON.stringify({ ...Object.fromEntries(d.entries()), docs })); } catch (_) {}
+    document.getElementById("hostelOk").innerHTML =
+      `<div class="ok"><strong>Hostel application details captured.</strong><br />${summary}<br /><br />
+       The official hostel page for your choice has been opened in a new tab — submit the form and documents at the hostel office and pay the hostel fee (Rs. 48,000 + Rs. 4,000 caution deposit).
+       <br /><a class="srcbtn" href="${target}" target="_blank" rel="noopener">Official hostel page ${I.link}</a>
+       <a class="srcbtn" href="${FEE_PAYMENT_PORTAL}" target="_blank" rel="noopener">Official fee payments ${I.link}</a>
+       <a class="srcbtn" href="#/hostelportal">Hostel portal — status, fee &amp; documents ${I.link}</a></div>`;
+    window.open(target, "_blank", "noopener");
+  });
+}
+
 function render(route) {
   if (route === "home") {
     view.innerHTML = quickActionsHTML();
@@ -877,7 +1107,23 @@ function render(route) {
     view.innerHTML = applyHTML();
     viewBelow.innerHTML = "";
     wireApplyForm();
+  } else if (route === "syllabus") {
+    view.innerHTML = syllabusHTML();
+    viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", [
+      "Where do I download the scheme and syllabus for my branch?",
+      "What is the syllabus schedule and when are the mid exams?",
+      "What are the R24 regulations and attendance rules?",
+    ]);
+  } else if (route === "hostel") {
+    view.innerHTML = hostelHTML();
+    viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", [
+      "How do I apply for a hostel seat and pay the hostel fee?",
+      "What are the hostel rules and facilities?",
+      "How much is the hostel and bus fee?",
+    ]);
+    wireHostelForm();
   } else if (route === "campusmap") {
+
     view.innerHTML = `
       ${infoBlocksHTML(PAGES.campusmap, "campusmap")}
       <section class="block">

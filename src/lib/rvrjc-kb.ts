@@ -431,7 +431,103 @@ export const KB: KbChunk[] = [
     sourceLabel: "Official Transport Committee page",
     sourceUrl: "https://rvrjcce.ac.in/xtransport.php",
   },
+  {
+    id: "syllabus",
+    topic: "Scheme & Syllabus",
+    keywords: [
+      "syllabus", "scheme", "scheme and syllabus", "curriculum", "course structure",
+      "subjects", "subject list", "syllabus pdf", "r26", "r24", "r20", "r18", "credits",
+    ],
+    answer:
+      "Scheme & syllabus is published per department and per regulation (R26 / R24 / R20 / R18) on each department's own official page:\n\n" +
+      "• CSE — https://rvrjcce.ac.in/CSE/schemeandsyllabus.php\n" +
+      "• ECE — https://rvrjcce.ac.in/ECE/schemeandsyllabus.php\n" +
+      "• EEE — https://rvrjcce.ac.in/EEE/schemeandsyllabus.php\n" +
+      "• IT — https://rvrjcce.ac.in/IT/schemeandsyllabus.php\n" +
+      "• Mechanical — https://rvrjcce.ac.in/ME/schemeandsyllabus.php\n" +
+      "• Civil — https://rvrjcce.ac.in/CE/schemeandsyllabus.php\n" +
+      "• Chemical — https://rvrjcce.ac.in/Chemical/schemeandsyllabus.php\n" +
+      "• MCA — https://rvrjcce.ac.in/CA/schemeandsyllabus.php · MBA/BBA — https://rvrjcce.ac.in/MBA/schemeandsyllabus.php\n\n" +
+      "Each page lists the semester-wise course structure with a PDF for every subject. The regulation documents themselves are at " +
+      "https://rvrjcce.ac.in/files/R26-Regulations.pdf and https://rvrjcce.ac.in/files/R24-UG-Regulations.pdf.\n" +
+      "In this app, open the Syllabus tab to pick your department and regulation and download the official PDFs directly.",
+    sourceLabel: "Official Academic Regulations & Syllabus",
+    sourceUrl: "https://rvrjcce.ac.in/xacademicregulations.php",
+  },
+  {
+    id: "syllabus-schedule",
+    topic: "Syllabus Schedule & Mid Exam Dates",
+    keywords: [
+      "syllabus schedule", "unit wise", "mid syllabus", "first mid", "second mid",
+      "mid exam dates", "mid dates", "class work", "last working day", "sem end",
+      "semester end", "how much syllabus", "portion",
+    ],
+    answer:
+      "Syllabus coverage follows the mid-exam schedule in the official academic calendar (odd semester 2026-27):\n\n" +
+      "• B.Tech III & IV Year (and BBA II Year): class work 17-JUN-2026 · first mid 17-AUG-2026 · last working day 24-OCT-2026 · second mid 26-OCT-2026 · sem-end exams from 11-NOV-2026\n" +
+      "• B.Tech II Year: class work 03-AUG-2026 · first mid 21-SEP-2026 · last working day 21-NOV-2026 · second mid 23-NOV-2026 · sem-end exams from 07-DEC-2026\n" +
+      "• B.Tech I Year: class work 03-AUG-2026 · first mid 02-NOV-2026 · second mid 02-JAN-2027 · sem-end exams from 20-JAN-2027\n\n" +
+      "The first mid covers roughly the first half of the units and the second mid the remaining units; the exact unit split is announced by each subject teacher from the department's scheme & syllabus (https://rvrjcce.ac.in/xacademicregulations.php). Year-wise calendar PDFs: https://rvrjcce.ac.in/xacademiccalender.php",
+    sourceLabel: "Official Academic Calendar",
+    sourceUrl: "https://rvrjcce.ac.in/xacademiccalender.php",
+  },
+  {
+    id: "hostel-rules",
+    topic: "Hostel Rules & Facilities",
+    keywords: [
+      "hostel rules", "hostel", "hostels", "mens hostel", "men's hostel", "womens hostel",
+      "women's hostel", "girls hostel", "warden", "mess", "biometric", "hostel timings",
+      "hostel facilities", "hostel capacity",
+    ],
+    answer:
+      "RVRJC runs three hostels (official hostels page: https://rvrjcce.ac.in/xhostels.php):\n\n" +
+      "• Men's Hostel — inside the campus at Chandramoulipuram, 2 blocks, about 1250 students (https://rvrjcce.ac.in/xmenshostel.php)\n" +
+      "• Women's Hostel — S.V.N. Colony, Guntur, 2 blocks, about 400 students, for 2nd–4th year and PG women students (https://rvrjcce.ac.in/xwomenshostel.php)\n" +
+      "• First-Year Girls' Hostel — capacity 294, biometric entry/exit for security, hostel office 0863-2244171 (https://rvrjcce.ac.in/xgirlshostel.php)\n\n" +
+      "Rules students must follow: stay in the allotted room, sign in/out at the entry register (biometric in the girls' hostel), be back before the notified closing time, take written warden permission for leave/outing, attend the mess timings, and keep ragging, alcohol, smoking and outside visitors out — ragging is punishable and reportable to the Anti-Ragging Committee (https://rvrjcce.ac.in/xstudgrievances.php).\n" +
+      "Hostel fee 2026-27: Rs. 48,000 per year plus Rs. 4,000 refundable caution deposit.",
+    sourceLabel: "Official Hostels page",
+    sourceUrl: "https://rvrjcce.ac.in/xhostels.php",
+  },
+  {
+    id: "hostel-application",
+    topic: "Hostel Application & Fee",
+    keywords: [
+      "hostel application", "apply hostel", "hostel admission", "hostel form",
+      "hostel fee", "hostel seat", "hostel dd", "caution deposit", "hostel payment",
+      "hostel portal", "hostel status",
+    ],
+    answer:
+      "How to get a hostel seat:\n\n" +
+      "1. Take hostel admission at the time of / after college admission — apply to the Chief Warden through the hostel office (Men's hostel on campus; Women's hostel at S.V.N. Colony; first-year girls' hostel office 0863-2244171).\n" +
+      "2. Pay the hostel fee: Rs. 48,000 per year plus Rs. 4,000 refundable caution deposit (2026-27 official fee structure — https://rvrjcce.ac.in/xfeestructure.php). Men's hostel receipts are paid by DD in favour of \"NES Hostels – Men's Hostel Receipts A/c\", Union Bank of India, Guntur, or as notified on the hostel page.\n" +
+      "3. Submit the documents: admission/allotment letter, fee receipt or DD, Aadhaar, passport photos, parent contact and address proof, and a medical/undertaking form where asked.\n" +
+      "4. Track any online payment at https://rvrjcce.ac.in/xonlinefeestatus.php and other fee payments at https://rvrjcce.ac.in/xfeepayments.php\n\n" +
+      "In this app you can fill the Hostel Application form (Hostel tab) and it takes you to the official hostels page and payment portal.",
+    sourceLabel: "Official Hostels page",
+    sourceUrl: "https://rvrjcce.ac.in/xhostels.php",
+  },
+  {
+    id: "library-hours",
+    topic: "Central Library",
+    keywords: [
+      "library", "library hours", "library timings", "central library", "books",
+      "borrow", "issue books", "e journals", "ejournals", "ebooks", "reading room",
+      "delnet", "nptel", "library holiday",
+    ],
+    answer:
+      "The Central Library is a five-floor library (official page: https://rvrjcce.ac.in/xlibrary.php).\n\n" +
+      "Timings on working days:\n" +
+      "• Library open 8:00 AM – 9:30 PM\n" +
+      "• Book circulation (issue / return) 8:00 AM – 8:00 PM\n" +
+      "• Sundays and holidays 10:00 AM – 4:30 PM\n\n" +
+      "Collection: about 32,281 titles / 1,29,920 volumes, 22,984 e-journals and 12,399 e-books, plus back volumes, project reports and digital resources.\n" +
+      "Borrowing: UG students 3 books for 14 days; PG students 4 books for 14 days. Renewal and reference/reading-room use as per library rules; carry your ID card.",
+    sourceLabel: "Official Central Library page",
+    sourceUrl: "https://rvrjcce.ac.in/xlibrary.php",
+  },
 ];
+
 
 
 /** The seeded FAQ list — each question maps to a verified KB chunk. */
@@ -462,5 +558,11 @@ export const FAQ: { question: string; chunkId: string }[] = [
   { question: "How do I reach the college campus and where exactly is it?", chunkId: "campus-map" },
   { question: "How do I get my hall ticket for semester exams?", chunkId: "hall-ticket-exam-section" },
   { question: "What are the college bus routes and bus fee?", chunkId: "transport-routes" },
+  { question: "Where do I download the scheme and syllabus for my branch?", chunkId: "syllabus" },
+  { question: "What is the syllabus schedule and when are the mid exams?", chunkId: "syllabus-schedule" },
+  { question: "What are the hostel rules and facilities?", chunkId: "hostel-rules" },
+  { question: "How do I apply for a hostel seat and pay the hostel fee?", chunkId: "hostel-application" },
+  { question: "What are the central library hours and how many books can I borrow?", chunkId: "library-hours" },
 ];
+
 
