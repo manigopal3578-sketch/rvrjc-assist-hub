@@ -81,8 +81,25 @@ const json = (body: AskResponse | { error: string }, status = 200) =>
     headers: { "Content-Type": "application/json" },
   });
 
-/** Answer a non-RVRJC question with the model's general knowledge (streamed, consumed server-side). */
-async function generalAnswer(question: string, apiKey: string): Promise<string> {
+/** Friendly small talk handled locally so the bot always chats, even without AI. */
+function smallTalk(question: string): string | null {
+  const q = question.toLowerCase().replace(/[^a-z\s']/g, " ").trim();
+  const has = (...w: string[]) => w.some((x) => q === x || q.startsWith(x + " ") || q.includes(" " + x));
+  if (has("hi", "hello", "hey", "namaste", "hii", "good morning", "good evening", "good afternoon"))
+    return "Namaste! 🙏 I'm the RVRJC Assistant. Ask me anything — admissions, fees, syllabus, hostel, library, exams and results — or just chat with me.";
+  if (has("thanks", "thank you", "thankyou", "ty"))
+    return "Happy to help! Ask me anything else about RVRJC or any general question.";
+  if (has("bye", "goodbye", "see you"))
+    return "Bye! Come back any time you need RVRJC info. All the best 👍";
+  if (q.includes("who are you") || q.includes("your name") || q.includes("what can you do"))
+    return "I'm the RVRJC Assistant. I answer questions about R.V.R. & J.C. College of Engineering from its official pages (admissions, fees, syllabus, exams, hostel, library, placements) and I can also chat and answer general questions.";
+  if (q.includes("how are you"))
+    return "I'm doing great, thanks for asking! What would you like to know about RVRJC?";
+  return null;
+}
+
+/** Answer any question conversationally; RVRJC facts come only from the supplied context. */
+async function generalAnswer(question: string, apiKey: string, context = ""): Promise<string> {
   const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
     method: "POST",
     headers: {
