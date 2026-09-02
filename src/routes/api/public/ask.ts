@@ -221,15 +221,16 @@ export const Route = createFileRoute("/api/public/ask")({
         }
 
         try {
-          const answer = await generalAnswer(question, apiKey);
+          const answer = await generalAnswer(question, apiKey, context);
           return json({
             answer:
               answer ||
               "I couldn't produce an answer for that. Please try rephrasing your question.",
-            sourceLabel: "Official RVRJC website",
-            sourceUrl: "https://rvrjcce.ac.in",
-            mode: "general",
+            sourceLabel: nearby[0]?.c.sourceLabel ?? "Official RVRJC website",
+            sourceUrl: nearby[0]?.c.sourceUrl ?? "https://rvrjcce.ac.in",
+            mode: rvrjcish ? "rvrjc" : "general",
           });
+
 
         } catch (err) {
           const status = (err as { status?: number }).status ?? 500;
