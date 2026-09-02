@@ -81,8 +81,25 @@ const json = (body: AskResponse | { error: string }, status = 200) =>
     headers: { "Content-Type": "application/json" },
   });
 
-/** Answer a non-RVRJC question with the model's general knowledge (streamed, consumed server-side). */
-async function generalAnswer(question: string, apiKey: string): Promise<string> {
+/** Friendly small talk handled locally so the bot always chats, even without AI. */
+function smallTalk(question: string): string | null {
+  const q = question.toLowerCase().replace(/[^a-z\s']/g, " ").trim();
+  const has = (...w: string[]) => w.some((x) => q === x || q.startsWith(x + " ") || q.includes(" " + x));
+  if (has("hi", "hello", "hey", "namaste", "hii", "good morning", "good evening", "good afternoon"))
+    return "Namaste! 🙏 I'm the RVRJC Assistant. Ask me anything — admissions, fees, syllabus, hostel, library, exams and results — or just chat with me.";
+  if (has("thanks", "thank you", "thankyou", "ty"))
+    return "Happy to help! Ask me anything else about RVRJC or any general question.";
+  if (has("bye", "goodbye", "see you"))
+    return "Bye! Come back any time you need RVRJC info. All the best 👍";
+  if (q.includes("who are you") || q.includes("your name") || q.includes("what can you do"))
+    return "I'm the RVRJC Assistant. I answer questions about R.V.R. & J.C. College of Engineering from its official pages (admissions, fees, syllabus, exams, hostel, library, placements) and I can also chat and answer general questions.";
+  if (q.includes("how are you"))
+    return "I'm doing great, thanks for asking! What would you like to know about RVRJC?";
+  return null;
+}
+
+/** Answer any question conversationally; RVRJC facts come only from the supplied context. */
+async function generalAnswer(question: string, apiKey: string, context = ""): Promise<string> {
   const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
     method: "POST",
     headers: {
@@ -95,10 +112,23 @@ async function generalAnswer(question: string, apiKey: string): Promise<string> 
       stream: true,
       store: false,
       instructions:
-        "You are the RVRJC Assistant. This question is NOT about R.V.R. & J.C. College of Engineering, " +
-        "so answer it from your general knowledge, briefly and accurately (at most 120 words). " +
-        "Never invent facts about RVRJC, its fees, admissions, exams or staff.",
-      input: [{ role: "user", content: [{ type: "input_text", text: question }] }],
+        "You are the RVRJC Assistant for R.V.R. & J.C. College of Engineering (Autonomous), Guntur. " +
+        "Be warm, conversational and helpful, and answer ANY kind of question — college questions, " +
+        "general knowledge, study help, casual chat — briefly and accurately (at most 150 words). " +
+        "For facts about RVRJC you may ONLY use the CONTEXT block below; if the context does not " +
+        "contain the answer, say plainly that you don't have that verified RVRJC detail and suggest " +
+        "checking rvrjcce.ac.in or the college office. Never invent RVRJC fees, dates, staff or rules.",
+      input: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: context ? `CONTEXT (verified RVRJC pages):\n${context}\n\nQUESTION: ${question}` : question,
+            },
+          ],
+        },
+      ],
     }),
   });
 
@@ -165,18 +195,19 @@ export const Route = createFileRoute("/api/public/ask")({
           });
         }
 
-        // 4 — RVRJC-specific but nothing verified matched.
-        if (looksRvrjcSpecific(question)) {
-          return json({
-            answer:
-              "I couldn't find verified RVRJC information on this — you may want to check with the college office directly.",
-            sourceLabel: "Official RVRJC website",
-            sourceUrl: "https://rvrjcce.ac.in/index.php",
-            mode: "rvrjc",
-          });
+        // Friendly small talk — always works, no AI needed.
+        const chit = smallTalk(question);
+        if (chit) {
+          return json({ answer: chit, mode: "general" });
         }
 
-        // 3 — general knowledge fallback.
+        // 3 + 4 — conversational answer. RVRJC facts are constrained to the top KB chunks.
+        const nearby = ranked.filter((r) => r.s > 0.08).slice(0, 3);
+        const context = nearby
+          .map((r) => `# ${r.c.topic} (${r.c.sourceUrl})\n${r.c.answer}`)
+          .join("\n\n");
+        const rvrjcish = looksRvrjcSpecific(question) || nearby.length > 0;
+
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) {
           return json(
@@ -190,15 +221,16 @@ export const Route = createFileRoute("/api/public/ask")({
         }
 
         try {
-          const answer = await generalAnswer(question, apiKey);
+          const answer = await generalAnswer(question, apiKey, context);
           return json({
             answer:
               answer ||
               "I couldn't produce an answer for that. Please try rephrasing your question.",
-            sourceLabel: "Official RVRJC website",
-            sourceUrl: "https://rvrjcce.ac.in",
-            mode: "general",
+            sourceLabel: nearby[0]?.c.sourceLabel ?? "Official RVRJC website",
+            sourceUrl: nearby[0]?.c.sourceUrl ?? "https://rvrjcce.ac.in",
+            mode: rvrjcish ? "rvrjc" : "general",
           });
+
 
         } catch (err) {
           const status = (err as { status?: number }).status ?? 500;
