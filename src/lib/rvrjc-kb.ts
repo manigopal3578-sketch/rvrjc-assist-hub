@@ -558,5 +558,11 @@ export const FAQ: { question: string; chunkId: string }[] = [
   { question: "How do I reach the college campus and where exactly is it?", chunkId: "campus-map" },
   { question: "How do I get my hall ticket for semester exams?", chunkId: "hall-ticket-exam-section" },
   { question: "What are the college bus routes and bus fee?", chunkId: "transport-routes" },
+  { question: "Where do I download the scheme and syllabus for my branch?", chunkId: "syllabus" },
+  { question: "What is the syllabus schedule and when are the mid exams?", chunkId: "syllabus-schedule" },
+  { question: "What are the hostel rules and facilities?", chunkId: "hostel-rules" },
+  { question: "How do I apply for a hostel seat and pay the hostel fee?", chunkId: "hostel-application" },
+  { question: "What are the central library hours and how many books can I borrow?", chunkId: "library-hours" },
 ];
+
 
