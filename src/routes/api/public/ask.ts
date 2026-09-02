@@ -195,18 +195,19 @@ export const Route = createFileRoute("/api/public/ask")({
           });
         }
 
-        // 4 — RVRJC-specific but nothing verified matched.
-        if (looksRvrjcSpecific(question)) {
-          return json({
-            answer:
-              "I couldn't find verified RVRJC information on this — you may want to check with the college office directly.",
-            sourceLabel: "Official RVRJC website",
-            sourceUrl: "https://rvrjcce.ac.in/index.php",
-            mode: "rvrjc",
-          });
+        // Friendly small talk — always works, no AI needed.
+        const chit = smallTalk(question);
+        if (chit) {
+          return json({ answer: chit, mode: "general" });
         }
 
-        // 3 — general knowledge fallback.
+        // 3 + 4 — conversational answer. RVRJC facts are constrained to the top KB chunks.
+        const nearby = ranked.filter((r) => r.s > 0.08).slice(0, 3);
+        const context = nearby
+          .map((r) => `# ${r.c.topic} (${r.c.sourceUrl})\n${r.c.answer}`)
+          .join("\n\n");
+        const rvrjcish = looksRvrjcSpecific(question) || nearby.length > 0;
+
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) {
           return json(
