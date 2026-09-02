@@ -112,10 +112,23 @@ async function generalAnswer(question: string, apiKey: string, context = ""): Pr
       stream: true,
       store: false,
       instructions:
-        "You are the RVRJC Assistant. This question is NOT about R.V.R. & J.C. College of Engineering, " +
-        "so answer it from your general knowledge, briefly and accurately (at most 120 words). " +
-        "Never invent facts about RVRJC, its fees, admissions, exams or staff.",
-      input: [{ role: "user", content: [{ type: "input_text", text: question }] }],
+        "You are the RVRJC Assistant for R.V.R. & J.C. College of Engineering (Autonomous), Guntur. " +
+        "Be warm, conversational and helpful, and answer ANY kind of question — college questions, " +
+        "general knowledge, study help, casual chat — briefly and accurately (at most 150 words). " +
+        "For facts about RVRJC you may ONLY use the CONTEXT block below; if the context does not " +
+        "contain the answer, say plainly that you don't have that verified RVRJC detail and suggest " +
+        "checking rvrjcce.ac.in or the college office. Never invent RVRJC fees, dates, staff or rules.",
+      input: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: context ? `CONTEXT (verified RVRJC pages):\n${context}\n\nQUESTION: ${question}` : question,
+            },
+          ],
+        },
+      ],
     }),
   });
 
