@@ -526,6 +526,89 @@ export const KB: KbChunk[] = [
     sourceLabel: "Official Central Library page",
     sourceUrl: "https://rvrjcce.ac.in/xlibrary.php",
   },
+  {
+    id: "syllabus-regulation-which",
+    topic: "Which Regulation Applies To Me",
+    keywords: [
+      "which regulation", "r26", "r24", "r20", "r18", "my regulation", "regulation applies",
+      "admission year regulation", "old syllabus", "new syllabus", "syllabus version",
+    ],
+    answer:
+      "RVRJC is autonomous, so your syllabus is decided by the regulation of your admission batch, not by the current year:\n\n" +
+      "• R26 — students admitted from the 2026-27 batch\n" +
+      "• R24 — batch admitted from 2024-25\n" +
+      "• R20 — batch admitted from 2020-21\n" +
+      "• R18 — older batches still clearing backlogs\n\n" +
+      "Lateral-entry (ECET) students follow the regulation of the batch they join in II year. Pick your regulation on your department's scheme & syllabus page (for example https://rvrjcce.ac.in/CSE/schemeandsyllabus.php) to see the semester-wise course structure and the PDF for each subject. Regulation documents: https://rvrjcce.ac.in/xacademicregulations.php",
+    sourceLabel: "Official Academic Regulations page",
+    sourceUrl: "https://rvrjcce.ac.in/xacademicregulations.php",
+  },
+  {
+    id: "syllabus-units-marks",
+    topic: "Syllabus Units & Internal Marks",
+    keywords: [
+      "how many units", "units in a subject", "internal marks", "internal assessment",
+      "mid marks", "sessional marks", "pass marks", "credits", "attendance percentage",
+      "best of two mids", "exam pattern",
+    ],
+    answer:
+      "Each theory subject in the autonomous regulations is organised into five units in the scheme & syllabus, and each semester has two mid examinations covering roughly half the units each.\n\n" +
+      "• Internal (continuous) assessment plus the end-semester examination together make up the subject marks; the exact split, the weightage given to the two mids, assignments and the minimum marks needed to pass are printed in your regulation booklet (R26 / R24 / R20 / R18).\n" +
+      "• Attendance: a minimum of 75% attendance is required to be eligible for the end-semester examination, with condonation only as allowed in the regulations.\n\n" +
+      "Read the exact rule for your batch in the regulation PDF at https://rvrjcce.ac.in/xacademicregulations.php and the unit-wise content on your department's scheme & syllabus page.",
+    sourceLabel: "Official Academic Regulations page",
+    sourceUrl: "https://rvrjcce.ac.in/xacademicregulations.php",
+  },
+  {
+    id: "hostel-timings-leave",
+    topic: "Hostel Timings & Leave",
+    keywords: [
+      "hostel timings", "hostel time", "in time", "curfew", "hostel leave", "outing",
+      "going home", "warden permission", "hostel gate", "late night", "hostel entry",
+    ],
+    answer:
+      "Hostel entry/exit and leave are controlled by the Chief Warden and the resident wardens:\n\n" +
+      "• Sign in and out at the hostel entry register every time you leave the hostel; the First-Year Girls' Hostel uses biometric entry/exit for security (https://rvrjcce.ac.in/xgirlshostel.php).\n" +
+      "• Be back inside the hostel before the closing time notified on the hostel notice board, and follow the study-hour and mess timings displayed there.\n" +
+      "• Home visits and outings need written permission from the warden, with the parent/guardian informed; the warden records the leave in the movement register.\n" +
+      "• Ragging, alcohol, smoking and outside visitors in the rooms are prohibited — ragging is reportable to the Anti-Ragging Committee (https://rvrjcce.ac.in/xstudgrievances.php).\n\n" +
+      "The exact in-time for the current year is notified by the hostel office — Men's hostel (on campus), Women's hostel S.V.N. Colony, first-year girls' hostel office 0863-2244171.",
+    sourceLabel: "Official Hostels page",
+    sourceUrl: "https://rvrjcce.ac.in/xhostels.php",
+  },
+  {
+    id: "hostel-mess",
+    topic: "Hostel Mess & Food",
+    keywords: [
+      "mess", "mess fee", "food", "canteen", "dining", "mess timings", "menu",
+      "hostel food", "vegetarian", "mess bill",
+    ],
+    answer:
+      "The hostels run their own mess and dining halls for resident students, with the daily menu and mess timings (breakfast, lunch, snacks, dinner) displayed in the hostel.\n\n" +
+      "• The mess/food charges are part of the hostel fee for 2026-27: Rs. 48,000 per year plus Rs. 4,000 refundable caution deposit (official fee structure — https://rvrjcce.ac.in/xfeestructure.php).\n" +
+      "• Men's hostel: inside the campus at Chandramoulipuram; Women's hostel: S.V.N. Colony, Guntur; First-Year Girls' Hostel: capacity 294.\n" +
+      "• Special food requirements (medical/diet) should be given in writing to the warden at the time of hostel admission.\n\n" +
+      "For the current menu and mess rules ask the hostel office; hostel pages: https://rvrjcce.ac.in/xhostels.php",
+    sourceLabel: "Official Hostels page",
+    sourceUrl: "https://rvrjcce.ac.in/xhostels.php",
+  },
+  {
+    id: "library-eresources",
+    topic: "Library E-Resources & Renewal",
+    keywords: [
+      "e journals", "ejournals", "ebooks", "e books", "delnet", "nptel", "digital library",
+      "renew book", "renewal", "late fine", "lost book", "id card library", "reading room",
+      "library rules", "how many books",
+    ],
+    answer:
+      "Central Library (five floors — https://rvrjcce.ac.in/xlibrary.php):\n\n" +
+      "• Borrowing: UG students 3 books for 14 days, PG students 4 books for 14 days. Books can be renewed at the circulation counter if no one else has reserved them; carry your college ID card for every transaction.\n" +
+      "• Overdue books attract the fine notified by the library, and a lost book has to be replaced or paid for as per library rules.\n" +
+      "• Digital resources: about 22,984 e-journals and 12,399 e-books, plus DELNET resources, NPTEL video lectures, back volumes, project reports and a digital/reading section — accessible from the library on campus.\n" +
+      "• Timings: 8:00 AM – 9:30 PM on working days (circulation 8:00 AM – 8:00 PM); 10:00 AM – 4:30 PM on Sundays and holidays.",
+    sourceLabel: "Official Central Library page",
+    sourceUrl: "https://rvrjcce.ac.in/xlibrary.php",
+  },
 ];
 
 
