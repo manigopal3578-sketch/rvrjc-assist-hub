@@ -165,7 +165,12 @@
   .f input,.f select,.f textarea{border:1px solid var(--border);border-radius:9px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:#fbfcfe;outline:none}
   .f input:focus,.f select:focus,.f textarea:focus{border-color:#9db8e0;background:#fff}
   .f.full{grid-column:1 / -1}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:560px){.checks{grid-template-columns:1fr}}
+  .chk{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--ink);background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer}
+  .chk input{margin-top:2px;accent-color:var(--navy)}
   .note{font-size:11.5px;color:var(--gray);line-height:1.55;margin-top:12px}
+
   .ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:10px;padding:12px;font-size:12.5px;line-height:1.55;margin-top:12px}
 
   footer.site{padding:22px 16px 40px;text-align:center;color:var(--gray);font-size:11.5px;line-height:1.6}
