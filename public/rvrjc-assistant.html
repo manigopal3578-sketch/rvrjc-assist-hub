@@ -584,23 +584,108 @@ const PAGES = {
       },
     ],
   },
+  hostelportal: {
+    h: "Hostel portal",
+    p: "Hostel admission, fee payment, payment status and the documents you must submit. RVRJC hostels are run by NES — the college publishes every hostel detail on its official hostel pages, and payments go through the official college payment portals.",
+    official: "https://rvrjcce.ac.in/xhostels.php",
+    officialLabel: "Go to Official Hostels Page",
+    blocks: [
+      {
+        t: "1 · Hostel application & allotment status",
+        rows: [
+          ["Men's Hostel (on campus)", "Chandramoulipuram campus · 2 blocks · about 1250 students — rvrjcce.ac.in/xmenshostel.php"],
+          ["Women's Hostel", "S.V.N. Colony, Guntur · 2 blocks · about 400 students (2nd–4th year and PG) — rvrjcce.ac.in/xwomenshostel.php"],
+          ["First-Year Girls' Hostel", "Capacity 294 · biometric entry/exit · hostel office 0863-2244171 — rvrjcce.ac.in/xgirlshostel.php"],
+          ["Application & allotment", "Apply to the Chief Warden / hostel office at the time of admission; room allotment and vacancy status are confirmed by the hostel office"],
+        ],
+        src: "https://rvrjcce.ac.in/xhostels.php",
+        srcLabel: "Official Hostels page",
+      },
+      {
+        t: "2 · Hostel fee payment",
+        rows: [
+          ["Hostel fee 2026-27", "Rs. 48,000 per year + Rs. 4,000 refundable caution deposit"],
+          ["Men's hostel receipts (DD)", "DD in favour of \"NES Hostels – Men's Hostel Receipts A/c\", Union Bank of India, Guntur"],
+          ["Online payments (tuition / exam / bus)", "rvrjcce.ac.in/xfeepayments.php"],
+          ["Payment status", "rvrjcce.ac.in/xonlinefeestatus.php"],
+          ["Official terms", "Transaction charges are borne by the cardholder and are not refunded or reversed under any circumstances"],
+        ],
+        src: "https://rvrjcce.ac.in/xfeestructure.php",
+        srcLabel: "Official Fee Structure",
+      },
+      {
+        t: "3 · Documents to submit at the hostel office",
+        rows: [
+          ["Admission proof", "College admission / seat allotment letter"],
+          ["Fee proof", "Hostel fee receipt or DD counterfoil"],
+          ["Identity", "Aadhaar card · passport-size photographs · college ID"],
+          ["Parent / guardian", "Parent contact number and address proof, signed undertaking"],
+          ["Health", "Medical fitness / declaration form where the warden asks for it"],
+        ],
+        src: "https://rvrjcce.ac.in/xhostels.php",
+        srcLabel: "Official Hostels page",
+      },
+      {
+        t: "4 · Hostel rules you agree to",
+        rows: [
+          ["Entry / exit", "Sign the register at every exit; biometric entry/exit in the first-year girls' hostel"],
+          ["Timings & leave", "Return before the notified closing time; leave and outings need written warden permission"],
+          ["Prohibited", "Ragging, alcohol, smoking, outside visitors in rooms — ragging is punishable and reportable to the Anti-Ragging Committee"],
+          ["Grievances", "rvrjcce.ac.in/xstudgrievances.php"],
+        ],
+        src: "https://rvrjcce.ac.in/xstudgrievances.php",
+        srcLabel: "Official Grievance & Anti-Ragging page",
+      },
+    ],
+  },
 };
 
 /* Where each tab's "Go to Official Page" button points. */
 const ADMISSION_PORTAL = "https://cets.apsche.ap.gov.in/";
 const TUITION_FEE_PORTAL = "https://rvrjcce.ac.in/tuitionfee/tuitionfee.php";
+const HOSTEL_PORTAL = "https://rvrjcce.ac.in/xhostels.php";
+const FEE_PAYMENT_PORTAL = "https://rvrjcce.ac.in/xfeepayments.php";
 const OFFICIAL_BY_ROUTE = {
   home: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
   academics: { url: PAGES.academics.official, label: PAGES.academics.officialLabel },
+  syllabus: { url: "https://rvrjcce.ac.in/xacademicregulations.php", label: "Go to Official Regulations & Syllabus Page" },
   examinations: { url: PAGES.examinations.official, label: PAGES.examinations.officialLabel },
   admissions: { url: PAGES.admissions.official, label: PAGES.admissions.officialLabel },
   apply: { url: ADMISSION_PORTAL, label: "Open Official AP EAPCET Admission Portal" },
+  hostel: { url: HOSTEL_PORTAL, label: "Open Official RVRJC Hostels Page" },
+  hostelportal: { url: PAGES.hostelportal.official, label: PAGES.hostelportal.officialLabel },
   portal: { url: PAGES.portal.official, label: PAGES.portal.officialLabel },
   campusmap: { url: PAGES.campusmap.official, label: PAGES.campusmap.officialLabel },
   departments: { url: PAGES.departments.official, label: PAGES.departments.officialLabel },
   faq: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
   more: { url: PAGES.more.official, label: PAGES.more.officialLabel },
 };
+
+/* Departments and their official scheme & syllabus pages + regulation PDFs. */
+const REG_PDFS = [
+  ["R26 Regulations (PDF)", "https://rvrjcce.ac.in/files/R26-Regulations.pdf"],
+  ["R24 UG Regulations (PDF)", "https://rvrjcce.ac.in/files/R24-UG-Regulations.pdf"],
+];
+const SYLLABUS_DEPTS = [
+  ["Computer Science & Engineering (CSE)", "CSE"],
+  ["CSE (AI & Machine Learning)", "xcsm"],
+  ["CSE (Data Science)", "CSD"],
+  ["CSE (IoT)", "CSO"],
+  ["Computer Science & Business Systems (CSBS)", "CSBS"],
+  ["Artificial Intelligence (AI)", "AI"],
+  ["AI & Data Science", "AIDS"],
+  ["Quantum Computing", "QTC"],
+  ["Information Technology (IT)", "IT"],
+  ["Electronics & Communication Engineering (ECE)", "ECE"],
+  ["Electrical & Electronics Engineering (EEE)", "EEE"],
+  ["Mechanical Engineering", "ME"],
+  ["Civil Engineering", "CE"],
+  ["Chemical Engineering", "Chemical"],
+  ["Computer Applications (MCA)", "CA"],
+  ["Management Sciences (BBA & MBA)", "MBA"],
+];
+const REGULATIONS = ["R26", "R24", "R20", "R18"];
+
 
 /* ============================================================
    GLOBAL CHAT — created ONCE, lives outside the routed views,
