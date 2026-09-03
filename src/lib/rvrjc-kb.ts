@@ -21,6 +21,8 @@ export type KbChunk = {
   sourceLabel: string;
   /** Direct deep link to the official page containing this information. */
   sourceUrl: string;
+  /** Direct link to the official PDF, when a verified download URL exists. */
+  pdfUrl?: string;
 };
 
 export const OFFICIAL_SITE = "https://rvrjcce.ac.in";
@@ -646,6 +648,11 @@ export const FAQ: { question: string; chunkId: string }[] = [
   { question: "What are the hostel rules and facilities?", chunkId: "hostel-rules" },
   { question: "How do I apply for a hostel seat and pay the hostel fee?", chunkId: "hostel-application" },
   { question: "What are the central library hours and how many books can I borrow?", chunkId: "library-hours" },
+  { question: "Which regulation applies to my batch — R26, R24, R20 or R18?", chunkId: "syllabus-regulation-which" },
+  { question: "How are mid marks, internal marks and attendance calculated?", chunkId: "syllabus-units-marks" },
+  { question: "What are the hostel timings and how do I get leave permission?", chunkId: "hostel-timings-leave" },
+  { question: "How much is the hostel mess fee and where is the dining hall?", chunkId: "hostel-mess" },
+  { question: "What e-resources, e-journals and NPTEL access does the library give?", chunkId: "library-eresources" },
 ];
 
 
