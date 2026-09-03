@@ -741,6 +741,8 @@ const chat = (() => {
   const log = el.querySelector("#log");
   const input = el.querySelector("#qInput");
   let busy = false;
+  /* Conversation memory so the assistant keeps context like "CSE 2.1" across turns. */
+  const turns = [];
 
   const scrollLog = () => { body.scrollTop = body.scrollHeight; };
 
@@ -798,19 +800,22 @@ const chat = (() => {
     busy = true;
     input.value = "";
     push("user", q);
+    turns.push({ role: "user", text: q });
     typing(true);
     try {
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: q, history: turns.slice(-8) }),
       });
       const data = await res.json().catch(() => null);
       typing(false);
       if (!res.ok) {
         push("bot", (data && data.error) || ("The assistant couldn't answer that (HTTP " + res.status + "). Please try again."));
       } else {
-        push("bot", data.answer || "No answer returned.", data.sourceUrl, data.sourceLabel);
+        const text = data.answer || "No answer returned.";
+        turns.push({ role: "bot", text: text });
+        push("bot", text, data.sourceUrl, data.sourceLabel);
       }
     } catch (err) {
       typing(false);
