@@ -94,9 +94,9 @@ function looksRvrjcSpecific(question: string, ctx: StudentContext): boolean {
 
 type AskResponse = {
   answer: string;
-  sourceLabel?: string;
-  sourceUrl?: string;
-  pdfUrl?: string;
+  sourceLabel?: string | undefined;
+  sourceUrl?: string | undefined;
+  pdfUrl?: string | undefined;
   mode: "rvrjc" | "general";
 };
 
