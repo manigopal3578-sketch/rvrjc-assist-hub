@@ -135,8 +135,9 @@
   }
   .chat-panel.open{transform:none;opacity:1;pointer-events:auto}
   @media (max-width:700px){
-    .chat-panel{right:8px;left:8px;bottom:8px;width:auto;height:78vh;max-height:78vh}
+    .chat-panel{right:8px;left:8px;bottom:8px;width:auto;height:75vh;max-height:75vh}
   }
+
 
   /* ===== QUESTION ROWS ===== */
   .qrow{width:100%;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:9px;text-align:left}
@@ -224,6 +225,7 @@
 <aside class="drawer" id="drawer" aria-label="Site navigation">
   <h4>MENU</h4>
   <div id="drawerLinks"></div>
+  <a href="https://rvrjcce.ac.in" target="_blank" rel="noopener" style="color:var(--navy)">Official RVRJC website</a>
 </aside>
 
 <!-- ===== GLOBAL ASSISTANT (available on every page) ===== -->
@@ -648,7 +650,10 @@ const PAGES = {
 /* Where each tab's "Go to Official Page" button points. */
 const ADMISSION_PORTAL = "https://cets.apsche.ap.gov.in/";
 const TUITION_FEE_PORTAL = "https://rvrjcce.ac.in/tuitionfee/tuitionfee.php";
-const HOSTEL_PORTAL = "https://rvrjcce.ac.in/xhostels.php";
+const MENS_HOSTEL_PORTAL = "https://rvrjcce.ac.in/xmenshostel.php";
+const WOMENS_HOSTEL_PORTAL = "https://rvrjcce.ac.in/xwomenshostel.php";
+const GIRLS_HOSTEL_PORTAL = "https://rvrjcce.ac.in/xgirlshostel.php";
+const HOSTEL_PORTAL = MENS_HOSTEL_PORTAL;
 const FEE_PAYMENT_PORTAL = "https://rvrjcce.ac.in/xfeepayments.php";
 const OFFICIAL_BY_ROUTE = {
   home: { url: OFFICIAL_SITE, label: "Go to Official RVRJC Website" },
@@ -657,8 +662,8 @@ const OFFICIAL_BY_ROUTE = {
   examinations: { url: PAGES.examinations.official, label: PAGES.examinations.officialLabel },
   admissions: { url: PAGES.admissions.official, label: PAGES.admissions.officialLabel },
   apply: { url: ADMISSION_PORTAL, label: "Open Official AP EAPCET Admission Portal" },
-  hostel: { url: HOSTEL_PORTAL, label: "Open Official RVRJC Hostels Page" },
-  hostelportal: { url: PAGES.hostelportal.official, label: PAGES.hostelportal.officialLabel },
+  hostel: { url: MENS_HOSTEL_PORTAL, label: "Open Official Men's Hostel Portal" },
+  hostelportal: { url: MENS_HOSTEL_PORTAL, label: "Open Official Men's Hostel Portal" },
   portal: { url: PAGES.portal.official, label: PAGES.portal.officialLabel },
   campusmap: { url: PAGES.campusmap.official, label: PAGES.campusmap.officialLabel },
   departments: { url: PAGES.departments.official, label: PAGES.departments.officialLabel },
@@ -863,9 +868,13 @@ function officialButtonHTML(route) {
       <button class="btn btn-outline" data-go="hostel">${I.building} Hostel application</button>`,
     academics: `<button class="btn btn-orange" data-go="syllabus">${I.cap} Scheme &amp; Syllabus (all branches)</button>`,
     syllabus: `<button class="btn btn-outline" data-go="academics">${I.calendar} Academic calendar &amp; mid dates</button>`,
-    hostel: `<button class="btn btn-outline" data-go="hostelportal">${I.rupee} Hostel portal — status, fee &amp; documents</button>`,
-    hostelportal: `<button class="btn btn-orange" data-go="hostel">${I.edit} Apply for hostel</button>
-      <a class="btn btn-outline" href="${FEE_PAYMENT_PORTAL}" target="_blank" rel="noopener">${I.external} Pay fees online</a>`,
+    hostel: `<a class="btn btn-outline" href="${WOMENS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} Women's Hostel Portal</a>
+      <a class="btn btn-outline" href="${GIRLS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} First-Year Girls' Hostel Portal</a>
+      <button class="btn btn-outline" data-go="hostelportal">${I.rupee} Hostel portal — status, fee &amp; documents</button>`,
+    hostelportal: `<a class="btn btn-outline" href="${WOMENS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} Women's Hostel Portal</a>
+      <a class="btn btn-outline" href="${GIRLS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} First-Year Girls' Hostel Portal</a>
+      <button class="btn btn-orange" data-go="hostel">${I.edit} Apply for hostel</button>
+      <a class="btn btn-outline" href="${FEE_PAYMENT_PORTAL}" target="_blank" rel="noopener">${I.external} Pay hostel fee online</a>`,
     portal: `<a class="btn btn-orange" href="${TUITION_FEE_PORTAL}" target="_blank" rel="noopener">${I.external} Pay Tuition Fee</a>`,
     more: `<button class="btn btn-outline" data-go="campusmap">${I.building} Campus Map</button>`,
     campusmap: `<button class="btn btn-orange" data-go="hostel">${I.building} Hostel application</button>`,
@@ -1215,14 +1224,49 @@ function currentRoute() {
 window.addEventListener("hashchange", () => { render(currentRoute()); closeDrawer(); });
 render(currentRoute());
 
-/* ===== drawer ===== */
+/* ===== drawer (mobile menu) ===== */
 const drawer = document.getElementById("drawer");
 const scrim = document.getElementById("scrim");
-const closeDrawer = () => { drawer.classList.remove("open"); scrim.classList.remove("open"); };
-document.getElementById("burger").addEventListener("click", () => {
+const closeDrawer = () => {
+  drawer.classList.remove("open"); scrim.classList.remove("open");
+  document.body.style.overflow = "";
+};
+const openDrawer = () => {
   drawer.classList.add("open"); scrim.classList.add("open");
-});
+  document.body.style.overflow = "hidden";
+  const first = drawer.querySelector("a");
+  if (first) first.focus();
+};
+document.getElementById("burger").addEventListener("click", openDrawer);
 scrim.addEventListener("click", closeDrawer);
+drawer.addEventListener("click", e => { if (e.target.closest("a")) closeDrawer(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+/* swipe from the right edge opens the menu; swipe left/right on the page changes tab */
+let tX = 0, tY = 0, tracking = false;
+const swipeArea = document.querySelector(".wrap");
+swipeArea.addEventListener("touchstart", e => {
+  if (e.touches.length !== 1) return;
+  const t = e.touches[0];
+  if (e.target.closest(".chat-panel, .tabs, .mapwrap, input, textarea, select")) { tracking = false; return; }
+  tX = t.clientX; tY = t.clientY; tracking = true;
+}, { passive: true });
+swipeArea.addEventListener("touchend", e => {
+  if (!tracking) return;
+  tracking = false;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - tX, dy = t.clientY - tY;
+  if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
+  if (drawer.classList.contains("open")) { if (dx > 0) closeDrawer(); return; }
+  const ids = ROUTES.map(r => r.id);
+  const i = ids.indexOf(currentRoute());
+  const next = dx < 0 ? i + 1 : i - 1;
+  if (next >= 0 && next < ids.length) {
+    location.hash = "#/" + ids[next];
+  } else if (dx < 0) {
+    openDrawer();
+  }
+}, { passive: true });
+
 </script>
 </body>
 </html>
