@@ -286,7 +286,8 @@ export const Route = createFileRoute("/api/public/ask")({
         const context = nearby
           .map((r) => `# ${r.c.topic} (source: ${r.c.sourceUrl}${r.c.pdfUrl ? `, pdf: ${r.c.pdfUrl}` : ""})\n${r.c.answer}`)
           .join("\n\n");
-        const rvrjcish = looksRvrjcSpecific(question, ctx) || nearby.length > 0;
+        const rvrjcish =
+          looksRvrjcSpecific(question, ctx) || (nearby[0]?.s ?? 0) >= 0.2;
         const top = nearby[0]?.c;
 
         const apiKey = process.env["LOVABLE_API_KEY"];
