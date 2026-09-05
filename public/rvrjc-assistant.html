@@ -867,9 +867,13 @@ function officialButtonHTML(route) {
       <button class="btn btn-outline" data-go="hostel">${I.building} Hostel application</button>`,
     academics: `<button class="btn btn-orange" data-go="syllabus">${I.cap} Scheme &amp; Syllabus (all branches)</button>`,
     syllabus: `<button class="btn btn-outline" data-go="academics">${I.calendar} Academic calendar &amp; mid dates</button>`,
-    hostel: `<button class="btn btn-outline" data-go="hostelportal">${I.rupee} Hostel portal — status, fee &amp; documents</button>`,
-    hostelportal: `<button class="btn btn-orange" data-go="hostel">${I.edit} Apply for hostel</button>
-      <a class="btn btn-outline" href="${FEE_PAYMENT_PORTAL}" target="_blank" rel="noopener">${I.external} Pay fees online</a>`,
+    hostel: `<a class="btn btn-outline" href="${WOMENS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} Women's Hostel Portal</a>
+      <a class="btn btn-outline" href="${GIRLS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} First-Year Girls' Hostel Portal</a>
+      <button class="btn btn-outline" data-go="hostelportal">${I.rupee} Hostel portal — status, fee &amp; documents</button>`,
+    hostelportal: `<a class="btn btn-outline" href="${WOMENS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} Women's Hostel Portal</a>
+      <a class="btn btn-outline" href="${GIRLS_HOSTEL_PORTAL}" target="_blank" rel="noopener">${I.external} First-Year Girls' Hostel Portal</a>
+      <button class="btn btn-orange" data-go="hostel">${I.edit} Apply for hostel</button>
+      <a class="btn btn-outline" href="${FEE_PAYMENT_PORTAL}" target="_blank" rel="noopener">${I.external} Pay hostel fee online</a>`,
     portal: `<a class="btn btn-orange" href="${TUITION_FEE_PORTAL}" target="_blank" rel="noopener">${I.external} Pay Tuition Fee</a>`,
     more: `<button class="btn btn-outline" data-go="campusmap">${I.building} Campus Map</button>`,
     campusmap: `<button class="btn btn-orange" data-go="hostel">${I.building} Hostel application</button>`,
