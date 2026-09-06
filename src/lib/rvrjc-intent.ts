@@ -29,7 +29,9 @@ const BRANCHES: { code: string; name: string; aliases: string[] }[] = [
   { code: "IT", name: "Information Technology", aliases: ["it", "information technology"] },
   { code: "ECE", name: "Electronics & Communication Engineering", aliases: ["ece", "electronics"] },
   { code: "EEE", name: "Electrical & Electronics Engineering", aliases: ["eee", "electrical"] },
-  { code: "ME", name: "Mechanical Engineering", aliases: ["me", "mech", "mechanical"] },
+  // "me" is far more often the English pronoun ("give me my timetable") than Mechanical.
+  { code: "ME", name: "Mechanical Engineering", aliases: ["mech", "mechanical"] },
+
   { code: "CE", name: "Civil Engineering", aliases: ["ce", "civil"] },
   { code: "CHEM", name: "Chemical Engineering", aliases: ["chemical", "chem engineering"] },
   { code: "MBA", name: "Master of Business Administration", aliases: ["mba"] },

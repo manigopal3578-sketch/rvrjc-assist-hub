@@ -89,8 +89,16 @@ const THRESHOLD = 0.34;
 
 function looksRvrjcSpecific(question: string, ctx: StudentContext): boolean {
   const q = question.toLowerCase();
-  return RVRJC_HINTS.some((h) => q.includes(h)) || Boolean(ctx.branch || ctx.exam || ctx.year);
+  // The question itself must look college-related; sticky context alone is not enough,
+  // otherwise a general question asked after "CSE 2.1" gets an RVRJC source attached.
+  const own = parseContext(question);
+  return (
+    RVRJC_HINTS.some((h) => q.includes(h)) ||
+    Boolean(own.branch || own.exam || own.year) ||
+    (Boolean(ctx.branch || ctx.exam || ctx.year) && /\b(my|our|college|class)\b/.test(q))
+  );
 }
+
 
 type AskResponse = {
   answer: string;

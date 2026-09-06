@@ -23,7 +23,7 @@
   img{display:block;max-width:100%}
   button{font:inherit;cursor:pointer}
   .wrap{max-width:960px;margin:0 auto;background:#fff;min-height:100vh}
-  .pad{padding:16px 16px 110px}
+  .pad{padding:18px 18px 120px}
 
   /* ===== HEADER ===== */
   header.site{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 14px;position:relative;z-index:30}
@@ -59,8 +59,9 @@
   .tab[data-active="true"]{color:var(--navy);border-bottom-color:var(--navy)}
 
   /* ===== SECTIONS ===== */
-  h2.sec{font-size:18px;font-weight:800;margin:18px 0 12px;text-align:left}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  h2.sec{font-size:18px;font-weight:800;margin:26px 0 12px;text-align:left}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
   @media (max-width:480px){.grid2{grid-template-columns:1fr}}
   .card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:6px;transition:.15s}
   .card:hover{border-color:#c9d6ea;box-shadow:0 4px 14px rgba(13,42,92,.07)}
@@ -69,7 +70,7 @@
   .card .d{color:var(--gray);font-size:12px;line-height:1.4}
 
   /* ===== ACTION BUTTONS ===== */
-  .actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 6px}
   .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:11px 15px;font-size:13px;font-weight:700;text-decoration:none}
   .btn-primary{background:var(--navy);color:#fff}
   .btn-primary:hover{background:var(--navy-dark)}
@@ -145,8 +146,15 @@
   .qrow .q{flex:1;font-size:13.5px;font-weight:600}
   .qmark{width:30px;height:30px;border-radius:50%;background:var(--pale);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:0 0 auto}
   .chev{color:#9aa3b2;flex:0 0 auto}
-  .lead{color:var(--gray);font-size:13.5px;line-height:1.6;margin:0 0 4px}
-  .block{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0}
+  .lead{color:var(--gray);font-size:13.5px;line-height:1.65;margin:0 0 6px;max-width:70ch}
+  .block{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin:16px 0}
+
+  /* ===== PAGE PHOTO ===== */
+  .pagephoto{margin:2px 0 18px;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--pale)}
+  .pagephoto img{display:block;width:100%;height:170px;object-fit:cover}
+  .pagephoto figcaption{font-size:12px;color:var(--gray);padding:9px 12px;line-height:1.45;background:#fff;border-top:1px solid var(--border)}
+  @media (min-width:640px){.pagephoto img{height:230px}}
+
   .block-t{margin:0 0 10px;font-size:14px;font-weight:800;color:var(--navy)}
   .rows{margin:0}
   .row{display:flex;flex-direction:column;gap:2px;padding:9px 0;border-top:1px solid #f0f2f6}
@@ -858,7 +866,33 @@ drawerLinks.innerHTML = ROUTES.map(
   r => `<a href="#/${r.id}" data-route="${r.id}">${r.label}</a>`
 ).join("");
 
+/* One clean photo with a caption at the top of every page. */
+const PAGE_PHOTOS = {
+  academics: ["/img/academics.jpg", "Classes in progress at R.V.R. & J.C. College of Engineering — academic calendar, regulations and attendance."],
+  syllabus: ["/img/syllabus.jpg", "Scheme and syllabus study material — pick your branch and regulation below."],
+  examinations: ["/img/examinations.jpg", "Examination hall — mid and semester-end examinations, hall tickets and results."],
+  admissions: ["/img/admissions.jpg", "Admissions office — AP EAPCET/ECET counselling, Category-B and lateral entry."],
+  apply: ["/img/apply.jpg", "Filling in an application — complete your details here, then submit on the official portal."],
+  hostel: ["/img/hostel.jpg", "A hostel room on campus — apply for a seat and pay the hostel fee."],
+  hostelportal: ["/img/hostelportal.jpg", "Hostel reception — application status, fee payment and documents."],
+  portal: ["/img/portal.jpg", "Fee payment counter — tuition fee, examination fee and receipts."],
+  campusmap: ["/img/campusmap.jpg", "Aerial view of the campus at Chowdavaram, Guntur — buildings and directions."],
+  departments: ["/img/departments.jpg", "Departmental laboratories — engineering, computing and management programmes."],
+  faq: ["/img/faq.jpg", "Students asking the assistant — the most common questions, answered from official pages."],
+  more: ["/img/more.jpg", "Central library and campus facilities — library, transport, grievances and contacts."],
+};
+
+function pagePhotoHTML(route) {
+  const p = PAGE_PHOTOS[route];
+  if (!p) return "";
+  return `<figure class="pagephoto">
+    <img src="${p[0]}" alt="${p[1]}" loading="lazy" />
+    <figcaption>${p[1]}</figcaption>
+  </figure>`;
+}
+
 function officialButtonHTML(route) {
+
   const o = OFFICIAL_BY_ROUTE[route];
   if (!o) return "";
   const extra = {
@@ -1165,6 +1199,11 @@ function render(route) {
     view.innerHTML = infoBlocksHTML(PAGES[route], route);
     viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", COMMON_QUESTIONS.slice(0, 6));
   }
+
+  const photo = pagePhotoHTML(route);
+  if (photo) view.insertAdjacentHTML("afterbegin", photo);
+
+
 
   tabsEl.querySelectorAll(".tab").forEach(t =>
     t.setAttribute("data-active", String(t.dataset.route === route))
