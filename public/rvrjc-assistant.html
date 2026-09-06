@@ -1200,6 +1200,11 @@ function render(route) {
     viewBelow.innerHTML = commonQuestionsHTML("Ask the assistant", COMMON_QUESTIONS.slice(0, 6));
   }
 
+  const photo = pagePhotoHTML(route);
+  if (photo) view.insertAdjacentHTML("afterbegin", photo);
+
+
+
   tabsEl.querySelectorAll(".tab").forEach(t =>
     t.setAttribute("data-active", String(t.dataset.route === route))
   );
