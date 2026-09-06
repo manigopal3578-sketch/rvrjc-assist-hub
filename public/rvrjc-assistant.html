@@ -866,7 +866,33 @@ drawerLinks.innerHTML = ROUTES.map(
   r => `<a href="#/${r.id}" data-route="${r.id}">${r.label}</a>`
 ).join("");
 
+/* One clean photo with a caption at the top of every page. */
+const PAGE_PHOTOS = {
+  academics: ["/img/academics.jpg", "Classes in progress at R.V.R. & J.C. College of Engineering — academic calendar, regulations and attendance."],
+  syllabus: ["/img/syllabus.jpg", "Scheme and syllabus study material — pick your branch and regulation below."],
+  examinations: ["/img/examinations.jpg", "Examination hall — mid and semester-end examinations, hall tickets and results."],
+  admissions: ["/img/admissions.jpg", "Admissions office — AP EAPCET/ECET counselling, Category-B and lateral entry."],
+  apply: ["/img/apply.jpg", "Filling in an application — complete your details here, then submit on the official portal."],
+  hostel: ["/img/hostel.jpg", "A hostel room on campus — apply for a seat and pay the hostel fee."],
+  hostelportal: ["/img/hostelportal.jpg", "Hostel reception — application status, fee payment and documents."],
+  portal: ["/img/portal.jpg", "Fee payment counter — tuition fee, examination fee and receipts."],
+  campusmap: ["/img/campusmap.jpg", "Aerial view of the campus at Chowdavaram, Guntur — buildings and directions."],
+  departments: ["/img/departments.jpg", "Departmental laboratories — engineering, computing and management programmes."],
+  faq: ["/img/faq.jpg", "Students asking the assistant — the most common questions, answered from official pages."],
+  more: ["/img/more.jpg", "Central library and campus facilities — library, transport, grievances and contacts."],
+};
+
+function pagePhotoHTML(route) {
+  const p = PAGE_PHOTOS[route];
+  if (!p) return "";
+  return `<figure class="pagephoto">
+    <img src="${p[0]}" alt="${p[1]}" loading="lazy" />
+    <figcaption>${p[1]}</figcaption>
+  </figure>`;
+}
+
 function officialButtonHTML(route) {
+
   const o = OFFICIAL_BY_ROUTE[route];
   if (!o) return "";
   const extra = {
