@@ -135,6 +135,14 @@ type Msg = { role: "user" | "assistant"; text: string };
 
 async function searchRvrjcPdfs(question: string) {
   try {
+    const searchQuery = question
+      .replace(
+        /\b(pdf|pdfs|file|files|document|documents|download)\b/gi,
+        " ",
+      )
+      .replace(/\s+/g, " ")
+      .trim();
+
     const res = await fetch(
       "https://gambheera1.app.n8n.cloud/webhook/rasa-search",
       {
@@ -143,7 +151,7 @@ async function searchRvrjcPdfs(question: string) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          query: question,
+          query: searchQuery || question,
         }),
       },
     );
