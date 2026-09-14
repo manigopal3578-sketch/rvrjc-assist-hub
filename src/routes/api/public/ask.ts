@@ -131,7 +131,32 @@ function smallTalk(question: string): string | null {
   return null;
 }
 
-type Msg = { role: "user" | "assistant"; text: string };
+type Msg = { role: "user" | "assistant"; text: string }; 
+
+async function searchRvrjcPdfs(question: string) {
+  try {
+    const res = await fetch(
+      "https://gambheera1.app.n8n.cloud/webhook/rasa-search",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: question,
+        }),
+      },
+    );
+
+    if (!res.ok) return [];
+
+    const data = await res.json();
+
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
 
 /** Answer conversationally; RVRJC facts come only from the supplied context. */
 async function compose(
@@ -291,12 +316,52 @@ export const Route = createFileRoute("/api/public/ask")({
         if (chit) return json({ answer: chit, mode: "general" });
 
         const nearby = ranked.filter((r) => r.s > 0.08).slice(0, 3);
-        const context = nearby
-          .map((r) => `# ${r.c.topic} (source: ${r.c.sourceUrl}${r.c.pdfUrl ? `, pdf: ${r.c.pdfUrl}` : ""})\n${r.c.answer}`)
-          .join("\n\n");
-        const rvrjcish =
-          looksRvrjcSpecific(question, ctx) || (nearby[0]?.s ?? 0) >= 0.2;
-        const top = nearby[0]?.c;
+
+const rvrjcish =
+  looksRvrjcSpecific(question, ctx) || (nearby[0]?.s ?? 0) >= 0.2;
+
+const pdfResults = rvrjcish
+  ? await searchRvrjcPdfs(question)
+  : [];
+
+const pdfContext = pdfResults
+  .slice(0, 8)
+  .map(
+    (r: {
+      Title?: string;
+      Category?: string;
+      Year?: string;
+      Regulation?: string;
+      Branch?: string;
+      "PDF URL"?: string;
+      "Source Page"?: string;
+    }) =>
+      `# ${r.Title || "RVRJC document"}
+Category: ${r.Category || ""}
+Year: ${r.Year || ""}
+Regulation: ${r.Regulation || ""}
+Branch: ${r.Branch || ""}
+PDF: ${r["PDF URL"] || ""}
+Source page: ${r["Source Page"] || ""}`,
+  )
+  .join("\n\n");
+
+const kbContext = nearby
+  .map(
+    (r) =>
+      `# ${r.c.topic} (source: ${r.c.sourceUrl}${r.c.pdfUrl ? `, pdf: ${r.c.pdfUrl}` : ""})\n${r.c.answer}`,
+  )
+  .join("\n\n");
+
+const context = [
+  pdfContext ? `VERIFIED PDF SEARCH RESULTS:\n${pdfContext}` : "",
+  kbContext ? `VERIFIED RVRJC KB:\n${kbContext}` : "",
+]
+  .filter(Boolean)
+  .join("\n\n");
+
+const top = nearby[0]?.c;
+const topPdf = pdfResults[0];
 
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) {
@@ -335,16 +400,24 @@ export const Route = createFileRoute("/api/public/ask")({
             });
           }
           return json({
-            answer,
-            ...(rvrjcish && top
-              ? {
-                  sourceLabel: top.pdfUrl ? "⬇️ Download Official PDF" : top.sourceLabel,
-                  sourceUrl: top.pdfUrl ?? top.sourceUrl,
-                  pdfUrl: top.pdfUrl,
-                }
-              : {}),
-            mode: rvrjcish ? "rvrjc" : "general",
-          });
+  answer,
+  ...(rvrjcish && (topPdf || top)
+    ? {
+        sourceLabel: topPdf?.["PDF URL"]
+          ? "⬇️ Download Official PDF"
+          : top?.pdfUrl
+            ? "⬇️ Download Official PDF"
+            : top?.sourceLabel,
+        sourceUrl:
+          topPdf?.["PDF URL"] ??
+          top?.pdfUrl ??
+          topPdf?.["Source Page"] ??
+          top?.sourceUrl,
+        pdfUrl: topPdf?.["PDF URL"] ?? top?.pdfUrl,
+      }
+    : {}),
+  mode: rvrjcish ? "rvrjc" : "general",
+});
         } catch (err) {
           const status = (err as { status?: number }).status ?? 500;
           // A verified chunk beats an error message whenever we have one.
