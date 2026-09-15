@@ -3,17 +3,16 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "RVRJC Assistant – Prototype Website" },
+      { title: "RIVA Assistant – R.V.R. & J.C. College of Engineering" },
       {
         name: "description",
         content:
-          "Prototype RVRJC Assistant landing page with a persistent AI chat widget for admissions, academics, examinations and placements queries.",
+          "RIVA Assistant for R.V.R. & J.C. College of Engineering admissions, academics, examinations and placements queries.",
       },
-      { property: "og:title", content: "RVRJC Assistant – Prototype Website" },
+      { property: "og:title", content: "RIVA Assistant – R.V.R. & J.C. College of Engineering" },
       {
         property: "og:description",
-        content:
-          "Engineering Day demo: a mobile-first RVRJC landing page with a persistent RASA-style assistant widget.",
+        content: "A mobile-first RVRJC landing page with the persistent RIVA Assistant.",
       },
     ],
   }),
@@ -24,7 +23,7 @@ function Index() {
   return (
     <iframe
       src="/rvrjc-assistant.html"
-      title="RVRJC Assistant prototype"
+      title="RIVA Assistant"
       style={{ border: 0, width: "100%", height: "100vh", display: "block" }}
     />
   );
