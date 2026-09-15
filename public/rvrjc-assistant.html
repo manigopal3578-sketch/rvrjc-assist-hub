@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RVRJC Assistant – R.V.R. &amp; J.C. College of Engineering</title>
+<title>RIVA Assistant – R.V.R. &amp; J.C. College of Engineering</title>
+<meta name="description" content="RIVA, the R.V.R. &amp; J.C. College of Engineering assistant for admissions, academics, examinations and campus information." />
+<link rel="preload" as="image" href="/.netlify/images?url=/assets/riva-campus.png&amp;w=1200&amp;q=82" fetchpriority="high" />
 <style>
   :root{
     --navy:#0d2a5c;
@@ -193,7 +195,7 @@
   <!-- ===== HEADER ===== -->
   <header class="site">
     <a class="brand" href="https://rvrjcce.ac.in" target="_blank" rel="noopener">
-      <img class="crest" src="/__l5e/assets-v1/beb7034b-4f08-4229-bc4e-fce69dcf52c9/rvrjc-crest.png" alt="R.V.R. &amp; J.C. College of Engineering crest" />
+      <img class="crest" src="/.netlify/images?url=/assets/riva-logo.png&amp;w=96&amp;h=96&amp;fit=contain&amp;q=90" alt="R.V.R. &amp; J.C. College of Engineering crest" width="44" height="44" decoding="async" />
       <div>
         <div class="n1">R.V.R. &amp; J.C.</div>
         <div class="n2">COLLEGE OF ENGINEERING</div>
@@ -212,7 +214,7 @@
 
   <!-- ===== HERO ===== -->
   <div class="hero">
-    <img src="/__l5e/assets-v1/cf9fa55c-31ea-4125-b230-c8baa9743f5b/rvrjc-campus.jpeg" alt="R.V.R. &amp; J.C. College of Engineering main building" />
+    <img src="/.netlify/images?url=/assets/riva-campus.png&amp;w=1200&amp;q=82" srcset="/.netlify/images?url=/assets/riva-campus.png&amp;w=640&amp;q=80 640w, /.netlify/images?url=/assets/riva-campus.png&amp;w=960&amp;q=82 960w, /.netlify/images?url=/assets/riva-campus.png&amp;w=1200&amp;q=82 1200w" sizes="(max-width: 960px) 100vw, 960px" alt="R.V.R. &amp; J.C. College of Engineering main building" width="788" height="389" fetchpriority="high" decoding="async" />
   </div>
 
   <!-- ===== SECONDARY NAV ===== -->
@@ -238,10 +240,10 @@
 
 <!-- ===== GLOBAL ASSISTANT (available on every page) ===== -->
 <div class="chat-scrim" id="chatScrim"></div>
-<div class="chat-panel" id="chatPanel" role="dialog" aria-label="RVRJC Assistant"></div>
-<span class="fab-label" id="fabLabel">Ask the RVRJC Assistant</span>
-<button class="fab" id="fab" aria-label="Open the RVRJC Assistant">
-  <img src="/rasa-assistant.png" alt="RASA AI Assistant" />
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="RIVA Assistant"></div>
+<span class="fab-label" id="fabLabel">Ask the RIVA Assistant</span>
+<button class="fab" id="fab" aria-label="Open the RIVA Assistant">
+  <img src="/.netlify/images?url=/riva-assistant.png&amp;w=112&amp;h=112&amp;fit=contain&amp;q=85" alt="RIVA AI Assistant" width="56" height="56" decoding="async" />
 </button>
 
 <script>
@@ -721,14 +723,14 @@ const chat = (() => {
   el.className = "chat";
   el.innerHTML = `
     <div class="chat-head">
-      <img class="avatar" src="/rasa-assistant.png" alt="" />
-      <span class="title">RVRJC Assistant</span>
+      <img class="avatar" src="/.netlify/images?url=/riva-assistant.png&amp;w=56&amp;h=56&amp;fit=contain&amp;q=85" alt="" width="28" height="28" decoding="async" />
+      <span class="title">RIVA Assistant</span>
       <span class="online"><span class="dot"></span>Online</span>
       <button class="close" id="chatClose" aria-label="Close assistant">${I.close}</button>
     </div>
     <div class="chat-body" id="chatBody">
       <div class="hi">Namaste! 🙏</div>
-      <div class="sub">I'm your RVRJC Assistant.</div>
+      <div class="sub">I'm your RIVA Assistant.</div>
       <div class="muted">Ask me anything about admissions, academics, examinations, placements, departments, facilities and more. Every answer is linked to an official RVRJC source — and I can also help with general questions.</div>
       <div class="qa-label">QUICK ACTIONS</div>
       <div class="pills">
@@ -744,7 +746,7 @@ const chat = (() => {
       <button class="send" id="sendBtn" aria-label="Send">${I.send}</button>
     </div>
     <div class="chat-foot">
-      Powered by RASA AI Assistant ·
+      Powered by RIVA AI Assistant ·
       <a href="https://rvrjcce.ac.in" target="_blank" rel="noopener">Official RVRJC website</a>
     </div>
   `;
@@ -886,7 +888,7 @@ function pagePhotoHTML(route) {
   const p = PAGE_PHOTOS[route];
   if (!p) return "";
   return `<figure class="pagephoto">
-    <img src="${p[0]}" alt="${p[1]}" loading="lazy" />
+    <img src="/.netlify/images?url=${encodeURIComponent(p[0])}&amp;w=900&amp;q=78" alt="${p[1]}" loading="lazy" decoding="async" />
     <figcaption>${p[1]}</figcaption>
   </figure>`;
 }

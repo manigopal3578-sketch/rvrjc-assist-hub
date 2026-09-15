@@ -92,7 +92,7 @@ chat widget below (scroll to it and auto-fill + send).
 
 
 
-=== RASA CHAT WIDGET (INLINE CARD, always visible below quick actions
+=== RIVA CHAT WIDGET (INLINE CARD, always visible below quick actions
 
     on every page/section — this is the persistent part) ===
 
@@ -136,7 +136,7 @@ Body (white bg):
 
   plane icon)
 
-- Footer caption, centered, small gray: "Powered by RASA AI Assistant ·
+- Footer caption, centered, small gray: "Powered by RIVA AI Assistant ·
 
   Official RVRJC website"
 
