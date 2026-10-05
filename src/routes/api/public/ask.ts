@@ -48,9 +48,11 @@ const RVRJC_HINTS = [
 
 const ACADEMIC_DOC_HINTS = [
   "syllabus", "unit", "units", "course objective", "course objectives",
-  "course outcome", "course outcomes", "subject code", "subject", "paper",
-  "credits", "credit", "text book", "textbook", "learning resources",
-  "course structure", "l t p c", "ltpc", "prerequisite",
+  "course outcome", "course outcomes", "objective", "objectives", "outcome",
+  "outcomes", "purpose", "topic", "topics", "content", "subject code",
+  "subject", "paper", "course", "credits", "credit", "text book",
+  "textbook", "learning resources", "course structure", "l t p c", "ltpc",
+  "prerequisite",
 ];
 
 const BRANCH_ALIASES: Array<[RegExp, string]> = [
@@ -70,8 +72,9 @@ function normalizeAcademicQuery(question: string): string {
   return q.replace(/\s+/g, " ").trim();
 }
 
-function hasExplicitBranch(question: string, ctx: StudentContext): boolean {
-  if (ctx.branch) return true;
+function hasExplicitBranch(question: string): boolean {
+  // Only count a branch if it appears in THIS user message.
+  // Sticky context must not silently resolve an ambiguous document code.
   return /\b(?:CSE|CS|ECE|EEE|IT|ME|CE|CIVIL|CHEMICAL|CH|MCA|MBA|BBA)\b/i.test(question);
 }
 
@@ -97,7 +100,7 @@ function shouldAskForAcademicClarification(
   nearbyScore: number,
 ): string | null {
   const q = question.trim();
-  const hasBranch = hasExplicitBranch(q, ctx);
+  const hasBranch = hasExplicitBranch(q);
   const prefixedCode = hasPrefixedCourseCode(q);
   const numericOrUnqualifiedCode = /(?:^|\s)\d{3}(?:\s|$)/.test(q);
   const academicIntent = isAcademicDocQuery(q);
@@ -117,7 +120,9 @@ function shouldAskForAcademicClarification(
   }
 
   // A branch alone (for example, "CSE syllabus") still needs the subject.
-  if (academicIntent && hasBranch && !prefixedCode && nearbyScore < 0.15) {
+  // Also catch short branch-only/filler messages such as "CS one".
+  const branchOnly = /^(?:cse|cs|ece|eee|it|me|ce|civil|chemical|ch|mca|mba|bba)(?:\s+(?:one|one\s*subject|syllabus|subjects?))?$/i.test(q);
+  if ((academicIntent && hasBranch && !prefixedCode && nearbyScore < 0.15) || branchOnly) {
     return "Which subject or course code do you need? For example: CS213, CS215, or Discrete Mathematical Structures.";
   }
 
@@ -674,16 +679,20 @@ Source page: ${r["Source Page"] || ""}`,
         const top = effectiveNearby[0]?.c;
         const topPdf = pdfResults[0];
         const academicDocumentRequest = isAcademicDocQuery(effectiveQuestion);
+        const pdfFound = topPdf?.found === true && topPdf?.answerFound === true;
+        const pdfExplicitlyNotFound = topPdf?.found === false || topPdf?.answerFound === false;
 
-        // For official syllabus/course-document requests, do not fall back to
-        // the old generic KB/AI answer when the new official PDF search found
-        // nothing. A verified "not found" is safer than a plausible guess.
-        if (academicDocumentRequest && rvrjcish && pdfResults.length === 0) {
-          return json({
-            answer:
-              "I couldn't find a verified official RVRJC document for that request. Please give the department/branch and subject code or name, for example: CSE CS213.",
-            mode: "rvrjc",
-          });
+        // For official academic-document requests, NEVER fall through to the
+        // old KB/AI path when n8n did not return a grounded document answer.
+        // n8n may return either [] OR [{ found: false }], so both cases matter.
+        if (academicDocumentRequest && rvrjcish && !pdfFound) {
+          if (pdfExplicitlyNotFound || pdfResults.length === 0) {
+            return json({
+              answer:
+                "I couldn't find a verified official RVRJC document for that request. Please give the department/branch and subject code or name, for example: CSE CS213.",
+              mode: "rvrjc",
+            });
+          }
         }
 
         /*
