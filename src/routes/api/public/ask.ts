@@ -62,11 +62,12 @@ function score(question: string, chunk: KbChunk): number {
   let hits = 0;
   for (const kw of chunk.keywords) {
     if (kw.includes(" ")) {
-      if (q.includes(kw)) hits += 2.5; // phrase match is strong evidence
+      if (q.includes(kw)) hits += 2.5;
     } else if (qTokens.includes(kw)) {
       hits += 1;
     }
   }
+
   if (q.includes(chunk.topic.toLowerCase())) hits += 2;
 
   return hits / Math.max(3, qTokens.length);
@@ -76,12 +77,22 @@ function score(question: string, chunk: KbChunk): number {
 function contextBoost(chunk: KbChunk, ctx: StudentContext): number {
   let b = 0;
   const text = (chunk.answer + " " + chunk.topic).toLowerCase();
+
   if (ctx.regulation && text.includes(ctx.regulation.toLowerCase())) b += 0.12;
   if (ctx.exam?.startsWith("mid") && /\bmid\b/.test(text)) b += 0.12;
   if (ctx.exam === "semester-end" && /semester-end|hall ticket/.test(text)) b += 0.1;
-  if (ctx.year && text.includes(`${ctx.year === 1 ? "i" : ctx.year === 2 ? "ii" : ctx.year === 3 ? "iii" : "iv"} year`))
+
+  if (
+    ctx.year &&
+    text.includes(
+      `${ctx.year === 1 ? "i" : ctx.year === 2 ? "ii" : ctx.year === 3 ? "iii" : "iv"} year`,
+    )
+  ) {
     b += 0.08;
+  }
+
   if (ctx.program && text.includes(ctx.program.toLowerCase())) b += 0.05;
+
   return b;
 }
 
@@ -89,16 +100,18 @@ const THRESHOLD = 0.34;
 
 function looksRvrjcSpecific(question: string, ctx: StudentContext): boolean {
   const q = question.toLowerCase();
+
   // The question itself must look college-related; sticky context alone is not enough,
   // otherwise a general question asked after "CSE 2.1" gets an RVRJC source attached.
   const own = parseContext(question);
+
   return (
     RVRJC_HINTS.some((h) => q.includes(h)) ||
     Boolean(own.branch || own.exam || own.year) ||
-    (Boolean(ctx.branch || ctx.exam || ctx.year) && /\b(my|our|college|class)\b/.test(q))
+    (Boolean(ctx.branch || ctx.exam || ctx.year) &&
+      /\b(my|our|college|class)\b/.test(q))
   );
 }
-
 
 type AskResponse = {
   answer: string;
@@ -108,7 +121,10 @@ type AskResponse = {
   mode: "rvrjc" | "general";
 };
 
-const json = (body: AskResponse | { error: string }, status = 200) =>
+const json = (
+  body: AskResponse | { error: string },
+  status = 200,
+) =>
   new Response(JSON.stringify(body), {
     status,
     headers: { "Content-Type": "application/json" },
@@ -116,22 +132,61 @@ const json = (body: AskResponse | { error: string }, status = 200) =>
 
 /** Friendly small talk handled locally so the bot always chats, even without AI. */
 function smallTalk(question: string): string | null {
-  const q = question.toLowerCase().replace(/[^a-z\s']/g, " ").trim();
-  const has = (...w: string[]) => w.some((x) => q === x || q.startsWith(x + " ") || q.includes(" " + x));
-  if (has("hi", "hello", "hey", "namaste", "hii", "good morning", "good evening", "good afternoon"))
+  const q = question
+    .toLowerCase()
+    .replace(/[^a-z\s']/g, " ")
+    .trim();
+
+  const has = (...w: string[]) =>
+    w.some(
+      (x) =>
+        q === x ||
+        q.startsWith(x + " ") ||
+        q.includes(" " + x),
+    );
+
+  if (
+    has(
+      "hi",
+      "hello",
+      "hey",
+      "namaste",
+      "hii",
+      "good morning",
+      "good evening",
+      "good afternoon",
+    )
+  ) {
     return "Namaste! 🙏 I'm the RVRJC Assistant. Tell me your class (for example “CSE 2.1”) and ask away — mids, syllabus, fees, hostel, results or anything else.";
-  if (has("thanks", "thank you", "thankyou", "ty"))
+  }
+
+  if (has("thanks", "thank you", "thankyou", "ty")) {
     return "Happy to help! Ask me anything else about RVRJC or any general question.";
-  if (has("bye", "goodbye", "see you"))
+  }
+
+  if (has("bye", "goodbye", "see you")) {
     return "Bye! Come back any time you need RVRJC info. All the best 👍";
-  if (q.includes("who are you") || q.includes("your name") || q.includes("what can you do"))
+  }
+
+  if (
+    q.includes("who are you") ||
+    q.includes("your name") ||
+    q.includes("what can you do")
+  ) {
     return "I'm the RVRJC Assistant. I answer questions about R.V.R. & J.C. College of Engineering from its official pages (admissions, fees, syllabus, exams, hostel, library, placements) and I can also chat and answer general questions.";
-  if (q.includes("how are you"))
+  }
+
+  if (q.includes("how are you")) {
     return "I'm doing great, thanks for asking! What would you like to know about RVRJC?";
+  }
+
   return null;
 }
 
-type Msg = { role: "user" | "assistant"; text: string }; 
+type Msg = {
+  role: "user" | "assistant";
+  text: string;
+};
 
 async function searchRvrjcPdfs(question: string) {
   try {
@@ -170,7 +225,11 @@ async function searchRvrjcPdfs(question: string) {
 async function compose(
   question: string,
   apiKey: string,
-  opts: { context: string; ctx: StudentContext; turns: Msg[] },
+  opts: {
+    context: string;
+    ctx: StudentContext;
+    turns: Msg[];
+  },
 ): Promise<string> {
   const ctxLine = describeContext(opts.ctx);
   const title = contextTitle(opts.ctx);
@@ -195,13 +254,20 @@ async function compose(
     "",
     "NON-RVRJC QUESTIONS",
     "• General knowledge, study help or casual chat: answer normally, briefly and accurately, no source line needed.",
-    ctxLine ? `\nRESOLVED STUDENT CONTEXT (carried from this conversation): ${ctxLine}${title ? ` — suggested heading: ${title}` : ""}. Treat "my"/"our" as referring to it, and never ask again for details already listed here.` : "",
+    ctxLine
+      ? `\nRESOLVED STUDENT CONTEXT (carried from this conversation): ${ctxLine}${title ? ` — suggested heading: ${title}` : ""}. Treat "my"/"our" as referring to it, and never ask again for details already listed here.`
+      : "",
   ].join("\n");
 
   const input = [
     ...opts.turns.slice(-6).map((t) => ({
       role: t.role,
-      content: [{ type: t.role === "user" ? "input_text" : "output_text", text: t.text }],
+      content: [
+        {
+          type: t.role === "user" ? "input_text" : "output_text",
+          text: t.text,
+        },
+      ],
     })),
     {
       role: "user",
@@ -216,48 +282,79 @@ async function compose(
     },
   ];
 
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Lovable-API-Key": apiKey,
-      "X-Lovable-AIG-SDK": "fetch",
+  const res = await fetch(
+    "https://ai.gateway.lovable.dev/v1/responses",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Lovable-API-Key": apiKey,
+        "X-Lovable-AIG-SDK": "fetch",
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-5.6-sol",
+        stream: true,
+        store: false,
+        reasoning: {
+          effort: "low",
+          summary: "auto",
+        },
+        instructions,
+        input,
+      }),
     },
-    body: JSON.stringify({
-      model: "openai/gpt-5.6-sol",
-      stream: true,
-      store: false,
-      reasoning: { effort: "low", summary: "auto" },
-      instructions,
-      input,
-    }),
-  });
+  );
 
   if (!res.ok) {
     const body = await res.text();
-    throw Object.assign(new Error(`Gateway ${res.status}: ${body}`), { status: res.status, body });
+
+    throw Object.assign(
+      new Error(`Gateway ${res.status}: ${body}`),
+      {
+        status: res.status,
+        body,
+      },
+    );
   }
 
   // Read the SSE stream and accumulate the output text deltas.
   const reader = res.body!.getReader();
   const decoder = new TextDecoder();
+
   let buffer = "";
   let text = "";
+
   for (;;) {
     const { done, value } = await reader.read();
+
     if (done) break;
-    buffer += decoder.decode(value, { stream: true });
+
+    buffer += decoder.decode(value, {
+      stream: true,
+    });
+
     const lines = buffer.split("\n");
     buffer = lines.pop() ?? "";
+
     for (const line of lines) {
       if (!line.startsWith("data:")) continue;
+
       const payload = line.slice(5).trim();
+
       if (!payload || payload === "[DONE]") continue;
+
       try {
         const evt = JSON.parse(payload);
-        if (evt.type === "response.output_text.delta" && typeof evt.delta === "string") {
+
+        if (
+          evt.type === "response.output_text.delta" &&
+          typeof evt.delta === "string"
+        ) {
           text += evt.delta;
-        } else if (evt.type === "response.completed" && !text) {
+        } else if (
+          evt.type === "response.completed" &&
+          !text
+        ) {
           text = evt.response?.output_text ?? "";
         }
       } catch {
@@ -265,13 +362,18 @@ async function compose(
       }
     }
   }
+
   return text.trim();
 }
 
 /** Deterministic, well-structured fallback built straight from a verified chunk. */
-function chunkAnswer(chunk: KbChunk, ctx: StudentContext): string {
+function chunkAnswer(
+  chunk: KbChunk,
+  ctx: StudentContext,
+): string {
   const title = contextTitle(ctx);
   const head = title ? `📅 ${title}\n\n` : "";
+
   return `${head}${chunk.answer}`;
 }
 
@@ -281,97 +383,205 @@ export const Route = createFileRoute("/api/public/ask")({
       POST: async ({ request }) => {
         let question = "";
         let history: Msg[] = [];
+
         try {
           const body = (await request.json()) as {
             question?: unknown;
             history?: unknown;
           };
-          question = typeof body.question === "string" ? body.question.trim() : "";
+
+          question =
+            typeof body.question === "string"
+              ? body.question.trim()
+              : "";
+
           if (Array.isArray(body.history)) {
             history = body.history
               .filter(
-                (m): m is { role: string; text: string } =>
-                  !!m && typeof (m as { text?: unknown }).text === "string",
+                (
+                  m,
+                ): m is {
+                  role: string;
+                  text: string;
+                } =>
+                  !!m &&
+                  typeof (m as { text?: unknown }).text ===
+                    "string",
               )
               .slice(-8)
               .map((m) => ({
-                role: m.role === "user" ? "user" : "assistant",
+                role:
+                  m.role === "user"
+                    ? "user"
+                    : "assistant",
                 text: String(m.text).slice(0, 1500),
               }));
           }
         } catch {
-          return json({ error: "Invalid JSON body" }, 400);
+          return json(
+            { error: "Invalid JSON body" },
+            400,
+          );
         }
+
         if (!question || question.length > 600) {
-          return json({ error: "A question of 1-600 characters is required" }, 400);
+          return json(
+            {
+              error:
+                "A question of 1-600 characters is required",
+            },
+            400,
+          );
         }
 
         // 1 — understand the student's language, sticky across the conversation.
         const ctx = mergeContext(
-          contextFromHistory(history.filter((m) => m.role === "user").map((m) => m.text)),
+          contextFromHistory(
+            history
+              .filter((m) => m.role === "user")
+              .map((m) => m.text),
+          ),
           parseContext(question),
         );
 
         // 2 — retrieve with the context-expanded query.
         const expanded = expandQuery(question, ctx);
-        const ranked = KB.map((c) => ({ c, s: score(expanded, c) + contextBoost(c, ctx) })).sort(
-          (a, b) => b.s - a.s,
-        );
+
+        const ranked = KB.map((c) => ({
+          c,
+          s:
+            score(expanded, c) +
+            contextBoost(c, ctx),
+        })).sort((a, b) => b.s - a.s);
+
         const best = ranked[0];
 
         // Friendly small talk — always works, no AI needed.
-        const chit = !ctx.exam && !ctx.branch ? smallTalk(question) : null;
-        if (chit) return json({ answer: chit, mode: "general" });
+        const chit =
+          !ctx.exam && !ctx.branch
+            ? smallTalk(question)
+            : null;
 
-        const nearby = ranked.filter((r) => r.s > 0.08).slice(0, 3);
+        if (chit) {
+          return json({
+            answer: chit,
+            mode: "general",
+          });
+        }
 
-const rvrjcish =
-  looksRvrjcSpecific(question, ctx) || (nearby[0]?.s ?? 0) >= 0.2;
+        const nearby = ranked
+          .filter((r) => r.s > 0.08)
+          .slice(0, 3);
 
-const pdfResults = rvrjcish
-  ? await searchRvrjcPdfs(question)
-  : [];
+        const rvrjcish =
+          looksRvrjcSpecific(question, ctx) ||
+          (nearby[0]?.s ?? 0) >= 0.2;
 
-const pdfContext = pdfResults
-  .slice(0, 8)
-  .map(
-    (r: {
-      Title?: string;
-      Category?: string;
-      Year?: string;
-      Regulation?: string;
-      Branch?: string;
-      "PDF URL"?: string;
-      "Source Page"?: string;
-    }) =>
-      `# ${r.Title || "RVRJC document"}
+        /*
+         * NEW RIVA PIPELINE
+         *
+         * RVRJC questions are sent to the new n8n workflow.
+         * n8n searches the official PDF database, retrieves
+         * the document content, generates the grounded answer,
+         * and returns the official PDF URL.
+         */
+        const pdfResults = rvrjcish
+          ? await searchRvrjcPdfs(question)
+          : [];
+
+        const pdfContext = pdfResults
+          .slice(0, 8)
+          .map(
+            (r: {
+              Title?: string;
+              Category?: string;
+              Year?: string;
+              Regulation?: string;
+              Branch?: string;
+              "PDF URL"?: string;
+              "Source Page"?: string;
+            }) =>
+              `# ${r.Title || "RVRJC document"}
 Category: ${r.Category || ""}
 Year: ${r.Year || ""}
 Regulation: ${r.Regulation || ""}
 Branch: ${r.Branch || ""}
 PDF: ${r["PDF URL"] || ""}
 Source page: ${r["Source Page"] || ""}`,
-  )
-  .join("\n\n");
+          )
+          .join("\n\n");
 
-const kbContext = nearby
-  .map(
-    (r) =>
-      `# ${r.c.topic} (source: ${r.c.sourceUrl}${r.c.pdfUrl ? `, pdf: ${r.c.pdfUrl}` : ""})\n${r.c.answer}`,
-  )
-  .join("\n\n");
+        const kbContext = nearby
+          .map(
+            (r) =>
+              `# ${r.c.topic} (source: ${r.c.sourceUrl}${
+                r.c.pdfUrl
+                  ? `, pdf: ${r.c.pdfUrl}`
+                  : ""
+              })\n${r.c.answer}`,
+          )
+          .join("\n\n");
 
-const context = [
-  pdfContext ? `VERIFIED PDF SEARCH RESULTS:\n${pdfContext}` : "",
-  kbContext ? `VERIFIED RVRJC KB:\n${kbContext}` : "",
-]
-  .filter(Boolean)
-  .join("\n\n");
+        const context = [
+          pdfContext
+            ? `VERIFIED PDF SEARCH RESULTS:\n${pdfContext}`
+            : "",
+          kbContext
+            ? `VERIFIED RVRJC KB:\n${kbContext}`
+            : "",
+        ]
+          .filter(Boolean)
+          .join("\n\n");
 
-const top = nearby[0]?.c;
-const topPdf = pdfResults[0];
+        const top = nearby[0]?.c;
+        const topPdf = pdfResults[0];
 
-        const apiKey = process.env["LOVABLE_API_KEY"];
+        /*
+         * CRITICAL:
+         * If the new n8n workflow has already produced a grounded
+         * answer from an official RVRJC document, use that answer
+         * directly instead of sending the question through the
+         * old Lovable AI compose() path.
+         *
+         * This prevents the old KB/AI path from overriding the
+         * new official-PDF answer.
+         */
+        if (
+          topPdf?.found === true &&
+          topPdf?.answerFound === true &&
+          typeof topPdf?.answer === "string" &&
+          topPdf.answer.trim()
+        ) {
+          const officialPdf =
+            topPdf["PDF URL"] ||
+            topPdf.pdfUrl ||
+            topPdf["PDF URL "] ||
+            "";
+
+          const sourcePage =
+            topPdf["Source Page"] || "";
+
+          return json({
+            answer: topPdf.answer.trim(),
+            sourceLabel: officialPdf
+              ? "⬇️ Download Official PDF"
+              : "Official RVRJC Source",
+            sourceUrl:
+              officialPdf || sourcePage,
+            pdfUrl:
+              officialPdf || undefined,
+            mode: "rvrjc",
+          });
+        }
+
+        /*
+         * FALLBACK:
+         * If n8n did not produce a grounded answer, retain the
+         * existing Lovable AI / local KB behaviour.
+         */
+        const apiKey =
+          process.env["LOVABLE_API_KEY"];
+
         if (!apiKey) {
           // No AI available: serve the verified chunk directly when confident.
           if (best && best.s >= THRESHOLD) {
@@ -383,6 +593,7 @@ const topPdf = pdfResults[0];
               mode: "rvrjc",
             });
           }
+
           return json({
             answer:
               "I couldn't find a verified official RVRJC document with that exact detail, and the AI service isn't configured right now. Ask me about admissions, fees, exams, results, placements, hostel, library or departments and I'll answer from the official pages.",
@@ -391,66 +602,107 @@ const topPdf = pdfResults[0];
         }
 
         try {
-          const answer = await compose(question, apiKey, { context, ctx, turns: history });
+          const answer = await compose(
+            question,
+            apiKey,
+            {
+              context,
+              ctx,
+              turns: history,
+            },
+          );
+
           if (!answer) {
             if (best && best.s >= THRESHOLD) {
               return json({
                 answer: chunkAnswer(best.c, ctx),
-                sourceLabel: best.c.sourceLabel,
-                sourceUrl: best.c.sourceUrl,
+                sourceLabel:
+                  best.c.sourceLabel,
+                sourceUrl:
+                  best.c.sourceUrl,
                 pdfUrl: best.c.pdfUrl,
                 mode: "rvrjc",
               });
             }
+
             return json({
-              answer: "I couldn't produce an answer for that. Please try rephrasing your question.",
+              answer:
+                "I couldn't produce an answer for that. Please try rephrasing your question.",
               mode: "general",
             });
           }
+
           return json({
-  answer,
-  ...(rvrjcish && (topPdf || top)
-    ? {
-        sourceLabel: topPdf?.["PDF URL"]
-          ? "⬇️ Download Official PDF"
-          : top?.pdfUrl
-            ? "⬇️ Download Official PDF"
-            : top?.sourceLabel,
-        sourceUrl:
-          topPdf?.["PDF URL"] ??
-          top?.pdfUrl ??
-          topPdf?.["Source Page"] ??
-          top?.sourceUrl,
-        pdfUrl: topPdf?.["PDF URL"] ?? top?.pdfUrl,
-      }
-    : {}),
-  mode: rvrjcish ? "rvrjc" : "general",
-});
+            answer,
+
+            ...(rvrjcish &&
+            (topPdf || top)
+              ? {
+                  sourceLabel:
+                    topPdf?.["PDF URL"]
+                      ? "⬇️ Download Official PDF"
+                      : top?.pdfUrl
+                        ? "⬇️ Download Official PDF"
+                        : top?.sourceLabel,
+
+                  sourceUrl:
+                    topPdf?.["PDF URL"] ??
+                    top?.pdfUrl ??
+                    topPdf?.["Source Page"] ??
+                    top?.sourceUrl,
+
+                  pdfUrl:
+                    topPdf?.["PDF URL"] ??
+                    top?.pdfUrl,
+                }
+              : {}),
+
+            mode: rvrjcish
+              ? "rvrjc"
+              : "general",
+          });
         } catch (err) {
-          const status = (err as { status?: number }).status ?? 500;
+          const status =
+            (err as { status?: number })
+              .status ?? 500;
+
           // A verified chunk beats an error message whenever we have one.
           if (best && best.s >= THRESHOLD) {
             return json({
               answer: chunkAnswer(best.c, ctx),
-              sourceLabel: best.c.sourceLabel,
-              sourceUrl: best.c.sourceUrl,
+              sourceLabel:
+                best.c.sourceLabel,
+              sourceUrl:
+                best.c.sourceUrl,
               pdfUrl: best.c.pdfUrl,
               mode: "rvrjc",
             });
           }
-          const messageByStatus: Record<number, string> = {
+
+          const messageByStatus: Record<
+            number,
+            string
+          > = {
             402: "The AI credits for this assistant are exhausted. The app owner needs to top up Lovable AI credits.",
             403: "AI access is blocked by workspace policy for this assistant.",
             429: "The assistant is rate limited right now. Please try again in a few seconds.",
           };
-          console.error("ask endpoint compose failed", status, err);
+
+          console.error(
+            "ask endpoint compose failed",
+            status,
+            err,
+          );
+
           return json(
             {
               error:
                 messageByStatus[status] ??
                 "The assistant couldn't reach the AI service. Please try again.",
             },
-            status >= 400 && status < 600 ? status : 500,
+            status >= 400 && status < 600
+              ? status
+              : 500,
           );
         }
       },
