@@ -72,14 +72,96 @@ function normalizeAcademicQuery(question: string): string {
   return q.replace(/\s+/g, " ").trim();
 }
 
+/** Normalize a user's branch reply without changing course-code prefixes. */
+function canonicalBranch(question: string): string | null {
+  const q = question
+    .toLowerCase()
+    .replace(/[.,]/g, " ")
+    .replace(/\bdepartment\b|\bbranch\b|\bdept\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const aliases: Array<[RegExp, string]> = [
+    [/^(?:cse|cs|computer science|computer science and engineering)$/, "CSE"],
+    [/^(?:ece|electronics and communication|electronics and communication engineering)$/, "ECE"],
+    [/^(?:eee|electrical and electronics|electrical and electronics engineering)$/, "EEE"],
+    [/^(?:it|information technology)$/, "IT"],
+    [/^(?:me|mechanical|mechanical engineering)$/, "ME"],
+    [/^(?:ce|civil|civil engineering)$/, "CE"],
+    [/^(?:chemical|chemical engineering|ch)$/, "CH"],
+    [/^(?:mca|master of computer applications)$/, "MCA"],
+    [/^(?:mba|master of business administration)$/, "MBA"],
+    [/^(?:bba|bachelor of business administration)$/, "BBA"],
+  ];
+
+  for (const [pattern, branch] of aliases) {
+    if (pattern.test(q)) return branch;
+  }
+  return null;
+}
+
+/** Return the course-code prefix used by RVRJC's syllabus codes. */
+function coursePrefixForBranch(branch: string): string {
+  const map: Record<string, string> = {
+    CSE: "CS",
+    ECE: "ECE",
+    EEE: "EEE",
+    IT: "IT",
+    ME: "ME",
+    CE: "CE",
+    CH: "CH",
+    MCA: "MCA",
+    MBA: "MBA",
+    BBA: "BBA",
+  };
+  return map[branch] ?? branch;
+}
+
+function canonicalizeNumericCourseCode(question: string): string {
+  // Only canonicalize a bare 3-digit course code when the same message
+  // contains an explicit branch. This prevents ordinary numbers from being
+  // rewritten and leaves already-qualified codes untouched.
+  const match = question.match(/(?:^|\s)(\d{3})(?=\s|$)/);
+  if (!match) return question;
+
+  const branchMatch = question.match(
+    /\b(?:CSE|CS|ECE|EEE|IT|ME|CE|CIVIL|CHEMICAL|CH|MCA|MBA|BBA)\b/i,
+  );
+  if (!branchMatch) return question;
+
+  const branch = canonicalBranch(branchMatch[0]);
+  if (!branch) return question;
+
+  const code = `${coursePrefixForBranch(branch)}${match[1]}`;
+  return question.replace(match[1], code);
+}
+
 function hasExplicitBranch(question: string): boolean {
-  // Only count a branch if it appears in THIS user message.
-  // Sticky context must not silently resolve an ambiguous document code.
-  return /\b(?:CSE|CS|ECE|EEE|IT|ME|CE|CIVIL|CHEMICAL|CH|MCA|MBA|BBA)\b/i.test(question);
+  // Detect a branch anywhere in the user's message, not only when the
+  // entire message is itself a branch reply. This is essential for direct
+  // queries such as "211 syllabus CSE" and "CSE 211 syllabus".
+  const branchPattern = /\b(?:CSE|CS|ECE|EEE|IT|ME|CE|CIVIL|CHEMICAL|CH|MCA|MBA|BBA|computer science(?: and engineering)?|electronics and communication(?: engineering)?|electrical and electronics(?: engineering)?|information technology|mechanical(?: engineering)?|civil engineering|chemical engineering|master of computer applications|master of business administration|bachelor of business administration)\b/i;
+  return branchPattern.test(question);
 }
 
 function hasCourseCode(question: string): boolean {
-  return /\b(?:[A-Za-z]{2,8}\s*)?\d{3}\b/.test(question);
+  // Qualified codes are unambiguous.
+  if (hasPrefixedCourseCode(question)) return true;
+
+  // A bare 3-digit number is a course code only when the surrounding
+  // language looks academic. This prevents false positives such as
+  // "Room 211", "Page 215", "Roll number 211", etc.
+  if (!/\b\d{3}\b/.test(question)) return false;
+
+  const q = question.toLowerCase();
+  const nonCoursePrefix = /^(?:room|page|pages|roll|roll\s*number|phone|mobile|year|marks?|score|question|q)\s*[:#-]?\s*\d{3}\b/i;
+  if (nonCoursePrefix.test(q)) return false;
+
+  return (
+    ACADEMIC_DOC_HINTS.some((h) => q.includes(h)) ||
+    /\b(?:syllabus|subject|course|paper|unit|units|objective|objectives|outcome|outcomes|credits?|code)\b/i.test(q) ||
+    (hasExplicitBranch(question) && !nonCoursePrefix.test(q))
+  );
 }
 
 function hasPrefixedCourseCode(question: string): boolean {
@@ -88,10 +170,7 @@ function hasPrefixedCourseCode(question: string): boolean {
 
 function isAcademicDocQuery(question: string): boolean {
   const q = question.toLowerCase();
-  return (
-    ACADEMIC_DOC_HINTS.some((h) => q.includes(h)) ||
-    hasCourseCode(question)
-  );
+  return ACADEMIC_DOC_HINTS.some((h) => q.includes(h)) || hasCourseCode(question);
 }
 
 function shouldAskForAcademicClarification(
@@ -102,32 +181,27 @@ function shouldAskForAcademicClarification(
   const q = question.trim();
   const hasBranch = hasExplicitBranch(q);
   const prefixedCode = hasPrefixedCourseCode(q);
-  const numericOrUnqualifiedCode = /(?:^|\s)\d{3}(?:\s|$)/.test(q);
+  const numericOrUnqualifiedCode =
+    /\b\d{3}\b/.test(q) &&
+    !hasPrefixedCourseCode(q) &&
+    hasCourseCode(q);
   const academicIntent = isAcademicDocQuery(q);
 
-  // A code such as "213 syllabus" is not unique until the branch is known.
   if (numericOrUnqualifiedCode && !hasBranch) {
     return "Which department/branch is this for? Please give the code, e.g. CSE (or CS), ECE, EEE, IT, ME, CE.";
   }
 
-  // A fully qualified code such as CS213 is safe to search directly.
   if (prefixedCode) return null;
 
-  // Any academic-document request without a branch is ambiguous once we
-  // support multiple departments. Ask for the branch instead of guessing.
   if (academicIntent && !hasBranch && !prefixedCode) {
     return "Which department/branch is this for? Please give the code, e.g. CSE (or CS), ECE, EEE, IT, ME, CE.";
   }
 
-  // A branch alone (for example, "CSE syllabus") still needs the subject.
-  // Also catch short branch-only/filler messages such as "CS one".
   const branchOnly = /^(?:cse|cs|ece|eee|it|me|ce|civil|chemical|ch|mca|mba|bba)(?:\s+(?:one|one\s*subject|syllabus|subjects?))?$/i.test(q);
   if ((academicIntent && hasBranch && !prefixedCode && nearbyScore < 0.15) || branchOnly) {
     return "Which subject or course code do you need? For example: CS213, CS215, or Discrete Mathematical Structures.";
   }
 
-  // A short subject-name query can be ambiguous across departments.
-  // Ask for the branch rather than guessing when the local KB strongly suggests a subject.
   const words = q.split(/\s+/).filter(Boolean).length;
   const hasQuestionWord = /\b(what|how|why|when|where|which|who|can|does|is|are)\b/i.test(q);
   if (!hasBranch && words <= 6 && nearbyScore >= 0.15 && !hasQuestionWord) {
@@ -137,37 +211,153 @@ function shouldAskForAcademicClarification(
   return null;
 }
 
-function previousUserQuestion(history: Msg[]): string {
-  for (let i = history.length - 1; i >= 0; i--) {
-    if (history[i]?.role === "user") return history[i].text;
-  }
-  return "";
+type ClarificationKind = "branch" | "subject" | null;
+
+function clarificationKind(text: string): ClarificationKind {
+  const q = text.toLowerCase().replace(/\s+/g, " ").trim();
+  if (
+    q.includes("which department/branch") ||
+    q.includes("which department") ||
+    q.includes("which branch")
+  ) return "branch";
+
+  if (q.includes("which subject") || q.includes("which subject or course code")) return "subject";
+  return null;
 }
 
-function hasPendingClarification(history: Msg[]): boolean {
+function previousUserQuestion(history: Msg[], beforeIndex: number): string {
+  // The clarification should normally immediately follow the user's request.
+  // If it does not, refuse to guess which earlier user message it referred to.
+  const previous = history[beforeIndex - 1];
+  return previous?.role === "user" ? previous.text : "";
+}
+
+function latestPendingClarification(
+  history: Msg[],
+  currentQuestion: string,
+): { kind: ClarificationKind; assistantIndex: number } | null {
   for (let i = history.length - 1; i >= 0; i--) {
     const turn = history[i];
-    if (turn?.role === "assistant") {
-      const text = turn.text.toLowerCase();
-      return (
-        text.includes("which department/branch") ||
-        text.includes("which department") ||
-        text.includes("which subject")
-      );
+    if (turn?.role !== "assistant") continue;
+
+    const kind = clarificationKind(turn.text);
+    if (!kind) continue;
+
+    // History may include the current user turn or omit it. After the
+    // clarification there must therefore be either zero turns, or exactly
+    // one user turn equal to the current question. Anything else means this
+    // clarification is stale and must not contaminate the new question.
+    const after = history.slice(i + 1);
+    const currentNormalized = normalizeAcademicQuery(currentQuestion);
+    if (after.length === 0) return { kind, assistantIndex: i };
+    if (
+      after.length === 1 &&
+      after[0]?.role === "user" &&
+      normalizeAcademicQuery(after[0].text) === currentNormalized
+    ) {
+      return { kind, assistantIndex: i };
     }
-    if (turn?.role === "user") break;
+
+    return null;
   }
-  return false;
+  return null;
+}
+
+function isLikelyClarificationAnswer(
+  question: string,
+  kind: ClarificationKind,
+): boolean {
+  const q = question.trim();
+  if (!q || !kind) return false;
+
+  if (kind === "branch") {
+    return Boolean(canonicalBranch(q));
+  }
+
+  if (hasCourseCode(q)) return true;
+
+  const words = q.split(/\s+/).filter(Boolean);
+  const hasQuestionWord = /\b(what|how|why|when|where|which|who|can|does|is|are)\b/i.test(q);
+  return words.length <= 8 && !hasQuestionWord;
+}
+
+function extractPrefixedCourseCode(text: string): string | null {
+  const match = text.match(/\b(?:CS|CSE|ECE|EEE|IT|ME|CE|CH|MCA|MBA|BBA)\s*\d{3}\b/i);
+  return match ? match[0].replace(/\s+/g, "").toUpperCase() : null;
+}
+
+function isAcademicFollowUp(question: string): boolean {
+  const q = question.toLowerCase();
+  return (
+    /\b(?:what|which|list|show|give|tell)\b/.test(q) &&
+    /\b(?:unit|units|topic|topics|objective|objectives|outcome|outcomes|credits?|code|syllabus|prerequisite|textbook|content|course|subject)\b/.test(q)
+  ) || /^(?:units?|topics?|objectives?|outcomes?|syllabus|credits?|course outcomes?)\??$/i.test(question.trim());
+}
+
+function latestStickyCourseCode(history: Msg[]): string | null {
+  // Only explicit codes written by the student establish academic context.
+  // Never learn a sticky course code from an assistant answer, because an
+  // answer may legitimately mention alternative courses or examples.
+  for (let i = history.length - 1; i >= 0; i--) {
+    if (history[i]?.role !== "user") continue;
+    const code = extractPrefixedCourseCode(history[i]?.text ?? "");
+    if (code) return code;
+  }
+  return null;
 }
 
 function buildResolvedAcademicQuery(question: string, history: Msg[]): string {
-  const normalized = normalizeAcademicQuery(question);
-  if (!hasPendingClarification(history)) return normalized;
+  let normalized = normalizeAcademicQuery(question);
+  if (!normalized) return normalized;
 
-  const previous = normalizeAcademicQuery(previousUserQuestion(history));
-  if (!previous || previous === normalized) return normalized;
+  // Canonicalize a numeric course number whenever the same message explicitly
+  // identifies its branch. This handles direct one-message forms such as
+  // "211 syllabus CSE" and "CSE 211 syllabus", not only clarification turns.
+  if (hasCourseCode(normalized) && hasExplicitBranch(normalized)) {
+    normalized = canonicalizeNumericCourseCode(normalized);
+  }
 
-  return `${previous} ${normalized}`.replace(/\s+/g, " ").trim();
+  // First resolve an active clarification.
+  const pending = latestPendingClarification(history, question);
+  if (pending) {
+
+    // Explicitly qualified codes are always self-contained and override stale
+    // clarification state. A bare branch is handled below as the intended
+    // answer to a branch clarification.
+    if (hasPrefixedCourseCode(normalized)) return normalized;
+
+    if (isLikelyClarificationAnswer(normalized, pending.kind)) {
+      const previous = normalizeAcademicQuery(
+        previousUserQuestion(history, pending.assistantIndex),
+      );
+      if (previous && previous !== normalized) {
+        // A branch reply completes a numeric course code. Canonicalize it to the
+        // actual RVRJC course-code form (e.g. "213 syllabus" + "CSE" -> "CS213 syllabus").
+        if (pending.kind === "branch") {
+          const branch = canonicalBranch(normalized);
+          if (branch) {
+            const combined = `${previous} ${branch}`.replace(/\s+/g, " ").trim();
+            return canonicalizeNumericCourseCode(combined);
+          }
+        }
+
+        return `${previous} ${normalized}`.replace(/\s+/g, " ").trim();
+      }
+    }
+  }
+
+  // Sticky academic course context: once the student explicitly established
+  // a course (e.g. CS215), short follow-ups such as "What are the units?"
+  // continue to refer to that course. Only academic follow-ups inherit it,
+  // so ordinary questions are never hijacked by an old course code.
+  if (!hasPrefixedCourseCode(normalized) && isAcademicFollowUp(normalized)) {
+    const sticky = latestStickyCourseCode(history);
+    if (sticky && !normalized.toLowerCase().includes(sticky.toLowerCase())) {
+      return `${sticky} ${normalized}`.replace(/\s+/g, " ").trim();
+    }
+  }
+
+  return normalized;
 }
 
 function tokens(s: string): string[] {
